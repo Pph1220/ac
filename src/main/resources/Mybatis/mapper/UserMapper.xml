@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhpang.ac.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.lhpang.ac.pojo.User">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="Logno" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="Password" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="Phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="Question" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="Answer" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="Role" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="Creat_Time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="Update_Time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, Logno, Password, Phone, Question, Answer, Role, Creat_Time, Update_Time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from c_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from c_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lhpang.ac.pojo.User">
+    insert into c_user (id, Logno, Password, 
+      Phone, Question, Answer, 
+      Role, Creat_Time, Update_Time
+      )
+    values (#{id,jdbcType=INTEGER}, #{logno,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, 
+      #{role,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lhpang.ac.pojo.User">
+    insert into c_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="logno != null">
+        Logno,
+      </if>
+      <if test="password != null">
+        Password,
+      </if>
+      <if test="phone != null">
+        Phone,
+      </if>
+      <if test="question != null">
+        Question,
+      </if>
+      <if test="answer != null">
+        Answer,
+      </if>
+      <if test="role != null">
+        Role,
+      </if>
+      <if test="creatTime != null">
+        Creat_Time,
+      </if>
+      <if test="updateTime != null">
+        Update_Time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="logno != null">
+        #{logno,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="question != null">
+        #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null">
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null">
+        #{role,jdbcType=INTEGER},
+      </if>
+      <if test="creatTime != null">
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lhpang.ac.pojo.User">
+    update c_user
+    <set>
+      <if test="logno != null">
+        Logno = #{logno,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        Password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        Phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="question != null">
+        Question = #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null">
+        Answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null">
+        Role = #{role,jdbcType=INTEGER},
+      </if>
+      <if test="creatTime != null">
+        Creat_Time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        Update_Time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lhpang.ac.pojo.User">
+    update c_user
+    set Logno = #{logno,jdbcType=VARCHAR},
+      Password = #{password,jdbcType=VARCHAR},
+      Phone = #{phone,jdbcType=VARCHAR},
+      Question = #{question,jdbcType=VARCHAR},
+      Answer = #{answer,jdbcType=VARCHAR},
+      Role = #{role,jdbcType=INTEGER},
+      Creat_Time = #{creatTime,jdbcType=TIMESTAMP},
+      Update_Time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
