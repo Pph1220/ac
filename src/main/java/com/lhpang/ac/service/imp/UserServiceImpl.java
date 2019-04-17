@@ -1,21 +1,20 @@
-package com.lhpang.ac.service.Imp;
+package com.lhpang.ac.service.imp;
 
 import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.dao.UserMapper;
 import com.lhpang.ac.pojo.User;
-import com.lhpang.ac.service.IUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
-*   类路径: com.lhpang.ac.service.Imp.UserService
+*   类路径: com.lhpang.ac.service.imp.UserService
 *   描述: //TODO 
 *   @author: lhpang
 *   @date: 2019-04-17 10:16
 */
 @Service
-public class UserService implements IUserService {
+public class UserServiceImpl implements com.lhpang.ac.service.UserService {
 
     @Autowired
     private UserMapper userMapper;

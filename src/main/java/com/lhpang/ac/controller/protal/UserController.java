@@ -3,14 +3,12 @@ package com.lhpang.ac.controller.protal;
 import com.lhpang.ac.common.Constant;
 import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.pojo.User;
-import com.lhpang.ac.service.IUserService;
-import com.lhpang.ac.service.Imp.UserService;
+import com.lhpang.ac.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 
@@ -25,7 +23,7 @@ import javax.servlet.http.HttpSession;
 public class UserController {
 
     @Autowired
-    private IUserService iUserService;
+    private UserService userService;
 
     /**
      * 描 述: 登陆
@@ -38,7 +36,7 @@ public class UserController {
     @RequestMapping(value = "login",method = RequestMethod.GET)
     public ServerResponse<User> login(String logno, String password, HttpSession session){
 
-        ServerResponse<User> login = iUserService.login(logno, password);
+        ServerResponse<User> login = userService.login(logno, password);
 
         if(login.isSuccess()){
             session.setAttribute(Constant.CURRENT_USER, login.getData());
