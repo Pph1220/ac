@@ -2,7 +2,7 @@ package com.lhpang.ac.common;
 
 /**
 *   类路径: com.lhpang.ac.common.Responescode
-*   描述: //TODO 
+*   描述: 相应枚举
 *   @author: lhpang
 *   @date: 2019-04-17 14:45
 */

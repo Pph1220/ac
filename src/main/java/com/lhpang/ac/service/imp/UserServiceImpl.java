@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 /**
 *   类路径: com.lhpang.ac.service.imp.UserService
-*   描述: //TODO 
+*   描述:  UserService
 *   @author: lhpang
 *   @date: 2019-04-17 10:16
 */
@@ -23,6 +23,13 @@ public class UserServiceImpl implements com.lhpang.ac.service.UserService {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 描 述: 登陆
+     * @date: 2019/4/17 23:11
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.pojo.User>
+     **/
     @Override
     public ServerResponse<User> login(String logNo, String password) {
 
