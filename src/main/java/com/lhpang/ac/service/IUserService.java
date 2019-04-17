@@ -1,5 +1,6 @@
 package com.lhpang.ac.service;
 
+import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.pojo.User;
 
 /**
@@ -10,6 +11,6 @@ import com.lhpang.ac.pojo.User;
 */
 public interface IUserService {
 
-    User select(Integer id);
+    ServerResponse<User> login(String logno, String password);
 
 }

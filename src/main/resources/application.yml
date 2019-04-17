@@ -9,3 +9,7 @@ mybatis:
   mapper-locations: classpath:Mybatis/mapper/*.xml
 
 debug: true
+
+logging:
+  level:
+    com.lhpang.ac.dao : debug
