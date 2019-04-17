@@ -34,9 +34,9 @@ public class UserController {
      **/
     @ResponseBody
     @RequestMapping(value = "login",method = RequestMethod.GET)
-    public ServerResponse<User> login(String logno, String password, HttpSession session){
+    public ServerResponse<User> login(String logNo, String password, HttpSession session){
 
-        ServerResponse<User> login = userService.login(logno, password);
+        ServerResponse<User> login = userService.login(logNo, password);
 
         if(login.isSuccess()){
             session.setAttribute(Constant.CURRENT_USER, login.getData());
@@ -44,5 +44,72 @@ public class UserController {
 
         return login;
     }
+
+    /**
+     * 描 述: 登出
+     * @date: 2019/4/17 20:41
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
+    @ResponseBody
+    @RequestMapping(value = "logout",method = RequestMethod.GET)
+    public ServerResponse<String> logout (HttpSession session){
+
+        session.removeAttribute(Constant.CURRENT_USER);
+
+        return ServerResponse.createBySuccess();
+    }
+    /**
+     * 描 述: 用户注册
+     * @date: 2019/4/17 21:49
+     * @author: lhpang
+     * @param:  User
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
+    @ResponseBody
+    @RequestMapping(value = "register",method = RequestMethod.GET)
+    public ServerResponse<String> register(User user){
+
+        return userService.register(user);
+    }
+    /**
+     * 描 述: 检查登陆账号,电话是否唯一
+     * @date: 2019/4/17 22:07
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
+    @ResponseBody
+    @RequestMapping(value = "checkValid",method = RequestMethod.GET)
+    public ServerResponse<String> checkValid(String s,String type){
+
+        return userService.checkValid(s,type);
+    }
+    /**
+     * 描 述: 获取当前用户信息
+     * @date: 2019/4/17 22:10
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.pojo.User>
+     **/
+    @ResponseBody
+    @RequestMapping(value = "getUserInfo",method = RequestMethod.GET)
+    public ServerResponse<User> getUserInfo(HttpSession session){
+
+        User user = (User) session.getAttribute(Constant.CURRENT_USER);
+
+        if(user != null){
+            return ServerResponse.createBySuccess(user);
+        }
+        return ServerResponse.createByErrorMessage("未登录");
+    }
+
+    /*@ResponseBody
+    @RequestMapping(value = "forgetPassword",method = RequestMethod.GET)
+    public ServerResponse<String> forgetPassword(String logNo){
+
+    }*/
+
     
 }

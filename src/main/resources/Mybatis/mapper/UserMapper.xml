@@ -151,16 +151,22 @@
       Update_Time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="checkLogno" resultType="int" parameterType="string">
+  <select id="checkLogNo" resultType="int" parameterType="string">
     select count(Logno)
     from c_user
-    where Logno = #{logno,jdbcType=VARCHAR}
+    where Logno = #{logNo,jdbcType=VARCHAR}
   </select>
   <select id="login" parameterType="map" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from c_user
-    where Logno = #{logno}
+    where Logno = #{logNo}
     and Password = #{password}
   </select>
+  <select id="checkPhone" resultType="int" parameterType="string">
+    select count(Logno)
+    from c_user
+    where Phone = #{phone,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

@@ -33,7 +33,7 @@ public interface UserMapper {
      * @param: logno
      * @return: int
     **/
-    int checkLogno(String logno);
+    int checkLogNo(String logNo);
     /**
      * 描 述: 登陆
      * @date: 2019-04-17 15:51
@@ -41,5 +41,13 @@ public interface UserMapper {
      * @param: logno,password
      * @return: User
     **/
-    User login(@Param("logno") String logno, @Param("password") String password);
+    User login(@Param("logNo") String logNo, @Param("password") String password);
+    /**
+     * 描 述: 检查电话是否存在
+     * @date: 2019/4/17 20:48
+     * @author: lhpang
+     * @param: String phone
+     * @return:
+    **/
+    int checkPhone(String phone);
 }
