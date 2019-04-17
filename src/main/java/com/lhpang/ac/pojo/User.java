@@ -6,6 +6,8 @@ import java.util.Date;
 public class User implements Serializable {
     private Integer id;
 
+    private String name;
+
     private String logno;
 
     private String password;
@@ -24,8 +26,9 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public User(Integer id, String logno, String password, String phone, String question, String answer, Integer role, Date creatTime, Date updateTime) {
+    public User(Integer id, String name, String logno, String password, String phone, String question, String answer, Integer role, Date creatTime, Date updateTime) {
         this.id = id;
+        this.name = name;
         this.logno = logno;
         this.password = password;
         this.phone = phone;
@@ -37,7 +40,6 @@ public class User implements Serializable {
     }
 
     public User() {
-        super();
     }
 
     public Integer getId() {
@@ -48,12 +50,20 @@ public class User implements Serializable {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getLogno() {
         return logno;
     }
 
     public void setLogno(String logno) {
-        this.logno = logno == null ? null : logno.trim();
+        this.logno = logno;
     }
 
     public String getPassword() {
@@ -61,7 +71,7 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
     }
 
     public String getPhone() {
@@ -69,7 +79,7 @@ public class User implements Serializable {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
+        this.phone = phone;
     }
 
     public String getQuestion() {
@@ -77,7 +87,7 @@ public class User implements Serializable {
     }
 
     public void setQuestion(String question) {
-        this.question = question == null ? null : question.trim();
+        this.question = question;
     }
 
     public String getAnswer() {
@@ -85,7 +95,7 @@ public class User implements Serializable {
     }
 
     public void setAnswer(String answer) {
-        this.answer = answer == null ? null : answer.trim();
+        this.answer = answer;
     }
 
     public Integer getRole() {
@@ -110,5 +120,9 @@ public class User implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 }

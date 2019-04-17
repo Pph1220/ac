@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.lhpang.ac.pojo.User">
     <constructor>
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="Name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="Logno" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="Password" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="Phone" javaType="java.lang.String" jdbcType="VARCHAR" />
@@ -15,7 +16,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, Logno, Password, Phone, Question, Answer, Role, Creat_Time, Update_Time
+    id, Name ,Logno, Password, Phone, Question, Answer, Role, Creat_Time, Update_Time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -28,11 +29,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.lhpang.ac.pojo.User">
-    insert into c_user (id, Logno, Password, 
+    insert into c_user (id, Name, Logno, Password,
       Phone, Question, Answer, 
       Role, Creat_Time, Update_Time
       )
-    values (#{id,jdbcType=INTEGER}, #{logno,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{logno,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{phone,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, 
       #{role,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
@@ -42,6 +43,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="name != null">
+        Name,
       </if>
       <if test="logno != null">
         Logno,
@@ -71,6 +75,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
       <if test="logno != null">
         #{logno,jdbcType=VARCHAR},
@@ -104,6 +111,9 @@
       <if test="logno != null">
         Logno = #{logno,jdbcType=VARCHAR},
       </if>
+      <if test="name != null">
+        Name = #{name,jdbcType=VARCHAR},
+      </if>
       <if test="password != null">
         Password = #{password,jdbcType=VARCHAR},
       </if>
@@ -130,7 +140,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.lhpang.ac.pojo.User">
     update c_user
-    set Logno = #{logno,jdbcType=VARCHAR},
+    set Name = #{name,jdbcType=VARCHAR},
+      Logno = #{logno,jdbcType=VARCHAR},
       Password = #{password,jdbcType=VARCHAR},
       Phone = #{phone,jdbcType=VARCHAR},
       Question = #{question,jdbcType=VARCHAR},
