@@ -42,5 +42,20 @@ public interface UserService {
      * @return: 
     **/
     ServerResponse<String> forgetPassword(String Password);
-
+    /**
+     * 描 述: 获得忘记密码问题
+     * @date: 2019-04-18 10:17
+     * @author: lhpang
+     * @param:
+     * @return:
+    **/
+    ServerResponse<String> getQuestion(String logNo);
+    /**
+     * 描 述: 验证密保答案
+     * @date: 2019-04-18 10:31
+     * @author: lhpang
+     * @param:
+     * @return:
+    **/
+    ServerResponse<String> checkAnswer(String logNo,String question,String answer);
 }

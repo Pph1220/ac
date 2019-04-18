@@ -160,13 +160,25 @@
     select 
     <include refid="Base_Column_List" />
     from c_user
-    where Logno = #{logNo}
-    and Password = #{password}
+    where Logno = #{logNo,jdbcType=VARCHAR}
+    and Password = #{password,jdbcType=VARCHAR}
   </select>
   <select id="checkPhone" resultType="int" parameterType="string">
     select count(Logno)
     from c_user
     where Phone = #{phone,jdbcType=VARCHAR}
+  </select>
+  <select id="getQuestion" parameterType="string" resultType="string">
+    select  Question
+    from c_user
+    where Logno = #{logNo,jdbcType=VARCHAR}
+  </select>
+  <select id="checkAnswer" parameterType="map" resultType="int">
+    select count(1)
+    from c_user
+    where Logno = #{logNo,jdbcType=VARCHAR}
+        and Question = #{question,jdbcType=VARCHAR}
+        and Answer = #{answer,jdbcType=VARCHAR}
   </select>
 
 </mapper>

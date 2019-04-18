@@ -44,7 +44,6 @@ public class UserController {
 
         return login;
     }
-
     /**
      * 描 述: 登出
      * @date: 2019/4/17 20:41
@@ -103,6 +102,30 @@ public class UserController {
             return ServerResponse.createBySuccess(user);
         }
         return ServerResponse.createByErrorMessage("未登录");
+    }
+    /**
+     * 描 述: 获得密保问题
+     * @date: 2019-04-18 11:40
+     * @author: lhpang
+     * @param: [logNo]
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
+    @ResponseBody
+    @RequestMapping(value = "getQuestion",method = RequestMethod.GET)
+    public ServerResponse<String> getQuestion(String logNo){
+        return userService.getQuestion(logNo);
+    }
+    /**
+     * 描 述: 检查密保问题答案
+     * @date: 2019-04-18 11:42
+     * @author: lhpang
+     * @param: [logNo, question, answer]
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
+    @ResponseBody
+    @RequestMapping(value = "checkAnswer",method = RequestMethod.GET)
+    public ServerResponse<String> checkAnswer(String logNo,String question,String answer){
+        return userService.checkAnswer(logNo, question, answer);
     }
 
     /*@ResponseBody
