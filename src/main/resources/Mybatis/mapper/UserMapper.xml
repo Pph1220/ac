@@ -177,8 +177,20 @@
     select count(1)
     from c_user
     where Logno = #{logNo,jdbcType=VARCHAR}
-        and Question = #{question,jdbcType=VARCHAR}
         and Answer = #{answer,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="forgetPassword" parameterType="map">
+    update c_user
+    set Password=#{newPassword},update_time=now()
+    where logNo=#{logNo}
+  </update>
+
+  <select id="checkPhoneByUserId" parameterType="map" resultType="int">
+    select count(1)
+    from c_user
+    where Phone=#{phone}
+    and id != #{id}
   </select>
 
 </mapper>

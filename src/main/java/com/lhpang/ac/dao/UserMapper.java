@@ -54,10 +54,14 @@ public interface UserMapper {
      * 描 述: 获得忘记密码问题
      * @date: 2019-04-18 10:28
      * @author: lhpang
-     * @param:
+     * @param:  logNo
      * @return:
     **/
     String getQuestion(String logNo);
 
-    int checkAnswer(@Param("logNo") String logNo,@Param("question") String question,@Param("answer") String answer);
+    int checkAnswer(@Param("logNo") String logNo,@Param("answer") String answer);
+
+    int forgetPassword(@Param("logNo")String logNo,@Param("newPassword")String newPassword);
+
+    int checkPhoneByUserId(@Param("id")Integer id,@Param("phone")String phone);
 }

@@ -35,14 +35,6 @@ public interface UserService {
     **/
     ServerResponse<String> checkValid(String s,String type);
     /**
-     * 描 述: 忘记密码
-     * @date: 2019/4/17 22:20
-     * @author: lhpang
-     * @param: 
-     * @return: 
-    **/
-    ServerResponse<String> forgetPassword(String Password);
-    /**
      * 描 述: 获得忘记密码问题
      * @date: 2019-04-18 10:17
      * @author: lhpang
@@ -57,5 +49,45 @@ public interface UserService {
      * @param:
      * @return:
     **/
-    ServerResponse<String> checkAnswer(String logNo,String question,String answer);
+    ServerResponse<String> checkAnswer(String logNo,String answer);
+    /**
+     * 描 述: 忘记密码
+     * @date: 2019/4/18 22:53
+     * @author: lhpang
+     * @param: 
+     * @return: 
+    **/
+    ServerResponse<String> forgetPassword(String logNo,String newPassword,String answer);
+    /**
+     * 描 述: 登陆状态下修改密码
+     * @date: 2019/4/18 22:53
+     * @author: lhpang
+     * @param:
+     * @return:
+    **/
+    ServerResponse<String> updatePasswordOnLine(User user,String oldPassword,String newPassword);
+    /**
+     * 描 述: 更新个人信息
+     * @date: 2019/4/18 23:11
+     * @author: lhpang
+     * @param: 
+     * @return: 
+    **/
+    ServerResponse<User> updateInformation(User user);
+    /**
+     * 描 述: 获得当前用户信息
+     * @date: 2019/4/18 23:18
+     * @author: lhpang
+     * @param:
+     * @return:
+    **/
+    ServerResponse<User> getInformation(Integer userId);
+    /**
+     * 描 述: 判断当前用户是否为管理员
+     * @date: 2019/4/18 23:21
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
+    ServerResponse<String> checkAdminRole(User user);
 }

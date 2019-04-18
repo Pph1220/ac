@@ -1,6 +1,7 @@
 package com.lhpang.ac.controller.protal;
 
 import com.lhpang.ac.common.Constant;
+import com.lhpang.ac.common.ResponseCode;
 import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.pojo.User;
 import com.lhpang.ac.service.UserService;
@@ -124,15 +125,76 @@ public class UserController {
      **/
     @ResponseBody
     @RequestMapping(value = "checkAnswer",method = RequestMethod.GET)
-    public ServerResponse<String> checkAnswer(String logNo,String question,String answer){
-        return userService.checkAnswer(logNo, question, answer);
+    public ServerResponse<String> checkAnswer(String logNo,String answer){
+        return userService.checkAnswer(logNo, answer);
     }
-
-    /*@ResponseBody
+    /**
+     * 描 述: 忘记密码
+     * @date: 2019/4/18 22:50
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
+    @ResponseBody
     @RequestMapping(value = "forgetPassword",method = RequestMethod.GET)
-    public ServerResponse<String> forgetPassword(String logNo){
+    public ServerResponse<String> forgetPassword(String logNo,String newPassword,String answer){
+        return userService.forgetPassword(logNo,newPassword,answer);
+    }
+    /**
+     * 描 述: 登陆状态忘记密码
+     * @date: 2019/4/18 22:50
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
+    @ResponseBody
+    @RequestMapping(value = "updatePasswordOnLine",method = RequestMethod.GET)
+    public ServerResponse<String> updatePasswordOnLine(HttpSession session,String oldPassword,String newPassword){
+        User user = (User) session.getAttribute(Constant.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorMessage("用户未登陆");
+        }
+        return userService.updatePasswordOnLine(user, oldPassword, newPassword);
+    }
+    /**
+     * 描 述: 更新用户信息
+     * @date: 2019/4/18 22:52
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.pojo.User>
+     **/
+    @ResponseBody
+    @RequestMapping(value = "updateInformation",method = RequestMethod.GET)
+    public ServerResponse<User> updateInformation(User user,HttpSession session){
 
-    }*/
+        User currentUser = (User) session.getAttribute(Constant.CURRENT_USER);
+        if(currentUser == null){
+            return ServerResponse.createByErrorMessage("用户未登陆");
+        }
+        user.setId(currentUser.getId());
+        ServerResponse<User> response = userService.updateInformation(user);
 
-    
+        if(response.isSuccess()){
+            response.getData().setLogno(currentUser.getLogno());
+            session.setAttribute(Constant.CURRENT_USER, response.getData());
+        }
+        return response;
+    }
+    /**
+     * 描 述: 获得当前用户信息
+     * @date: 2019/4/18 23:24
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.pojo.User>
+     **/
+    @ResponseBody
+    @RequestMapping(value = "getInformation",method = RequestMethod.GET)
+    public ServerResponse<User> getInformation(HttpSession session){
+        User currentUser = (User)session.getAttribute(Constant.CURRENT_USER);
+        if(currentUser == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
+        }
+        return userService.getInformation(currentUser.getId());
+
+    }
 }
