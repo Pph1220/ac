@@ -1,6 +1,7 @@
 package com.lhpang.ac.service.imp;
 
 import com.lhpang.ac.common.Constant;
+import com.lhpang.ac.common.ResponseCode;
 import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.dao.UserMapper;
 import com.lhpang.ac.pojo.User;
@@ -293,5 +294,19 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createBySuccess();
         }
         return ServerResponse.createByError();
+    }
+    /**
+     * 描 述: 判断是否在登陆状态
+     * @date: 2019-04-19 16:56
+     * @author: lhpang
+     * @param: [user]
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
+    @Override
+    public ServerResponse<String> isOnLine(User user) {
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录");
+        }
+        return ServerResponse.createBySuccess();
     }
 }

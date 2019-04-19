@@ -90,4 +90,6 @@ public interface UserService {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     ServerResponse<String> checkAdminRole(User user);
+
+    ServerResponse<String> isOnLine(User user);
 }

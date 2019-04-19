@@ -2,7 +2,9 @@ package com.lhpang.ac.dao;
 
 import com.lhpang.ac.pojo.Category;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
+@Repository
 @Mapper
 public interface CategoryMapper {
     int deleteByPrimaryKey(Integer id);
