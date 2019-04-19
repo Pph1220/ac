@@ -6,11 +6,9 @@ import com.lhpang.ac.dao.UserMapper;
 import com.lhpang.ac.pojo.User;
 import com.lhpang.ac.service.UserService;
 import com.lhpang.ac.utils.MD5Util;
-import org.apache.catalina.Server;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.security.provider.MD5;
 
 import java.sql.Timestamp;
 
@@ -100,6 +98,7 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotBlank(type)){
             if(Constant.LOGNO.equals(type)){
                 count = userMapper.checkLogNo(s);
+
                 if(count > 0){
                     return ServerResponse.createByErrorMessage("登陆账号已存在");
                 }
