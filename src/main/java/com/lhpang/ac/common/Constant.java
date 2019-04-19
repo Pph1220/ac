@@ -15,7 +15,7 @@ public class Constant {
     public static final String CURRENT_USER = "currentUser";
 
     public static final String PHONE = "phone";
-    public static final String LOGNO = "logNo";
+    public static final String LOGNO = "logno";
 
     public interface ProductListOrderBy{
         Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_desc","price_asc");

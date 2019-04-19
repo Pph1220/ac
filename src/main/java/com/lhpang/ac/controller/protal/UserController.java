@@ -34,7 +34,7 @@ public class UserController {
      * @return: java.lang.Object
      **/
     @ResponseBody
-    @RequestMapping(value = "login",method = RequestMethod.GET)
+    @RequestMapping(value = "login",method = RequestMethod.POST)
     public ServerResponse<User> login(String logNo, String password, HttpSession session){
 
         ServerResponse<User> login = userService.login(logNo, password);
@@ -53,7 +53,7 @@ public class UserController {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
-    @RequestMapping(value = "logout",method = RequestMethod.GET)
+    @RequestMapping(value = "logout",method = RequestMethod.POST)
     public ServerResponse<String> logout (HttpSession session){
 
         session.removeAttribute(Constant.CURRENT_USER);
@@ -68,7 +68,7 @@ public class UserController {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
-    @RequestMapping(value = "register",method = RequestMethod.GET)
+    @RequestMapping(value = "register",method = RequestMethod.POST)
     public ServerResponse<String> register(User user){
 
         return userService.register(user);
@@ -81,7 +81,7 @@ public class UserController {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
-    @RequestMapping(value = "checkValid",method = RequestMethod.GET)
+    @RequestMapping(value = "checkValid",method = RequestMethod.POST)
     public ServerResponse<String> checkValid(String s,String type){
 
         return userService.checkValid(s,type);
@@ -94,7 +94,7 @@ public class UserController {
      * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.pojo.User>
      **/
     @ResponseBody
-    @RequestMapping(value = "getUserInfo",method = RequestMethod.GET)
+    @RequestMapping(value = "getUserInfo",method = RequestMethod.POST)
     public ServerResponse<User> getUserInfo(HttpSession session){
 
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
@@ -112,9 +112,9 @@ public class UserController {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
-    @RequestMapping(value = "getQuestion",method = RequestMethod.GET)
-    public ServerResponse<String> getQuestion(String logNo){
-        return userService.getQuestion(logNo);
+    @RequestMapping(value = "getQuestion",method = RequestMethod.POST)
+    public ServerResponse<String> getQuestion(String logno){
+        return userService.getQuestion(logno);
     }
     /**
      * 描 述: 检查密保问题答案
@@ -124,9 +124,9 @@ public class UserController {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
-    @RequestMapping(value = "checkAnswer",method = RequestMethod.GET)
-    public ServerResponse<String> checkAnswer(String logNo,String answer){
-        return userService.checkAnswer(logNo, answer);
+    @RequestMapping(value = "checkAnswer",method = RequestMethod.POST)
+    public ServerResponse<String> checkAnswer(String logno,String answer){
+        return userService.checkAnswer(logno, answer);
     }
     /**
      * 描 述: 忘记密码
@@ -136,9 +136,9 @@ public class UserController {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
-    @RequestMapping(value = "forgetPassword",method = RequestMethod.GET)
-    public ServerResponse<String> forgetPassword(String logNo,String newPassword,String answer){
-        return userService.forgetPassword(logNo,newPassword,answer);
+    @RequestMapping(value = "forgetPassword",method = RequestMethod.POST)
+    public ServerResponse<String> forgetPassword(String logno,String newPassword,String answer){
+        return userService.forgetPassword(logno,newPassword,answer);
     }
     /**
      * 描 述: 登陆状态忘记密码
@@ -148,7 +148,7 @@ public class UserController {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
-    @RequestMapping(value = "updatePasswordOnLine",method = RequestMethod.GET)
+    @RequestMapping(value = "updatePasswordOnLine",method = RequestMethod.POST)
     public ServerResponse<String> updatePasswordOnLine(HttpSession session,String oldPassword,String newPassword){
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
         if(user == null){
@@ -164,18 +164,16 @@ public class UserController {
      * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.pojo.User>
      **/
     @ResponseBody
-    @RequestMapping(value = "updateInformation",method = RequestMethod.GET)
+    @RequestMapping(value = "updateInformation",method = RequestMethod.POST)
     public ServerResponse<User> updateInformation(User user,HttpSession session){
 
         User currentUser = (User) session.getAttribute(Constant.CURRENT_USER);
         if(currentUser == null){
             return ServerResponse.createByErrorMessage("用户未登陆");
         }
-        user.setId(currentUser.getId());
-        ServerResponse<User> response = userService.updateInformation(user);
+        ServerResponse<User> response = userService.updateInformation(currentUser,user);
 
         if(response.isSuccess()){
-            response.getData().setLogno(currentUser.getLogno());
             session.setAttribute(Constant.CURRENT_USER, response.getData());
         }
         return response;
@@ -188,7 +186,7 @@ public class UserController {
      * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.pojo.User>
      **/
     @ResponseBody
-    @RequestMapping(value = "getInformation",method = RequestMethod.GET)
+    @RequestMapping(value = "getInformation",method = RequestMethod.POST)
     public ServerResponse<User> getInformation(HttpSession session){
         User currentUser = (User)session.getAttribute(Constant.CURRENT_USER);
         if(currentUser == null){

@@ -73,7 +73,7 @@ public interface UserService {
      * @param: 
      * @return: 
     **/
-    ServerResponse<User> updateInformation(User user);
+    ServerResponse<User> updateInformation(User currentUser,User updateUser);
     /**
      * 描 述: 获得当前用户信息
      * @date: 2019/4/18 23:18
