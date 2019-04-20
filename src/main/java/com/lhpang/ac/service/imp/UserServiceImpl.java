@@ -42,7 +42,6 @@ public class UserServiceImpl implements UserService {
         }
         //对比的是加密后的密码
         String MD5password = MD5Util.md5(password);
-        System.out.println(MD5password);
 
         User user = userMapper.login(logNo, MD5password);
         if (user == null) {

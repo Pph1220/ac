@@ -113,8 +113,9 @@ public class UserController {
      **/
     @ResponseBody
     @RequestMapping(value = "getQuestion",method = RequestMethod.POST)
-    public ServerResponse<String> getQuestion(String logno){
-        return userService.getQuestion(logno);
+    public ServerResponse<String> getQuestion(String logNo){
+        
+        return userService.getQuestion(logNo);
     }
     /**
      * 描 述: 检查密保问题答案
@@ -125,8 +126,9 @@ public class UserController {
      **/
     @ResponseBody
     @RequestMapping(value = "checkAnswer",method = RequestMethod.POST)
-    public ServerResponse<String> checkAnswer(String logno,String answer){
-        return userService.checkAnswer(logno, answer);
+    public ServerResponse<String> checkAnswer(String logNo,String answer){
+        
+        return userService.checkAnswer(logNo, answer);
     }
     /**
      * 描 述: 忘记密码
@@ -137,8 +139,8 @@ public class UserController {
      **/
     @ResponseBody
     @RequestMapping(value = "forgetPassword",method = RequestMethod.POST)
-    public ServerResponse<String> forgetPassword(String logno,String newPassword,String answer){
-        return userService.forgetPassword(logno,newPassword,answer);
+    public ServerResponse<String> forgetPassword(String logNo,String newPassword,String answer){
+        return userService.forgetPassword(logNo,newPassword,answer);
     }
     /**
      * 描 述: 登陆状态忘记密码

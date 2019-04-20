@@ -4,6 +4,8 @@ import com.lhpang.ac.pojo.Category;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @Mapper
 public interface CategoryMapper {
@@ -18,4 +20,7 @@ public interface CategoryMapper {
     int updateByPrimaryKeySelective(Category record);
 
     int updateByPrimaryKey(Category record);
+
+    List<Category> selectAllCategory();
+
 }

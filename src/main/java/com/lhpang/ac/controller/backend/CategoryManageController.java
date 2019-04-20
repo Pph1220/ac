@@ -3,16 +3,19 @@ package com.lhpang.ac.controller.backend;
 import com.lhpang.ac.common.Constant;
 import com.lhpang.ac.common.ResponseCode;
 import com.lhpang.ac.common.ServerResponse;
+import com.lhpang.ac.pojo.Category;
 import com.lhpang.ac.pojo.User;
 import com.lhpang.ac.service.CategoryService;
 import com.lhpang.ac.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
 *   类路径: com.lhpang.ac.controller.backend.CategoryManageController
@@ -20,7 +23,8 @@ import javax.servlet.http.HttpSession;
 *   @author: lhpang
 *   @date: 2019-04-19 16:15
 */
-@RestController("/categorymanage/")
+@RestController
+@RequestMapping("/categorymanage/")
 public class CategoryManageController {
 
     @Autowired
@@ -51,8 +55,15 @@ public class CategoryManageController {
         }
         return categoryService.addCategory(categoryName, parentId);
     }
+    /**
+     * 描 述: 修改品类名称
+     * @date: 2019-04-20 14:01
+     * @author: lhpang
+     * @param: [session, categoryId, newName]
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
     @RequestMapping(value = "setCategoryName",method = RequestMethod.GET)
-    public ServerResponse<String> setCategoryName(HttpSession session,int id,String newName){
+    public ServerResponse<String> setCategoryName(HttpSession session,Integer categoryId,String newName){
         User user = (User)session.getAttribute(Constant.CURRENT_USER);
 
         //判断是否为登陆状态
@@ -60,12 +71,50 @@ public class CategoryManageController {
         if(!isOnLine.isSuccess()){
             return isOnLine;
         }
-        ServerResponse response = userService.checkAdminRole(user);
-        if(!response.isSuccess()){
+        ServerResponse checkAdminRole = userService.checkAdminRole(user);
+        if(!checkAdminRole.isSuccess()){
             return ServerResponse.createByErrorMessage("没有操作权限");
         }
-        int count categoryService.
+        ServerResponse<String> response = categoryService.setCategoryName(categoryId,newName);
 
+        return response;
+    }
+    /**
+     * 描 述: 删除品类
+     * @date: 2019-04-20 14:01
+     * @author: lhpang
+     * @param: [session, categoryId]
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
+    @RequestMapping(value = "deleteCategory",method = RequestMethod.GET)
+    public ServerResponse<String> deleteCategory(HttpSession session,Integer categoryId){
+
+        User currentUser = (User) session.getAttribute(Constant.CURRENT_USER);
+        //判断是否为登陆状态
+        ServerResponse isOnLine = userService.isOnLine(currentUser);
+        if(!isOnLine.isSuccess()){
+            return isOnLine;
+        }
+        ServerResponse checkAdminRole = userService.checkAdminRole(currentUser);
+        if(!checkAdminRole.isSuccess()){
+            return ServerResponse.createByErrorMessage("没有操作权限");
+        }
+
+        ServerResponse<String> response = categoryService.deleteCategory(categoryId);
+
+        return response;
+    }
+    /**
+     * 描 述: 查询所有品类
+     * @date: 2019-04-20 14:20
+     * @author: lhpang
+     * @param: []
+     * @return: com.lhpang.ac.common.ServerResponse<java.util.List<com.lhpang.ac.pojo.Category>>
+     **/
+    @RequestMapping(value = "selectAllCategory",method = RequestMethod.GET)
+    public ServerResponse<List<Category>> selectAllCategory(){
+
+        return categoryService.selectAllCategory();
     }
     
 }
