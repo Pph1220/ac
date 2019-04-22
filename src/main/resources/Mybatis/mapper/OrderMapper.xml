@@ -8,7 +8,7 @@
       <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="shipping" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="payment" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-      <arg column="paymeng_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="payment_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="payment_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="dend_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
@@ -18,7 +18,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, order_no, user_id, shipping, payment, paymeng_type, status, payment_time, dend_time, 
+    id, order_no, user_id, shipping, payment, payment_type, status, payment_time, dend_time, 
     end_time, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -33,12 +33,12 @@
   </delete>
   <insert id="insert" parameterType="com.lhpang.ac.pojo.Order">
     insert into c_order (id, order_no, user_id, 
-      shipping, payment, paymeng_type, 
+      shipping, payment, payment_type, 
       status, payment_time, dend_time, 
       end_time, create_time, update_time
       )
     values (#{id,jdbcType=INTEGER}, #{orderNo,jdbcType=BIGINT}, #{userId,jdbcType=INTEGER}, 
-      #{shipping,jdbcType=INTEGER}, #{payment,jdbcType=DECIMAL}, #{paymengType,jdbcType=INTEGER}, 
+      #{shipping,jdbcType=INTEGER}, #{payment,jdbcType=DECIMAL}, #{paymentType,jdbcType=INTEGER}, 
       #{status,jdbcType=INTEGER}, #{paymentTime,jdbcType=TIMESTAMP}, #{dendTime,jdbcType=TIMESTAMP}, 
       #{endTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
@@ -61,8 +61,8 @@
       <if test="payment != null">
         payment,
       </if>
-      <if test="paymengType != null">
-        paymeng_type,
+      <if test="paymentType != null">
+        payment_type,
       </if>
       <if test="status != null">
         status,
@@ -99,8 +99,8 @@
       <if test="payment != null">
         #{payment,jdbcType=DECIMAL},
       </if>
-      <if test="paymengType != null">
-        #{paymengType,jdbcType=INTEGER},
+      <if test="paymentType != null">
+        #{paymentType,jdbcType=INTEGER},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -137,8 +137,8 @@
       <if test="payment != null">
         payment = #{payment,jdbcType=DECIMAL},
       </if>
-      <if test="paymengType != null">
-        paymeng_type = #{paymengType,jdbcType=INTEGER},
+      <if test="paymentType != null">
+        payment_type = #{paymentType,jdbcType=INTEGER},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
@@ -167,7 +167,7 @@
       user_id = #{userId,jdbcType=INTEGER},
       shipping = #{shipping,jdbcType=INTEGER},
       payment = #{payment,jdbcType=DECIMAL},
-      paymeng_type = #{paymengType,jdbcType=INTEGER},
+      payment_type = #{paymentType,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       payment_time = #{paymentTime,jdbcType=TIMESTAMP},
       dend_time = #{dendTime,jdbcType=TIMESTAMP},

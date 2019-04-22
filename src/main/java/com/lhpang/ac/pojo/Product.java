@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Project implements Serializable {
+public class Product implements Serializable {
+
+    private static final long serialVersionUID = -3075746413930184039L;
+
     private Integer id;
 
     private Integer categoryId;
@@ -27,9 +30,7 @@ public class Project implements Serializable {
 
     private Date updateTime;
 
-    private static final long serialVersionUID = 1L;
-
-    public Project(Integer id, Integer categoryId, String name, String subtitle, String mainImage, String detail, BigDecimal price, Integer stock, Integer status, Date createTime, Date updateTime) {
+    public Product(Integer id, Integer categoryId, String name, String subtitle, String mainImage, String detail, BigDecimal price, Integer stock, Integer status, Date createTime, Date updateTime) {
         this.id = id;
         this.categoryId = categoryId;
         this.name = name;
@@ -43,7 +44,7 @@ public class Project implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Project() {
+    public Product() {
         super();
     }
 

@@ -1,14 +1,12 @@
 package com.lhpang.ac.controller.backend;
 
 import com.lhpang.ac.common.Constant;
-import com.lhpang.ac.common.ResponseCode;
 import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.pojo.Category;
 import com.lhpang.ac.pojo.User;
 import com.lhpang.ac.service.CategoryService;
 import com.lhpang.ac.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,16 +41,11 @@ public class CategoryManageController {
     public ServerResponse<String> addCategory(HttpSession session,String categoryName,@RequestParam(value = "parentId",defaultValue = "0") int parentId){
         User user = (User)session.getAttribute(Constant.CURRENT_USER);
 
-        //判断是否为登陆状态
-        ServerResponse isOnLine = userService.isOnLine(user);
-        if(!isOnLine.isSuccess()){
-            return isOnLine;
+        ServerResponse response = userService.checkRoleAndOnLine(user);
+        if(!response.isSuccess()){
+            return response;
         }
-        //判断是否为管理员
-        ServerResponse checkAdminRole = userService.checkAdminRole(user);
-        if(!checkAdminRole.isSuccess()){
-            return ServerResponse.createByErrorMessage("没有操作权限");
-        }
+
         return categoryService.addCategory(categoryName, parentId);
     }
     /**
@@ -66,18 +59,12 @@ public class CategoryManageController {
     public ServerResponse<String> setCategoryName(HttpSession session,Integer categoryId,String newName){
         User user = (User)session.getAttribute(Constant.CURRENT_USER);
 
-        //判断是否为登陆状态
-        ServerResponse isOnLine = userService.isOnLine(user);
-        if(!isOnLine.isSuccess()){
-            return isOnLine;
+        ServerResponse response = userService.checkRoleAndOnLine(user);
+        if(!response.isSuccess()){
+            return response;
         }
-        ServerResponse checkAdminRole = userService.checkAdminRole(user);
-        if(!checkAdminRole.isSuccess()){
-            return ServerResponse.createByErrorMessage("没有操作权限");
-        }
-        ServerResponse<String> response = categoryService.setCategoryName(categoryId,newName);
 
-        return response;
+        return categoryService.setCategoryName(categoryId,newName);
     }
     /**
      * 描 述: 删除品类
@@ -89,20 +76,14 @@ public class CategoryManageController {
     @RequestMapping(value = "deleteCategory",method = RequestMethod.GET)
     public ServerResponse<String> deleteCategory(HttpSession session,Integer categoryId){
 
-        User currentUser = (User) session.getAttribute(Constant.CURRENT_USER);
-        //判断是否为登陆状态
-        ServerResponse isOnLine = userService.isOnLine(currentUser);
-        if(!isOnLine.isSuccess()){
-            return isOnLine;
-        }
-        ServerResponse checkAdminRole = userService.checkAdminRole(currentUser);
-        if(!checkAdminRole.isSuccess()){
-            return ServerResponse.createByErrorMessage("没有操作权限");
+        User user = (User)session.getAttribute(Constant.CURRENT_USER);
+
+        ServerResponse response = userService.checkRoleAndOnLine(user);
+        if(!response.isSuccess()){
+            return response;
         }
 
-        ServerResponse<String> response = categoryService.deleteCategory(categoryId);
-
-        return response;
+        return categoryService.deleteCategory(categoryId);
     }
     /**
      * 描 述: 查询所有品类

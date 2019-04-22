@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class OrderItem implements Serializable {
+
+    private static final long serialVersionUID = -3472496522906904114L;
+
     private Integer id;
 
     private Integer userId;
@@ -26,8 +29,6 @@ public class OrderItem implements Serializable {
     private Date createTime;
 
     private Date updateTime;
-
-    private static final long serialVersionUID = 1L;
 
     public OrderItem(Integer id, Integer userId, Long orderNo, Integer productId, String productName, String productImage, BigDecimal currentUnitPrice, Integer quantity, BigDecimal totalPrice, Date createTime, Date updateTime) {
         this.id = id;

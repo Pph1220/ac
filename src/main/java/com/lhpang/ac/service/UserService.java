@@ -90,6 +90,20 @@ public interface UserService {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     ServerResponse<String> checkAdminRole(User user);
-
-    ServerResponse<String> isOnLine(User user);
+    /**
+     * 描 述: 判断是否在登陆状态
+     * @date: 2019-04-19 16:56
+     * @author: lhpang
+     * @param: [user]
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
+    ServerResponse<String> checkOnLine(User user);
+    /**
+     * 描 述: 验证用户是否为管理员和是否在线
+     * @date: 2019-04-22 15:25
+     * @author: lhpang
+     * @param: [user]
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
+    ServerResponse<String> checkRoleAndOnLine(User user);
 }

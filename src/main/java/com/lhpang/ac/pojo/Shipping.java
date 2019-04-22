@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Shipping implements Serializable {
+
+    private static final long serialVersionUID = -1510001232762180276L;
+
     private Integer id;
 
     private Integer userId;
@@ -17,8 +20,6 @@ public class Shipping implements Serializable {
     private Date createTime;
 
     private Date updateTime;
-
-    private static final long serialVersionUID = 1L;
 
     public Shipping(Integer id, Integer userId, String receiverName, String receiverPhone, String receiveraddress, Date createTime, Date updateTime) {
         this.id = id;

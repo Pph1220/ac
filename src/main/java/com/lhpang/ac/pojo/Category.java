@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Category implements Serializable {
+
+    private static final long serialVersionUID = 6186260080611412902L;
+
     private Integer id;
 
     private Integer parentId;
@@ -17,8 +20,6 @@ public class Category implements Serializable {
     private Date createTime;
 
     private Date updateTime;
-
-    private static final long serialVersionUID = 1L;
 
     public Category(Integer id, Integer parentId, String name, Boolean status, Integer sortOrder, Date createTime, Date updateTime) {
         this.id = id;

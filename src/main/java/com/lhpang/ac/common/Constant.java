@@ -47,7 +47,8 @@ public class Constant {
     }
 
     public enum ProductStatusEnum{
-        ON_SALE(1,"在线");
+        ON_SALE(1,"在线"),
+        OFF_SALE(0,"下架");
         private String value;
         private int code;
         ProductStatusEnum(int code,String value){

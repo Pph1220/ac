@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Cart implements Serializable {
+
+
+    private static final long serialVersionUID = 401752875021978094L;
+
     private Integer id;
 
     private Integer userId;
@@ -18,7 +22,6 @@ public class Cart implements Serializable {
 
     private Date updateTime;
 
-    private static final long serialVersionUID = 1L;
 
     public Cart(Integer id, Integer userId, Integer productId, Integer quantity, Integer checked, Date createTime, Date updateTime) {
         this.id = id;

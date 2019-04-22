@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class PayInfo implements Serializable {
+
+    private static final long serialVersionUID = -8032249192947383615L;
+
     private Integer id;
 
     private Integer userId;
@@ -19,8 +22,6 @@ public class PayInfo implements Serializable {
     private Date createTime;
 
     private Date updateTime;
-
-    private static final long serialVersionUID = 1L;
 
     public PayInfo(Integer id, Integer userId, Long orderNo, Integer payPlatform, String platformNumber, String platformStatus, Date createTime, Date updateTime) {
         this.id = id;

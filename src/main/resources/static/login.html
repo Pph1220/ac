@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello</title>
+</head>
+<script src="script/JQuery.js" type="text/javascript"></script>
+<body>
+Hello!
+
+<input id="logNo" type="text" />
+<input id="password" type="password" />
+<input type="button" value="login" name="login" onclick="login()" />
+
+</body>
+<script>
+    function login(){
+        $.ajax({
+            url: "/user/login",
+            type: "POST",
+            data: {logNo:$('#logNo').val(),
+                    password:$('#password').val()},
+            dataType:"json",
+            async: false,
+            success: function(result){
+                if (result.status == 0){
+                    console.log(result);
+                }else{
+                    console.log(result);
+                }
+            }
+        });
+    }
+</script>
+</html>

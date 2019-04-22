@@ -4,7 +4,6 @@ import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.dao.CategoryMapper;
 import com.lhpang.ac.pojo.Category;
 import com.lhpang.ac.service.CategoryService;
-import org.apache.catalina.Server;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @Override
-    public ServerResponse<String> addCategory(String name, Integer parentId){
+    public synchronized ServerResponse<String> addCategory(String name, Integer parentId){
 
         if(StringUtils.isBlank(name) || parentId == null){
             return ServerResponse.createByErrorMessage("添加品类参数错误");
@@ -52,14 +51,14 @@ public class CategoryServiceImpl implements CategoryService {
         return ServerResponse.createByErrorMessage("添加失败");
     }
     /**
-     * 描 述: //TODO
+     * 描 述: 修改分类名称
      * @date: 2019-04-20 12:22
      * @author: lhpang
      * @param: [id, name]
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @Override
-    public ServerResponse<String> setCategoryName(Integer id, String name){
+    public synchronized ServerResponse<String> setCategoryName(Integer id, String name){
 
         if (id == null || StringUtils.isBlank(name)){
             return ServerResponse.createByErrorMessage("参数错误");
@@ -84,7 +83,8 @@ public class CategoryServiceImpl implements CategoryService {
      * @param: [categoryId]
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
-    public ServerResponse<String> deleteCategory(Integer categoryId){
+    @Override
+    public synchronized ServerResponse<String> deleteCategory(Integer categoryId){
 
         if (categoryId == null){
             return ServerResponse.createByErrorMessage("参数错误");

@@ -279,7 +279,6 @@ public class UserServiceImpl implements UserService {
         user.setPassword(StringUtils.EMPTY);
         return ServerResponse.createBySuccess(user);
     }
-
     /**
      * 描 述: 判断当前用户是否为管理员
      * @date: 2019/4/18 23:21
@@ -292,7 +291,7 @@ public class UserServiceImpl implements UserService {
         if (user != null && user.getRole().intValue() == Constant.Role.ROLE_ADMIN) {
             return ServerResponse.createBySuccess();
         }
-        return ServerResponse.createByError();
+        return ServerResponse.createByErrorMessage("无权限操作");
     }
     /**
      * 描 述: 判断是否在登陆状态
@@ -302,9 +301,30 @@ public class UserServiceImpl implements UserService {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @Override
-    public ServerResponse<String> isOnLine(User user) {
+    public ServerResponse<String> checkOnLine(User user) {
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录");
+        }
+        return ServerResponse.createBySuccess();
+    }
+    /**
+     * 描 述: 验证用户是否为管理员和是否在线
+     * @date: 2019-04-22 15:25
+     * @author: lhpang
+     * @param: [user]
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
+    @Override
+    public ServerResponse<String> checkRoleAndOnLine(User user){
+        //判断是否为登陆状态
+        ServerResponse onLine = this.checkOnLine(user);
+        if(!onLine.isSuccess()){
+            return onLine;
+        }
+        //判断是否为管理员
+        ServerResponse adminRole = this.checkAdminRole(user);
+        if(!adminRole.isSuccess()){
+            return adminRole;
         }
         return ServerResponse.createBySuccess();
     }

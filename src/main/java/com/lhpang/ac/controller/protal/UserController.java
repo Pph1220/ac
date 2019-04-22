@@ -153,8 +153,10 @@ public class UserController {
     @RequestMapping(value = "updatePasswordOnLine",method = RequestMethod.POST)
     public ServerResponse<String> updatePasswordOnLine(HttpSession session,String oldPassword,String newPassword){
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
-        if(user == null){
-            return ServerResponse.createByErrorMessage("用户未登陆");
+
+        ServerResponse onLine = userService.checkOnLine(user);
+        if(!onLine.isSuccess()){
+            return onLine;
         }
         return userService.updatePasswordOnLine(user, oldPassword, newPassword);
     }
@@ -170,8 +172,9 @@ public class UserController {
     public ServerResponse<User> updateInformation(User user,HttpSession session){
 
         User currentUser = (User) session.getAttribute(Constant.CURRENT_USER);
-        if(currentUser == null){
-            return ServerResponse.createByErrorMessage("用户未登陆");
+        ServerResponse onLine = userService.checkOnLine(user);
+        if(!onLine.isSuccess()){
+            return onLine;
         }
         ServerResponse<User> response = userService.updateInformation(currentUser,user);
 

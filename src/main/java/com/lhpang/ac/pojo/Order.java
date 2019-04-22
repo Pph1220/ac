@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Order implements Serializable {
+
+    private static final long serialVersionUID = 5356614455164304490L;
+
     private Integer id;
 
     private Long orderNo;
@@ -15,7 +18,7 @@ public class Order implements Serializable {
 
     private BigDecimal payment;
 
-    private Integer paymengType;
+    private Integer paymentType;
 
     private Integer status;
 
@@ -29,15 +32,13 @@ public class Order implements Serializable {
 
     private Date updateTime;
 
-    private static final long serialVersionUID = 1L;
-
-    public Order(Integer id, Long orderNo, Integer userId, Integer shipping, BigDecimal payment, Integer paymengType, Integer status, Date paymentTime, Date dendTime, Date endTime, Date createTime, Date updateTime) {
+    public Order(Integer id, Long orderNo, Integer userId, Integer shipping, BigDecimal payment, Integer paymentType, Integer status, Date paymentTime, Date dendTime, Date endTime, Date createTime, Date updateTime) {
         this.id = id;
         this.orderNo = orderNo;
         this.userId = userId;
         this.shipping = shipping;
         this.payment = payment;
-        this.paymengType = paymengType;
+        this.paymentType = paymentType;
         this.status = status;
         this.paymentTime = paymentTime;
         this.dendTime = dendTime;
@@ -90,12 +91,12 @@ public class Order implements Serializable {
         this.payment = payment;
     }
 
-    public Integer getPaymengType() {
-        return paymengType;
+    public Integer getPaymentType() {
+        return paymentType;
     }
 
-    public void setPaymengType(Integer paymengType) {
-        this.paymengType = paymengType;
+    public void setPaymentType(Integer paymentType) {
+        this.paymentType = paymentType;
     }
 
     public Integer getStatus() {
