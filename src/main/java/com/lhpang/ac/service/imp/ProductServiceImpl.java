@@ -1,16 +1,25 @@
 package com.lhpang.ac.service.imp;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lhpang.ac.common.Constant;
 import com.lhpang.ac.common.ResponseCode;
 import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.dao.ProductMapper;
 import com.lhpang.ac.pojo.Product;
 import com.lhpang.ac.service.ProductService;
-import oracle.jrockit.jfr.openmbean.ProducerDescriptorType;
+import com.lhpang.ac.utils.Util;
+import com.lhpang.ac.vo.ProductDetailVo;
+import com.lhpang.ac.vo.ProductListVo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.stereotype.Service;
 
+import java.security.PublicKey;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
 *   类路径: com.lhpang.ac.service.imp.ProductService
@@ -100,7 +109,8 @@ public class ProductServiceImpl implements ProductService {
      * @param: [productId]
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.Object>
      **/
-    public ServerResponse<Object> managerProductDetail(Integer productId){
+    @Override
+    public ServerResponse<ProductDetailVo> managerProductDetail(Integer productId){
 
         if(productId == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
@@ -108,8 +118,109 @@ public class ProductServiceImpl implements ProductService {
         Product product = productMapper.selectByPrimaryKey(productId);
 
         if(product == null){
-            return ServerResponse.createByErrorMessage("商品已下架或删除");
+            return ServerResponse.createByErrorMessage("商品不存在");
         }
-        return null;
+
+        ProductDetailVo vo = this.poToDetailVo(product);
+
+        return ServerResponse.createBySuccess(vo);
+    }
+    /**
+     * 描 述: 查询Product列表
+     * @date: 2019/4/22 22:58
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
+     **/
+    @Override
+    public ServerResponse<PageInfo> getProductList(int pageNum,int pageSize){
+        //startPage
+        PageHelper.startPage(pageNum, pageSize);
+        //查询
+        List<Product> products = productMapper.selectList();
+
+        List<ProductListVo> listVos = new ArrayList<>();
+        //po转Vo
+        for (Product product:products){
+            listVos.add(this.poToListVo(product));
+        }
+        //pagerHelper收尾
+        PageInfo pageInfo = new PageInfo(products);
+        pageInfo.setList(listVos);
+
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+    /**
+     * 描 述: 搜索商品
+     * @date: 2019/4/22 23:30
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
+     **/
+    @Override
+    public ServerResponse<PageInfo> searchProduct(String productName,int pageNum,int pageSize){
+
+        //startPage
+        PageHelper.startPage(pageNum, pageSize);
+        if (StringUtils.isBlank(productName)) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        //查询
+        List<Product> products = productMapper.selectByName(productName);
+
+        List<ProductListVo> listVos = new ArrayList<>();
+        //po转Vo
+        for (Product product:products){
+            listVos.add(this.poToListVo(product));
+        }
+        //pagerHelper收尾
+        PageInfo pageInfo = new PageInfo(products);
+        pageInfo.setList(listVos);
+
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+    /**
+     * 描 述: poToListVo
+     * @date: 2019/4/22 22:52
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.vo.ProductListVo
+     **/
+    public ProductListVo poToListVo(Product product){
+
+        ProductListVo vo = new ProductListVo();
+        vo.setId(product.getId());
+        vo.setCategoryId(product.getCategoryId());
+        vo.setName(product.getName());
+        vo.setPrice(product.getPrice());
+        vo.setStatus(product.getStatus());
+        vo.setPrice(product.getPrice());
+        vo.setSubtitle(product.getSubtitle());
+        vo.setMainImage(product.getMainImage());
+
+        return vo;
+    }
+    /**
+     * 描 述: po转vo
+     * @date: 2019/4/22 22:15
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.vo.ProductDetailVo
+     **/
+    private ProductDetailVo poToDetailVo(Product product){
+
+        ProductDetailVo vo = new ProductDetailVo();
+        vo.setId(product.getId());
+        vo.setCategoryId(product.getCategoryId());
+        vo.setDetail(product.getDetail());
+        vo.setName(product.getName());
+        vo.setPrice(product.getPrice());
+        vo.setStatus(product.getStatus());
+        vo.setStock(product.getStock());
+        vo.setSubtitle(product.getSubtitle());
+        vo.setCreateTime(product.getCreateTime().toString());
+        vo.setCreateTime(Util.dateToString(product.getCreateTime()));
+        vo.setUpdateTime(Util.dateToString(product.getUpdateTime()));
+        return vo;
     }
 }

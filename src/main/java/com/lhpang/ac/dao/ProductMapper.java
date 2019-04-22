@@ -4,6 +4,8 @@ import com.lhpang.ac.pojo.Product;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @Mapper
 public interface ProductMapper {
@@ -18,4 +20,8 @@ public interface ProductMapper {
     int updateByPrimaryKeySelective(Product record);
 
     int updateByPrimaryKey(Product record);
+
+    List<Product> selectList();
+
+    List<Product> selectByName(String name);
 }

@@ -10,6 +10,11 @@ mybatis:
 
 debug: true
 
+#logging:
+#  level:
+#    com.lhpang.ac.dao : debug
+
+#mybatis显示sql语句的配置
 logging:
   level:
-    com.lhpang.ac.dao : debug
+    com.lhpang.ac.dao : trace

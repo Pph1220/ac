@@ -1,19 +1,20 @@
 package com.lhpang.ac.controller.backend;
 
+import com.github.pagehelper.PageInfo;
 import com.lhpang.ac.common.Constant;
-import com.lhpang.ac.common.ResponseCode;
 import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.pojo.Product;
 import com.lhpang.ac.pojo.User;
 import com.lhpang.ac.service.ProductService;
 import com.lhpang.ac.service.UserService;
+import com.lhpang.ac.vo.ProductDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -66,8 +67,6 @@ public class ProductManagerController {
         if(!response.isSuccess()){
             return response;
         }
-
-
         return productService.setStatus(productId);
     }
     /**
@@ -79,15 +78,47 @@ public class ProductManagerController {
      **/
     @ResponseBody
     @RequestMapping(value = "getProductDetail",method = RequestMethod.GET)
-    public ServerResponse<Product> getProductDetail(HttpSession session,Integer productId){
+    public ServerResponse<ProductDetailVo> getProductDetail(HttpSession session, Integer productId){
         User user = (User)session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkRoleAndOnLine(user);
         if(!response.isSuccess()){
             return response;
         }
+        return productService.managerProductDetail(productId);
+    }
+    /**
+     * 描 述: 所有商品
+     * @date: 2019/4/22 23:15
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
+     **/
+    @ResponseBody
+    @RequestMapping(value = "getProductList",method = RequestMethod.GET)
+    public ServerResponse<PageInfo> getProductList(HttpSession session, @RequestParam(value = "pageNum",
+            defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+        User user = (User)session.getAttribute(Constant.CURRENT_USER);
 
+        ServerResponse response = userService.checkRoleAndOnLine(user);
+        if(!response.isSuccess()){
+            return response;
+        }
+        return productService.getProductList(pageNum,pageSize);
+    }
 
+    @ResponseBody
+    @RequestMapping(value = "searchProduct",method = RequestMethod.GET)
+    public ServerResponse<PageInfo> searchProduct(HttpSession session,String productName, @RequestParam(value =
+            "pageNum",
+            defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+        User user = (User)session.getAttribute(Constant.CURRENT_USER);
+
+        ServerResponse response = userService.checkRoleAndOnLine(user);
+        if(!response.isSuccess()){
+            return response;
+        }
+        return productService.searchProduct(productName,pageNum,pageSize);
     }
     
 }

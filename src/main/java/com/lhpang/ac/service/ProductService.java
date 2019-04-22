@@ -1,7 +1,9 @@
 package com.lhpang.ac.service;
 
+import com.github.pagehelper.PageInfo;
 import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.pojo.Product;
+import com.lhpang.ac.vo.ProductDetailVo;
 
 /**
 *   类路径: com.lhpang.ac.service.ProductService
@@ -18,7 +20,37 @@ public interface ProductService {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     ServerResponse<String> saveOrUpdateProduct(Product product);
-
+    /**
+     * 描 述: 修改上下架状态
+     * @date: 2019-04-22 16:43
+     * @author: lhpang
+     * @param: [id]
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
+     **/
     ServerResponse<String> setStatus(Integer id);
+    /**
+     * 描 述: 商品详情
+     * @date: 2019-04-22 17:53
+     * @author: lhpang
+     * @param: [productId]
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.Object>
+     **/
+    ServerResponse<ProductDetailVo> managerProductDetail(Integer productId);
+    /**
+     * 描 述: 查询Product列表
+     * @date: 2019/4/22 22:58
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
+     **/
+    ServerResponse<PageInfo> getProductList(int pageNum, int pageSize);
+    /**
+     * 描 述: 搜索商品
+     * @date: 2019/4/22 23:30
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
+     **/
+    ServerResponse<PageInfo> searchProduct(String productName,int pageNum,int pageSize);
     
 }
