@@ -7,7 +7,7 @@ import com.lhpang.ac.vo.ProductDetailVo;
 
 /**
 *   类路径: com.lhpang.ac.service.ProductService
-*   描述: //TODO 
+*   描述: 商品Service
 *   @author: lhpang
 *   @date: 2019-04-17 10:14
 */
@@ -52,5 +52,21 @@ public interface ProductService {
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
      **/
     ServerResponse<PageInfo> searchProduct(String productName,int pageNum,int pageSize);
+    /**
+     * 描 述: 获得商品信息详情(前台)
+     * @date: 2019-04-23 10:18
+     * @author: lhpang
+     * @param: [productId]
+     * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.vo.ProductDetailVo>
+     **/
+    ServerResponse<ProductDetailVo> getProductDetail(Integer productId);
+    /**
+     * 描 述: 搜索(前台)
+     * @date: 2019-04-23 10:57
+     * @author: lhpang
+     * @param: [productName, pageSize, pageNum, orderBy]
+     * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
+     **/
+    ServerResponse<PageInfo> getProductByproductNameCategoryId(String productName,Integer categoryId,int pageSize,int pageNum,String orderBy);
     
 }

@@ -167,14 +167,28 @@
   <select id="selectList" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from c_project
+    from c_product
     order by id asc
   </select>
 
   <select id="selectByName" parameterType="string" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from c_project
+    from c_product
     where name like CONCAT('%',#{name},'%')
+  </select>
+
+  <select id="selectByNameCategoryId" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from c_product
+    where status = 1
+    <if test="name != null">
+      and name like CONCAT('%',#{name},'%')
+    </if>
+    <if test="categoryId != null">
+      and categoryId = #{categoryId}
+    </if>
+
   </select>
 </mapper>

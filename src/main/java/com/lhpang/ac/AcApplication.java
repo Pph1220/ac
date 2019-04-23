@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AcApplication {
 
     public static void main(String[] args) {
+        //TODO Fuck BoHai University
         SpringApplication.run(AcApplication.class, args);
     }
 

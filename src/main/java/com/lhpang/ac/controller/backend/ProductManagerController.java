@@ -106,12 +106,19 @@ public class ProductManagerController {
         }
         return productService.getProductList(pageNum,pageSize);
     }
-
+    /**
+     * 描 述: 搜索商品
+     * @date: 2019-04-23 9:45
+     * @author: lhpang
+     * @param: [session, productName, pageNum, pageSize]
+     * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
+     **/
     @ResponseBody
     @RequestMapping(value = "searchProduct",method = RequestMethod.GET)
     public ServerResponse<PageInfo> searchProduct(HttpSession session,String productName, @RequestParam(value =
             "pageNum",
             defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+
         User user = (User)session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkRoleAndOnLine(user);
@@ -120,5 +127,4 @@ public class ProductManagerController {
         }
         return productService.searchProduct(productName,pageNum,pageSize);
     }
-    
 }

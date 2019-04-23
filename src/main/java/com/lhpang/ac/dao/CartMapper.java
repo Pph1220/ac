@@ -2,7 +2,12 @@ package com.lhpang.ac.dao;
 
 import com.lhpang.ac.pojo.Cart;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 @Mapper
 public interface CartMapper {
     int deleteByPrimaryKey(Integer id);
@@ -16,4 +21,28 @@ public interface CartMapper {
     int updateByPrimaryKeySelective(Cart record);
 
     int updateByPrimaryKey(Cart record);
+    /**
+     * 描 述: 查找这个商品在不在这个用户的购物车里
+     * @date: 2019-04-23 14:34
+     * @author: lhpang
+     * @param:  Integer userId,Integer productId
+     * @return: Cart
+     **/
+    Cart selectByUserIdProductId(@Param("userId") Integer userId, @Param("productId") Integer productId);
+    /**
+     * 描 述: 通过userId查找购物车
+     * @date: 2019-04-23 14:39
+     * @author: lhpang
+     * @param: Integer userId
+     * @return: List<Cart>
+    **/
+    List<Cart> selectCartByUserId(Integer userId);
+    /**
+     * 描 述: 根据UserId查找购物车中未被选中的数量
+     * @date: 2019-04-23 16:56
+     * @author: lhpang
+     * @param:  Integer userId
+     * @return: int
+    **/
+    int selectCartProductCheckedStatusByUserId(Integer userId);
 }

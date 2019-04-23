@@ -2,28 +2,29 @@ package com.lhpang.ac.service.imp;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.lhpang.ac.common.Constant;
 import com.lhpang.ac.common.ResponseCode;
 import com.lhpang.ac.common.ServerResponse;
+import com.lhpang.ac.dao.CategoryMapper;
 import com.lhpang.ac.dao.ProductMapper;
+import com.lhpang.ac.pojo.Category;
 import com.lhpang.ac.pojo.Product;
 import com.lhpang.ac.service.ProductService;
-import com.lhpang.ac.utils.Util;
+import com.lhpang.ac.utils.DateUtil;
 import com.lhpang.ac.vo.ProductDetailVo;
 import com.lhpang.ac.vo.ProductListVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.stereotype.Service;
 
-import java.security.PublicKey;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
 *   类路径: com.lhpang.ac.service.imp.ProductService
-*   描述: //TODO 
+*   描述: 产品ServiceImpl
 *   @author: lhpang
 *   @date: 2019-04-17 10:18
 */
@@ -32,9 +33,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductMapper productMapper;
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     /**
-     * 描 述: 商品新增或修改
+     * 描 述: 商品新增或修改(后台)
      * @date: 2019-04-22 16:36
      * @author: lhpang
      * @param: [product]
@@ -62,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
         return ServerResponse.createByErrorMessage("参数错误");
     }
     /**
-     * 描 述: 修改上下架状态
+     * 描 述: 修改上下架状态(后台)
      * @date: 2019-04-22 16:43
      * @author: lhpang
      * @param: [id]
@@ -103,7 +106,7 @@ public class ProductServiceImpl implements ProductService {
         return ServerResponse.createByErrorMessage("修改失败");
     }
     /**
-     * 描 述: 商品详情
+     * 描 述: 商品详情(后台)
      * @date: 2019-04-22 17:53
      * @author: lhpang
      * @param: [productId]
@@ -126,11 +129,11 @@ public class ProductServiceImpl implements ProductService {
         return ServerResponse.createBySuccess(vo);
     }
     /**
-     * 描 述: 查询Product列表
+     * 描 述: 查询Product列表(后台)
      * @date: 2019/4/22 22:58
      * @author: lhpang
      * @param:
-     * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
+     * @return: com.lhpang.ac.common.ServerResponse<com.github.pageHelper.PageInfo>
      **/
     @Override
     public ServerResponse<PageInfo> getProductList(int pageNum,int pageSize){
@@ -151,7 +154,7 @@ public class ProductServiceImpl implements ProductService {
         return ServerResponse.createBySuccess(pageInfo);
     }
     /**
-     * 描 述: 搜索商品
+     * 描 述: 搜索商品(后台)
      * @date: 2019/4/22 23:30
      * @author: lhpang
      * @param:
@@ -219,8 +222,80 @@ public class ProductServiceImpl implements ProductService {
         vo.setStock(product.getStock());
         vo.setSubtitle(product.getSubtitle());
         vo.setCreateTime(product.getCreateTime().toString());
-        vo.setCreateTime(Util.dateToString(product.getCreateTime()));
-        vo.setUpdateTime(Util.dateToString(product.getUpdateTime()));
+        vo.setCreateTime(DateUtil.dateToString(product.getCreateTime()));
+        vo.setUpdateTime(DateUtil.dateToString(product.getUpdateTime()));
         return vo;
+    }
+
+    /**
+     * 描 述: 获得商品信息详情(前台)
+     * @date: 2019-04-23 10:18
+     * @author: lhpang
+     * @param: [productId]
+     * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.vo.ProductDetailVo>
+     **/
+    @Override
+    public ServerResponse<ProductDetailVo> getProductDetail(Integer productId){
+
+        if(productId == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        Product product = productMapper.selectByPrimaryKey(productId);
+
+        if(product == null){
+            return ServerResponse.createByErrorMessage("商品不存在");
+        }
+
+        if(product.getStatus() == Constant.ProductStatusEnum.OFF_SALE.getCode()){
+            return ServerResponse.createByErrorMessage("商品已下架");
+        }
+
+        ProductDetailVo vo = this.poToDetailVo(product);
+
+        return ServerResponse.createBySuccess(vo);
+    }
+    /**
+     * 描 述: 搜索(前台)
+     * @date: 2019-04-23 10:57
+     * @author: lhpang
+     * @param: [productName, pageSize, pageNum, orderBy]
+     * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
+     **/
+    @Override
+    public ServerResponse<PageInfo> getProductByproductNameCategoryId(String productName,Integer categoryId,int pageSize,int pageNum,String orderBy){
+        if(StringUtils.isBlank(productName) && categoryId == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        //查询有没有这个分类
+        Category categorie = categoryMapper.selectByPrimaryKey(categoryId);
+        //PageHelper start
+        PageHelper.startPage(pageNum, pageSize);
+        if(categorie == null && StringUtils.isBlank(productName)){
+            //没有该分类也没有关键字时返回空
+            List<ProductListVo> productListVos = Lists.newArrayList();
+            PageInfo page = new PageInfo(productListVos);
+            return ServerResponse.createBySuccess(page);
+        }
+
+        //排序
+        if(StringUtils.isNotBlank(orderBy)){
+            if (Constant.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)){
+                String[] orderByArray = orderBy.split("_");
+                PageHelper.orderBy(orderByArray[0] + " " + orderByArray[1]);
+            }
+        }
+        List<Product> products = productMapper.selectByNameCategoryId(productName,categoryId);
+
+        List<ProductListVo> productListVos = new ArrayList<>();
+
+        for(Product product: products){
+            ProductListVo productListVo = poToListVo(product);
+            productListVos.add(productListVo);
+        }
+
+        PageInfo pageInfo = new PageInfo(products);
+        pageInfo.setList(productListVos);
+
+        return ServerResponse.createBySuccess(pageInfo);
     }
 }

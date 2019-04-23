@@ -8,12 +8,12 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
- * 类路径: com.lhpang.ac.utils.Util
+ * 类路径: com.lhpang.ac.utils.DateUtil
  * 描述: 工具类
  * @author: lhpang
  * @date: 2019-04-16 21:11
  */
-public class Util {
+public class DateUtil {
 
     private static final String FORMAT = "yyyy-MM-dd HH:mm:ss";
 

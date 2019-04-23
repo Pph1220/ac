@@ -2,6 +2,7 @@ package com.lhpang.ac.dao;
 
 import com.lhpang.ac.pojo.Product;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface ProductMapper {
     List<Product> selectList();
 
     List<Product> selectByName(String name);
+
+    List<Product> selectByNameCategoryId(@Param("name") String name,@Param("categoryId") Integer categoryId);
 }
