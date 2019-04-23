@@ -1,5 +1,6 @@
 package com.lhpang.ac.service.imp;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.lhpang.ac.common.Constant;
 import com.lhpang.ac.common.ResponseCode;
@@ -12,12 +13,12 @@ import com.lhpang.ac.service.CartService;
 import com.lhpang.ac.utils.BigDecimalUtil;
 import com.lhpang.ac.vo.CartProductVo;
 import com.lhpang.ac.vo.CartVo;
-import com.sun.org.apache.bcel.internal.classfile.ConstantString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -73,10 +74,98 @@ public class CartServiceImpl implements CartService {
                 return ServerResponse.createByErrorMessage("加入购物车失败");
             }
         }
-        CartVo cartVo = this.getCartVoLimit(userId);
+        return this.list(userId);
+    }
+    /**
+     * 描 述: 修改购物车中商品
+     * @date: 2019/4/23 21:55
+     * @author: lhpang
+     * @param: [userId, count, productId]
+     * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.vo.CartVo>
+     **/
+    @Override
+    public ServerResponse<CartVo> update(Integer userId, Integer count, Integer productId) {
+        //判断参数
+        if(count == null || productId == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
 
+        Cart cart = cartMapper.selectByUserIdProductId(userId, productId);
+
+        if (cart != null){
+            cart.setQuantity(count);
+        }
+
+        cartMapper.updateByPrimaryKeySelective(cart);
+
+        return this.list(userId);
+    }
+    /**
+     * 描 述: 删除购物车中商品
+     * @date: 2019/4/23 22:02
+     * @author: lhpang
+     * @param: [userId, productIds]
+     * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.vo.CartVo>
+     **/
+    @Override
+    public ServerResponse<CartVo> delete(Integer userId, String productIds) {
+
+        Iterable<String> iterable = Splitter.on(",").split(productIds);
+
+        if(!iterable.iterator().hasNext()){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+
+        Iterator<String> iterator = iterable.iterator();
+        while (iterator.hasNext()){
+            if(iterator.next() != null){
+                cartMapper.deleteCartByUserIdProductId(userId, iterator.next());
+            }
+        }
+
+        return this.list(userId);
+    }
+    /**
+     * 描 述: 查询购物车中的商品
+     * @date: 2019/4/23 22:38
+     * @author: lhpang
+     * @param: [userId]
+     * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.vo.CartVo>
+     **/
+    @Override
+    public ServerResponse<CartVo> list(Integer userId) {
+
+        CartVo cartVo = this.getCartVoLimit(userId);
         return ServerResponse.createBySuccess(cartVo);
     }
+    /**
+     * 描 述: 全选,全不选,选择,不选择
+     * @date: 2019/4/23 23:26
+     * @author: lhpang
+     * @param: [userId, productId, checked]
+     * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.vo.CartVo>
+     **/
+    @Override
+    public ServerResponse<CartVo> checkOrUnCheckProduct(Integer userId,Integer productId,Integer checked) {
+        cartMapper.checkOrUnCheckProduct(userId, checked,productId);
+
+        return this.list(userId);
+    }
+    /**
+     * 描 述: 查询购物车中商品总数
+     * @date: 2019/4/23 23:50
+     * @author: lhpang
+     * @param: [userId]
+     * @return: com.lhpang.ac.common.ServerResponse<java.lang.Integer>
+     **/
+    public ServerResponse<Integer> getCartProductCount(Integer userId){
+
+        if(userId == null){
+            return ServerResponse.createBySuccess(0);
+        }
+        return ServerResponse.createBySuccess(cartMapper.getCartProductCount(userId));
+    }
+
     /**
      * 描 述: 根据userId获得CartVo
      * @date: 2019-04-23 17:05

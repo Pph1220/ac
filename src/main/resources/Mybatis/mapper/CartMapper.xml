@@ -138,4 +138,27 @@
     where checked = 0
     and user_id = #{userId}
   </select>
+  <delete id="deleteCartByUserIdProductId" parameterType="map">
+    delete from c_cart
+    where user_id =#{userId}
+    <if test="productId != null">
+      and product_id =#{productId}
+    </if>
+  </delete>
+
+  <update id="checkOrUnCheckProduct" parameterType="map">
+    update c_cart
+    set checked = #{checked},
+    update_time =now()
+    where user_id = #{userId}
+    <if test="productId != null">
+      and product_id = #{productId}
+    </if>
+  </update>
+
+  <select id="getCartProductCount" parameterType="int" resultType="int">
+    select IFNULL(sum (quantity),0) as count
+    from c_cart
+    where user_id = #{userId}
+  </select>
 </mapper>

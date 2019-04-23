@@ -45,4 +45,29 @@ public interface CartMapper {
      * @return: int
     **/
     int selectCartProductCheckedStatusByUserId(Integer userId);
+    /**
+     * 描 述: //TODO 
+     * @date: 2019/4/23 22:26
+     * @author: lhpang
+     * @param: Integer userId,Integer productId
+     * @return: int
+    **/
+    int deleteCartByUserIdProductId(@Param("userId")Integer userId,@Param("productId")String productId);
+    /**
+     * 描 述: //TODO
+     * @date: 2019/4/23 23:24
+     * @author: lhpang
+     * @param: Integer userId,Integer checked
+     * @return: int
+    **/
+    int checkOrUnCheckProduct(@Param("userId")Integer userId,@Param("checked")Integer checked,
+                              @Param("productId") Integer productId);
+    /**
+     * 描 述: 查询购物车中商品总数
+     * @date: 2019/4/23 23:46
+     * @author: lhpang
+     * @param: Integer userId
+     * @return: int
+    **/
+    int getCartProductCount(Integer userId);
 }
