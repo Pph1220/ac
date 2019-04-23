@@ -17,6 +17,7 @@ import com.lhpang.ac.vo.ProductListVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class ProductServiceImpl implements ProductService {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public synchronized ServerResponse<String> saveOrUpdateProduct(Product product) {
 
         if(product != null){
@@ -72,6 +74,7 @@ public class ProductServiceImpl implements ProductService {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @Override
+    @Transactional
     public synchronized ServerResponse<String> setStatus(Integer productId) {
 
         if(productId == null){
