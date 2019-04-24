@@ -15,18 +15,18 @@ public class Shipping implements Serializable {
 
     private String receiverPhone;
 
-    private String receiveraddress;
+    private String receiverAddress;
 
     private Date createTime;
 
     private Date updateTime;
 
-    public Shipping(Integer id, Integer userId, String receiverName, String receiverPhone, String receiveraddress, Date createTime, Date updateTime) {
+    public Shipping(Integer id, Integer userId, String receiverName, String receiverPhone, String receiverAddress, Date createTime, Date updateTime) {
         this.id = id;
         this.userId = userId;
         this.receiverName = receiverName;
         this.receiverPhone = receiverPhone;
-        this.receiveraddress = receiveraddress;
+        this.receiverAddress = receiverAddress;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -67,12 +67,12 @@ public class Shipping implements Serializable {
         this.receiverPhone = receiverPhone == null ? null : receiverPhone.trim();
     }
 
-    public String getReceiveraddress() {
-        return receiveraddress;
+    public String getReceiverAddress() {
+        return receiverAddress;
     }
 
-    public void setReceiveraddress(String receiveraddress) {
-        this.receiveraddress = receiveraddress == null ? null : receiveraddress.trim();
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress == null ? null : receiverAddress.trim();
     }
 
     public Date getCreateTime() {

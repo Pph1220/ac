@@ -7,13 +7,13 @@
       <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="receiver_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="receiver_phone" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="receiveraddress" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="receiverAddress" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, receiver_name, receiver_phone, receiveraddress, create_time, update_time
+    id, user_id, receiver_name, receiver_phone, receiver_address, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -25,12 +25,12 @@
     delete from c_shipping
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.lhpang.ac.pojo.Shipping">
+  <insert id="insert" parameterType="com.lhpang.ac.pojo.Shipping" useGeneratedKeys="true" keyProperty="id">
     insert into c_shipping (id, user_id, receiver_name, 
-      receiver_phone, receiveraddress, create_time, 
+      receiver_phone, receiver_address, create_time,
       update_time)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR}, 
-      #{receiverPhone,jdbcType=VARCHAR}, #{receiveraddress,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{receiverPhone,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.lhpang.ac.pojo.Shipping">
@@ -49,7 +49,7 @@
         receiver_phone,
       </if>
       <if test="receiveraddress != null">
-        receiveraddress,
+        receiver_address,
       </if>
       <if test="createTime != null">
         create_time,
@@ -71,7 +71,7 @@
       <if test="receiverPhone != null">
         #{receiverPhone,jdbcType=VARCHAR},
       </if>
-      <if test="receiveraddress != null">
+      <if test="receiverAddress != null">
         #{receiveraddress,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
@@ -94,8 +94,8 @@
       <if test="receiverPhone != null">
         receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
       </if>
-      <if test="receiveraddress != null">
-        receiveraddress = #{receiveraddress,jdbcType=VARCHAR},
+      <if test="receiver_address != null">
+        receiveraddress = #{receiverAddress,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -111,9 +111,40 @@
     set user_id = #{userId,jdbcType=INTEGER},
       receiver_name = #{receiverName,jdbcType=VARCHAR},
       receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
-      receiveraddress = #{receiveraddress,jdbcType=VARCHAR},
+      receiver_address = #{receiverAddress,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <delete id="deleteByShippingIdAndUserId" parameterType="map">
+    delete from c_shipping
+    where id = #{shippingId}
+    and user_id = #{userId}
+  </delete>
+
+  <update id="updateByShippingUserId" parameterType="com.lhpang.ac.pojo.Shipping">
+    update
+    set receiver_name = #{receiverName,jdbcType=VARCHAR},
+        receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
+        receiver_address = #{receiverAddress,jdbcType=VARCHAR},
+        update_time = now()
+    where user_id = #{userId}
+      and id = #{shippingId}
+  </update>
+
+  <select id="selectByShippingIdUserId" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from c_shipping
+    where user_id = #{userId}
+    and userId = #{shippingId}
+  </select>
+
+  <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from c_shipping
+    where user_id = #{userId}
+  </select>
 </mapper>
