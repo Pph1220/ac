@@ -6,7 +6,6 @@ import com.lhpang.ac.pojo.Shipping;
 import com.lhpang.ac.pojo.User;
 import com.lhpang.ac.service.ShippingService;
 import com.lhpang.ac.service.UserService;
-import com.sun.xml.internal.ws.resources.HttpserverMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +47,6 @@ public class ShippingController {
         if(!response.isSuccess()){
             return response;
         }
-
         return shippingService.add(user.getId(),shipping);
     }
     /**

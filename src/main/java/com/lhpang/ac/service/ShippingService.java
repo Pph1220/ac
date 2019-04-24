@@ -3,7 +3,6 @@ package com.lhpang.ac.service;
 import com.github.pagehelper.PageInfo;
 import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.pojo.Shipping;
-import org.springframework.stereotype.Service;
 
 /**
 *   类路径: com.lhpang.ac.service.ShippingService
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 *   @author: lhpang
 *   @date: 2019-04-17 10:13
 */
-@Service
 public interface ShippingService {
     /**
      * 描 述: 新增收货地址

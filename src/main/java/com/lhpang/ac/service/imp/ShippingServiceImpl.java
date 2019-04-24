@@ -3,16 +3,14 @@ package com.lhpang.ac.service.imp;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
-import com.lhpang.ac.common.Constant;
 import com.lhpang.ac.common.ResponseCode;
 import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.dao.ShippingMapper;
 import com.lhpang.ac.pojo.Shipping;
 import com.lhpang.ac.service.ShippingService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +20,7 @@ import java.util.Map;
 *   @author: lhpang
 *   @date: 2019-04-17 10:17
 */
+@Service("ShippingService")
 public class ShippingServiceImpl implements ShippingService {
 
     @Autowired
