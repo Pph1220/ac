@@ -5,6 +5,7 @@ import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.pojo.User;
 import com.lhpang.ac.service.OrderService;
 import com.lhpang.ac.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import java.util.Map;
 *   @author: lhpang
 *   @date: 2019-04-25 11:45
 */
+@Slf4j
 @Controller
 @RequestMapping("/order/")
 public class OrderController {
@@ -53,16 +55,17 @@ public class OrderController {
      * @return: java.lang.Object
      **/
     @ResponseBody
-    @RequestMapping(value = "aliPayCallback",method = RequestMethod.GET)
+    @RequestMapping(value = "aliPayCallback",method = RequestMethod.POST)
     public Object aliPayCallback(HttpServletRequest request){
 
         Map map = request.getParameterMap();
 
         ServerResponse response = orderService.aliPayCallBack(map);
         if(response.isSuccess()){
+            log.info("回调成功");
             return Constant.AlipayCallback.RESPONSE_SUCCESS;
         }
-
+        log.info("回调失败");
         return Constant.AlipayCallback.RESPONSE_FAILED;
     }
     

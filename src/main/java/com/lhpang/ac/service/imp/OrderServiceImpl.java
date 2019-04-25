@@ -75,7 +75,8 @@ public class OrderServiceImpl implements OrderService {
         }
         resultMap.put("orderNo", String.valueOf(order.getOrderNo()));
 
-        AlipayTradeService tradeService = new AlipayTradeServiceImpl.ClientBuilder().setAlipayPublicKey(alipayConfig.getAlipayPublicKey()).setAppid(alipayConfig.getAppid()).setCharset(alipayConfig.getCharset()).setFormat(alipayConfig.getFormat()).setGatewayUrl(alipayConfig.getOpenApiDomain()).setPrivateKey(alipayConfig.getPrivateKey()).setSignType(alipayConfig.getSignType()).build();
+        AlipayTradeService tradeService =
+                new AlipayTradeServiceImpl.ClientBuilder().setAlipayPublicKey(alipayConfig.getAlipayPublicKey()).setAppid(alipayConfig.getAppid()).setCharset(alipayConfig.getCharset()).setFormat(alipayConfig.getFormat()).setGatewayUrl(alipayConfig.getOpenApiDomain()).setPrivateKey(alipayConfig.getPrivateKey()).setSignType(alipayConfig.getSignType()).build();
 
         // (必填) 商户网站订单系统中唯一订单号，64个字符以内，只能包含字母、数字、下划线，
         // 需保证商户系统端不能重复，建议通过数据库sequence生成，
@@ -203,7 +204,7 @@ public class OrderServiceImpl implements OrderService {
             log.error("支付宝验证失败",e);
         }
 
-        Long orderNo = Long.valueOf(map.get("out-trade_no"));
+        Long orderNo = Long.valueOf(map.get("out_trade_no"));
         String tradeNo = map.get("trade_no");
         String tradeStatus = map.get("trade_status");
 
@@ -234,7 +235,7 @@ public class OrderServiceImpl implements OrderService {
         payInfo.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
         payInfoMapper.insert(payInfo);
-        return ServerResponse.createByError();
+        return ServerResponse.createBySuccess();
     }
     /**
      * 描 述: 打印支付宝返回的Response

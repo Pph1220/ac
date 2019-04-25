@@ -25,7 +25,7 @@ alipay:
   heartbeat_delay : 5
   heartbeat_duration : 900
   # 回调地址
-  notify-url:
+  notify-url : http://pph.nat300.top/order/aliPayCallback
 
 
 

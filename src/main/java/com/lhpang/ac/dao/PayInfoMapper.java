@@ -2,8 +2,10 @@ package com.lhpang.ac.dao;
 
 import com.lhpang.ac.pojo.PayInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 @Mapper
+@Repository
 public interface PayInfoMapper {
     int deleteByPrimaryKey(Integer id);
 

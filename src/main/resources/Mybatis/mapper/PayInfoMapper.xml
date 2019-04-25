@@ -29,7 +29,7 @@
   </delete>
   <insert id="insert" parameterType="com.lhpang.ac.pojo.PayInfo">
     insert into c_pay_info (id, user_id, order_no, 
-      "pay_ platform", platform_number, platform_status, 
+      pay_platform, platform_number, platform_status,
       create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{orderNo,jdbcType=BIGINT}, 
       #{payPlatform,jdbcType=INTEGER}, #{platformNumber,jdbcType=VARCHAR}, #{platformStatus,jdbcType=VARCHAR}, 
@@ -48,7 +48,7 @@
         order_no,
       </if>
       <if test="payPlatform != null">
-        "pay_ platform",
+        pay_platform,
       </if>
       <if test="platformNumber != null">
         platform_number,
@@ -100,7 +100,7 @@
         order_no = #{orderNo,jdbcType=BIGINT},
       </if>
       <if test="payPlatform != null">
-        "pay_ platform" = #{payPlatform,jdbcType=INTEGER},
+        pay_platform = #{payPlatform,jdbcType=INTEGER},
       </if>
       <if test="platformNumber != null">
         platform_number = #{platformNumber,jdbcType=VARCHAR},
@@ -121,7 +121,7 @@
     update c_pay_info
     set user_id = #{userId,jdbcType=INTEGER},
       order_no = #{orderNo,jdbcType=BIGINT},
-      "pay_ platform" = #{payPlatform,jdbcType=INTEGER},
+      pay_platform = #{payPlatform,jdbcType=INTEGER},
       platform_number = #{platformNumber,jdbcType=VARCHAR},
       platform_status = #{platformStatus,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},

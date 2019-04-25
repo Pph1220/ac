@@ -176,7 +176,6 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
   <select id="selectByUserIdAndOrderNo" parameterType="map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
@@ -184,8 +183,7 @@
     where user_id = #{userId}
     and order_no = #{orderNo}
   </select>
-
-  <select id="selectByOrderNo" parameterType="int" resultMap="BaseResultMap">
+  <select id="selectByOrderNo" parameterType="long" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from c_order
