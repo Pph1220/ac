@@ -14,7 +14,7 @@ public class Order implements Serializable {
 
     private Integer userId;
 
-    private Integer shipping;
+    private Integer shippingId;
 
     private BigDecimal payment;
 
@@ -32,11 +32,11 @@ public class Order implements Serializable {
 
     private Date updateTime;
 
-    public Order(Integer id, Long orderNo, Integer userId, Integer shipping, BigDecimal payment, Integer paymentType, Integer status, Date paymentTime, Date dendTime, Date endTime, Date createTime, Date updateTime) {
+    public Order(Integer id, Long orderNo, Integer userId, Integer shippingId, BigDecimal payment, Integer paymentType, Integer status, Date paymentTime, Date dendTime, Date endTime, Date createTime, Date updateTime) {
         this.id = id;
         this.orderNo = orderNo;
         this.userId = userId;
-        this.shipping = shipping;
+        this.shippingId = shippingId;
         this.payment = payment;
         this.paymentType = paymentType;
         this.status = status;
@@ -75,12 +75,12 @@ public class Order implements Serializable {
         this.userId = userId;
     }
 
-    public Integer getShipping() {
-        return shipping;
+    public Integer getShippingId() {
+        return shippingId;
     }
 
-    public void setShipping(Integer shipping) {
-        this.shipping = shipping;
+    public void setShippingId(Integer shippingId) {
+        this.shippingId = shippingId;
     }
 
     public BigDecimal getPayment() {

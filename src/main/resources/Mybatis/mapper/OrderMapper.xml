@@ -6,7 +6,7 @@
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="order_no" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="shipping" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="shippingId" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="payment" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="payment_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
@@ -18,7 +18,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, order_no, user_id, shipping, payment, payment_type, status, payment_time, dend_time, 
+    id, order_no, user_id, shipping_id, payment, payment_type, status, payment_time, dend_time,
     end_time, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -33,12 +33,12 @@
   </delete>
   <insert id="insert" parameterType="com.lhpang.ac.pojo.Order">
     insert into c_order (id, order_no, user_id, 
-      shipping, payment, payment_type, 
+      shipping_id, payment, payment_type,
       status, payment_time, dend_time, 
       end_time, create_time, update_time
       )
     values (#{id,jdbcType=INTEGER}, #{orderNo,jdbcType=BIGINT}, #{userId,jdbcType=INTEGER}, 
-      #{shipping,jdbcType=INTEGER}, #{payment,jdbcType=DECIMAL}, #{paymentType,jdbcType=INTEGER}, 
+      #{shippingId,jdbcType=INTEGER}, #{payment,jdbcType=DECIMAL}, #{paymentType,jdbcType=INTEGER},
       #{status,jdbcType=INTEGER}, #{paymentTime,jdbcType=TIMESTAMP}, #{dendTime,jdbcType=TIMESTAMP}, 
       #{endTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
@@ -55,8 +55,8 @@
       <if test="userId != null">
         user_id,
       </if>
-      <if test="shipping != null">
-        shipping,
+      <if test="shippingId != null">
+        shipping_id,
       </if>
       <if test="payment != null">
         payment,
@@ -93,8 +93,8 @@
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="shipping != null">
-        #{shipping,jdbcType=INTEGER},
+      <if test="shippingId != null">
+        #{shippingId,jdbcType=INTEGER},
       </if>
       <if test="payment != null">
         #{payment,jdbcType=DECIMAL},
@@ -131,8 +131,8 @@
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="shipping != null">
-        shipping = #{shipping,jdbcType=INTEGER},
+      <if test="shippingId != null">
+        shipping_id = #{shippingId,jdbcType=INTEGER},
       </if>
       <if test="payment != null">
         payment = #{payment,jdbcType=DECIMAL},
@@ -165,7 +165,7 @@
     update c_order
     set order_no = #{orderNo,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=INTEGER},
-      shipping = #{shipping,jdbcType=INTEGER},
+      shipping_id = #{shippingId,jdbcType=INTEGER},
       payment = #{payment,jdbcType=DECIMAL},
       payment_type = #{paymentType,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
@@ -188,5 +188,19 @@
     <include refid="Base_Column_List"/>
     from c_order
     where order_no = #{orderNo}
+  </select>
+  <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from c_order
+    where user_id = #{userId}
+    order by create_time desc
+  </select>
+
+  <select id="selectAllOrder">
+    select
+    <include refid="Base_Column_List"/>
+    from c_order
+    order by create_time desc
   </select>
 </mapper>

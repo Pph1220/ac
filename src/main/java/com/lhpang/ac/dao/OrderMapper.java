@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface OrderMapper {
@@ -23,4 +25,8 @@ public interface OrderMapper {
     Order selectByUserIdAndOrderNo(@Param("userId") Integer userId,@Param("orderNo") Long orderNo);
 
     Order selectByOrderNo(Long orderNo);
+
+    List<Order> selectByUserId(Integer userId);
+
+    List<Order> selectAllOrder();
 }
