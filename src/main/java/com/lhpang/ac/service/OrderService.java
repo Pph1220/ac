@@ -92,4 +92,12 @@ public interface OrderService {
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     ServerResponse search(Long orderNo);
+    /**
+     * 描 述: 后台发货
+     * @date: 2019-04-28 9:30
+     * @author: lhpang
+     * @param: [orderNo]
+     * @return: com.lhpang.ac.common.ServerResponse
+     **/
+    ServerResponse send(Long orderNo);
 }

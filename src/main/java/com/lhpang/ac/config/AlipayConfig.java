@@ -60,32 +60,32 @@ public class AlipayConfig {
     }
 
     public String description() {
-        StringBuilder sb = new StringBuilder("\nConfigs{");
-        sb.append("支付宝openapi网关: ").append(openApiDomain).append("\n");
+        StringBuilder sb = new StringBuilder("\nConfigs{\n");
+        sb.append("支付宝openapi网关: ").append(openApiDomain).append(",").append("\n");
         if (StringUtils.isNotEmpty(mcloudApiDomain)) {
-            sb.append(", 支付宝mcloudapi网关域名: ").append(mcloudApiDomain).append("\n");
+            sb.append("支付宝mcloudapi网关域名: ").append(mcloudApiDomain).append(",").append("\n");
         }
 
         if (StringUtils.isNotEmpty(pid)) {
-            sb.append(", pid: ").append(pid).append("\n");
+            sb.append("pid: ").append(pid).append(",").append("\n");
         }
-        sb.append(", appid: ").append(appid).append("\n");
+        sb.append("appid: ").append(appid).append(",").append("\n");
 
-        sb.append(", 商户RSA私钥: ").append(getKeyDescription(privateKey)).append("\n");
-        sb.append(", 商户RSA公钥: ").append(getKeyDescription(publicKey)).append("\n");
-        sb.append(", 支付宝RSA公钥: ").append(getKeyDescription(alipayPublicKey)).append("\n");
-        sb.append(", 签名类型: ").append(signType).append("\n");
+        sb.append("商户RSA私钥: ").append(getKeyDescription(privateKey)).append(",").append("\n");
+        sb.append("商户RSA公钥: ").append(getKeyDescription(publicKey)).append(",").append("\n");
+        sb.append("支付宝RSA公钥: ").append(getKeyDescription(alipayPublicKey)).append(",").append("\n");
+        sb.append("签名类型: ").append(signType).append(",").append("\n");
 
-        sb.append(", 查询重试次数: ").append(maxQueryRetry).append("\n");
-        sb.append(", 查询间隔(毫秒): ").append(queryDuration).append("\n");
-        sb.append(", 撤销尝试次数: ").append(maxCancelRetry).append("\n");
-        sb.append(", 撤销重试间隔(毫秒): ").append(cancelDuration).append("\n");
+        sb.append("查询重试次数: ").append(maxQueryRetry).append(",").append("\n");
+        sb.append("查询间隔(毫秒): ").append(queryDuration).append(",").append("\n");
+        sb.append("撤销尝试次数: ").append(maxCancelRetry).append(",").append("\n");
+        sb.append("撤销重试间隔(毫秒): ").append(cancelDuration).append(",").append("\n");
 
-        sb.append(", 交易保障调度延迟(秒): ").append(heartbeatDelay).append("\n");
-        sb.append(", 交易保障调度间隔(秒): ").append(heartbeatDuration).append("\n");
-        sb.append(", 回调地址: ").append(notifyUrl).append("\n");
-        sb.append(", 编码集: ").append(charset).append("\n");
-        sb.append(", 形式: ").append(format).append("\n");
+        sb.append("交易保障调度延迟(秒): ").append(heartbeatDelay).append(",").append("\n");
+        sb.append("交易保障调度间隔(秒): ").append(heartbeatDuration).append(",").append("\n");
+        sb.append("回调地址: ").append(notifyUrl).append(",").append("\n");
+        sb.append("编码集: ").append(charset).append(",").append("\n");
+        sb.append("形式: ").append(format);
         sb.append("}");
 
         return sb.toString();

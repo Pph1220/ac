@@ -90,5 +90,25 @@ public class OrderManageController {
 
         return orderService.search(orderNo);
     }
+    /**
+     * 描 述: 发货
+     * @date: 2019-04-26 15:56
+     * @author: lhpang
+     * @param: [session, orderNo]
+     * @return: com.lhpang.ac.common.ServerResponse
+     **/
+    @ResponseBody
+    @RequestMapping(value = "send",method = RequestMethod.GET)
+    public ServerResponse send(HttpSession session,Long orderNo){
+        User user = (User)session.getAttribute(Constant.CURRENT_USER);
+
+        ServerResponse response = userService.checkRoleAndOnLine(user);
+        if(!response.isSuccess()){
+            return response;
+        }
+
+        return  orderService.send(orderNo);
+
+    }
     
 }

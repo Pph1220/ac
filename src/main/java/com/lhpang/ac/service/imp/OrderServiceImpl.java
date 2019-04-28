@@ -714,5 +714,28 @@ public class OrderServiceImpl implements OrderService {
 
         return ServerResponse.createBySuccess(orderVo);
     }
+    /**
+     * 描 述: 后台发货
+     * @date: 2019-04-28 9:30
+     * @author: lhpang
+     * @param: [orderNo]
+     * @return: com.lhpang.ac.common.ServerResponse
+     **/
+    @Override
+    public ServerResponse send(Long orderNo){
+        if(orderNo == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        Order order = orderMapper.selectByOrderNo(orderNo);
+
+        if(order == null){
+            return ServerResponse.createByErrorMessage("订单不存在");
+        }
+        if(order.getStatus() > Constant.OrderStatusEnum.SHIPPED.getCode()){
+            return ServerResponse.createByErrorMessage("请勿重复发货");
+        }
+        order.setStatus(Constant.OrderStatusEnum.SHIPPED.getCode());
+        return ServerResponse.createBySuccessMessage("发货成功");
+    }
 
 }
