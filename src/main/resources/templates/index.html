@@ -3,32 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>阿C外卖</title>
-    <script src="../static/script/JQuery.js" type="javascript"/>
+    <script src="../script/JQuery.js" type="text/javascript"></script>
 </head>
 <body>
     <div style="height: 1080px;width: auto">
-        <input type="text" id="logNo" value=""/>
+        账号:<input type="text" id="logNo" value=""/>
         <br/>
-        <input type="password" id="password" value="" />
+        密码:<input type="password" id="password" value="" />
         <br/>
-        <input type="button" onclick="login();" value="登陆"/>
+        <input type="button" value="登陆" onclick="login();"/>
     </div>
 </body>
-<script type="javascript">
+<script type="text/javascript">
 
-    function longin() {
+    function login() {
         $.ajax({
-            type :'POST',
-            url :'/uer/login',
-            dataType : 'json',
-            data : (
-                logNo : $('#logNo').val(),
-                password : $('#password').val()
-            )
-            success : function(result) {
+            url:"user/login",
+            method:'post',
+            dataType:'json',
+            data:{
+                "logNo" : $('#logNo').val(),
+                "password" : $('#password').val()
+            },
+            success : function(result){
                 console.log(result);
+                if (result.status == 1){
+                    $('#logNo').val("");
+                    $('#password').val("");
+                    alert("登陆有误");
+                }
+                if (result.status == 0){
+                    if (result.data.role == 0){
+                        alert("登陆后台成功");
+                    }
+                    if(result.data.role == 1){
+                        alert("登陆前台成功");
+                    }
+                }
             }
-        });
+    });
+
     }
+
 </script>
 </html>

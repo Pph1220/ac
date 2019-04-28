@@ -36,6 +36,8 @@ spring:
       username: root
       password: 123456
       driver-class-name: com.mysql.jdbc.Driver
+  thymeleaf:
+    prefix: classpath:/templates/
 #配置MyBatis xml路径
 mybatis:
   mapper-locations: classpath:Mybatis/mapper/*.xml
