@@ -1,6 +1,7 @@
 package com.lhpang.ac.controller.protal;
 
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
 import com.lhpang.ac.common.Constant;
 import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.pojo.Product;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
 *   类路径: com.lhpang.ac.controller.protal.ProductController
@@ -72,6 +75,29 @@ public class ProductController {
             return response;
         }
         return productService.getProductByproductNameCategoryId(productName,categoryId, pageSize, pageNum, orderBy);
+    }
+
+    /**
+     * 描 述: 所有商品
+     * @date: 2019/4/22 23:15
+     * @author: lhpang
+     * @param:
+     * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
+     **/
+    @ResponseBody
+    @RequestMapping(value = "getProductList",method = RequestMethod.GET)
+    public ModelAndView getProductList(HttpSession session, @RequestParam(value = "pageNum",
+            defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+        User user = (User)session.getAttribute(Constant.CURRENT_USER);
+
+        ServerResponse response = userService.checkOnLine(user);
+        /*if(!response.isSuccess()){
+            return response;
+        }*/
+        Map<String,ServerResponse> map = Maps.newHashMap();
+
+        map.put("result", productService.getProductList(pageNum, pageSize));
+        return new ModelAndView("portal/product/productList",map);
     }
 
 }

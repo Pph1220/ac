@@ -139,7 +139,7 @@ public class ProductServiceImpl implements ProductService {
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pageHelper.PageInfo>
      **/
     @Override
-    public ServerResponse<PageInfo> getProductList(int pageNum,int pageSize){
+    public ServerResponse<PageInfo> getProductList(int pageNum, int pageSize){
         //startPage
         PageHelper.startPage(pageNum, pageSize);
         //查询
