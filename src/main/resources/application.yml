@@ -51,3 +51,4 @@ mybatis:
 logging:
   level:
     com.lhpang.ac.dao : trace
+

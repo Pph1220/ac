@@ -86,9 +86,9 @@ public class ProductController {
      * @param:
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
      **/
-    @RequestMapping(value = "getProductList",method = RequestMethod.GET)
-    public ModelAndView getProductList(HttpSession session, @RequestParam(value = "pageNum",
-            defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+    @RequestMapping(value = "list",method = RequestMethod.GET)
+    public ModelAndView list(HttpSession session, @RequestParam(value = "pageNum",
+            defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5") int pageSize){
         Map<String,Object> map = Maps.newHashMap();
         User user = (User)session.getAttribute(Constant.CURRENT_USER);
 
@@ -97,7 +97,7 @@ public class ProductController {
             map.put("result",response);
             return new ModelAndView("common/fail",map);
         }
-        map.put("result", productService.getProductList(pageNum, pageSize));
+        map.put("result", productService.list(pageNum, pageSize));
         return new ModelAndView("portal/product/productList",map);
     }
 

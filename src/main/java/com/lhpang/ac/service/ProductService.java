@@ -68,5 +68,12 @@ public interface ProductService {
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
      **/
     ServerResponse<PageInfo> getProductByproductNameCategoryId(String productName,Integer categoryId,int pageSize,int pageNum,String orderBy);
-    
+    /**
+     * 描 述: 全部商品（前台）
+     * @date: 2019/4/29 22:34
+     * @author: lhpang
+     * @param: [pageNum, pageSize]
+     * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
+     **/
+    ServerResponse<PageInfo> list(int pageNum, int pageSize);
 }

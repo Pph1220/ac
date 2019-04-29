@@ -12,7 +12,7 @@
         <div class="col-md-12 column">
             <nav class="navbar navbar-default" role="navigation">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/product/getProductList">阿 C 外 卖</a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/product/list">阿 C 外 卖</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
@@ -42,10 +42,10 @@
     </div>
     <div class="row clearfix">
         <div class="col-md-12 column">
-            <#list result.data.list as a>
+            <#list result.data.getList() as a>
                 <div class="col-md-4" style="width: 20%">
                     <div class="thumbnail">
-                        <img height="300" width="300" src="${a.mainImage}" />
+                        <img height="195px" width="195px" src="${a.mainImage}" />
                         <div class="caption">
                             <h3>
                                 <a href="/product/detail?productId=${a.id}">${a.name}</a>
@@ -89,31 +89,32 @@
          </div>
     </div>
     <div class="row clearfix">
-        <#--${result.data}-->
         <div class="col-md-12 column">
-            <ul class="pagination pagination-lg">
-                <li>
-                    <a href="#">上一页</a>
-                </li>
-                <li>
-                    <a href="#">1</a>
-                </li>
-                <li>
-                    <a href="#">2</a>
-                </li>
-                <li>
-                    <a href="#">3</a>
-                </li>
-                <li>
-                    <a href="#">4</a>
-                </li>
-                <li>
-                    <a href="#">5</a>
-                </li>
-                <li>
-                    <a href="#">下一页</a>
-                </li>
-            </ul>
+            <div class="col-md-4 column">
+            </div>
+            <div class="col-md-6 column">
+                <ul class="pagination pagination-lg">
+                    <#if !result.data.hasPreviousPage>
+                        <li class="disabled"><a href="#">上一页</a></li>
+                    <#else>
+                        <li><a href="/product/list?pageNum=${result.data.prePage}">上一页</a></li>
+                    </#if>
+                    <#list result.data.navigatepageNums as index>
+                        <#if result.data.pageNum == index>
+                            <li class="disabled"><a href="#">#{index}</a></li>
+                        <#else>
+                            <li><a href="/product/list?pageNum=${index}">${index}</a></li>
+                        </#if>
+                    </#list>
+                    <#if !(result.data.hasNextPage)>
+                        <li class="disabled"><a href="#">下一页</a></li>
+                    <#else>
+                        <li><a href="/product/list?pageNum=${result.data.nextPage}">下一页</a></li>
+                    </#if>
+                </ul>
+            </div>
+            <div class="col-md-2 column">
+            </div>
         </div>
     </div>
 </div>

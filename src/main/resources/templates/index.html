@@ -4,14 +4,41 @@
     <meta charset="UTF-8">
     <title>阿C外卖</title>
     <script src="../script/JQuery.js" type="text/javascript"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div style="height: 1080px;width: auto">
+    <!--<div style="height: 1080px;width: auto">
         账号:<input type="text" id="logNo" value=""/>
         <br/>
         密码:<input type="password" id="password" value="" />
         <br/>
         <input type="button" value="登陆" onclick="login();"/>
+    </div>-->
+    <div style="margin-top: 150px">
+
+    </div>
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-3 column">
+            </div>
+            <div class="col-md-6 column">
+                <form role="form">
+                    <div class="form-group">
+                        <div style="text-align: right"><h2>阿C外卖</h2></div>
+                        <label for="logNo">账号</label><input type="email" class="form-control" id="logNo" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">密码</label><input type="password" class="form-control" id="password" name="" />
+                    </div>
+                    <div class="checkbox">
+                    </div>
+                    <button type="button" class="btn btn-default">注册</button>
+                    <button style="margin-left: 400px" type="button" class="btn btn-default" onclick="login();">登陆</button>
+                </form>
+            </div>
+            <div class="col-md-3 column">
+            </div>
+        </div>
     </div>
 </body>
 <script type="text/javascript">
@@ -37,7 +64,7 @@
                         alert("登陆后台成功");
                     }
                     if(result.data.role == 1){
-                        window.location.href = "product/getProductList";
+                        window.location.href = "product/list";
                     }
                 }
             }

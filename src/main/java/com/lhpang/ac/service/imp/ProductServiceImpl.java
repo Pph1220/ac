@@ -1,5 +1,6 @@
 package com.lhpang.ac.service.imp;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -141,7 +142,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ServerResponse<PageInfo> getProductList(int pageNum, int pageSize){
         //startPage
-        PageHelper.startPage(pageNum, pageSize);
+        Page page = PageHelper.startPage(pageNum, pageSize);
         //查询
         List<Product> products = productMapper.selectList();
 
@@ -152,7 +153,7 @@ public class ProductServiceImpl implements ProductService {
         }
         //pagerHelper收尾
         PageInfo pageInfo = new PageInfo(products);
-        pageInfo.setList(listVos);
+        System.out.println(pageInfo);
 
         return ServerResponse.createBySuccess(pageInfo);
     }
@@ -301,5 +302,26 @@ public class ProductServiceImpl implements ProductService {
         pageInfo.setList(productListVos);
 
         return ServerResponse.createBySuccess(pageInfo);
+    }
+    /**
+     * 描 述: 全部商品（前台）
+     * @date: 2019/4/29 22:34
+     * @author: lhpang
+     * @param: [pageNum, pageSize]
+     * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
+     **/
+    @Override
+    public ServerResponse<PageInfo> list(int pageNum, int pageSize){
+        PageHelper.startPage(pageNum, pageSize);
+        List<Product> productList = productMapper.list();
+        List<ProductListVo> productListVoList = Lists.newArrayList();
+        for (Product product:productList){
+            ProductListVo vo = poToListVo(product);
+            productListVoList.add(vo);
+        }
+        PageInfo pageInfo = new PageInfo<>(productList);
+        pageInfo.setList(productListVoList);
+        return ServerResponse.createBySuccess(pageInfo);
+
     }
 }
