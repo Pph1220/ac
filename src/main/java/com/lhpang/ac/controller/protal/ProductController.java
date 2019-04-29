@@ -1,10 +1,8 @@
 package com.lhpang.ac.controller.protal;
 
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import com.lhpang.ac.common.Constant;
 import com.lhpang.ac.common.ServerResponse;
-import com.lhpang.ac.pojo.Product;
 import com.lhpang.ac.pojo.User;
 import com.lhpang.ac.service.ProductService;
 import com.lhpang.ac.service.UserService;
@@ -45,14 +43,16 @@ public class ProductController {
      **/
     @ResponseBody
     @RequestMapping(value = "detail",method = RequestMethod.GET)
-    public ServerResponse<ProductDetailVo> detail(HttpSession session,Integer productId){
+    public ModelAndView detail(HttpSession session,Integer productId){
+        Map<String,Object> map = Maps.newHashMap();
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
         ServerResponse response = userService.checkOnLine(user);
         if(!response.isSuccess()){
-            return response;
+            map.put("result", response);
+            return new ModelAndView("common/fail",map);
         }
-
-        return productService.getProductDetail(productId);
+        map.put("result", productService.getProductDetail(productId));
+        return new ModelAndView("portal/product/productDetail",map);
     }
     /**
      * 描 述: 搜索(前台)
@@ -61,20 +61,22 @@ public class ProductController {
      * @param: [productName, pageSize, pageNum, orderBy]
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
      **/
-    @ResponseBody
     @RequestMapping(value = "search",method = RequestMethod.GET)
-    public ServerResponse<PageInfo> search(HttpSession session,
+    public ModelAndView search(HttpSession session,
                                            @RequestParam(value = "productName" ,required = false) String productName,
                                            @RequestParam(value = "categoryId",required = false) Integer categoryId,
                                            @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                            @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
                                            @RequestParam(value = "orderBy",defaultValue = "") String orderBy){
+        Map<String,Object> map = Maps.newHashMap();
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
         ServerResponse response = userService.checkOnLine(user);
         if(!response.isSuccess()){
-            return response;
+            map.put("result",response);
+            return new ModelAndView("common/fail",map);
         }
-        return productService.getProductByproductNameCategoryId(productName,categoryId, pageSize, pageNum, orderBy);
+        map.put("result", productService.getProductByproductNameCategoryId(productName,categoryId, pageSize, pageNum, orderBy));
+        return new ModelAndView("portal/product/productList",map);
     }
 
     /**
@@ -84,18 +86,17 @@ public class ProductController {
      * @param:
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
      **/
-    @ResponseBody
     @RequestMapping(value = "getProductList",method = RequestMethod.GET)
     public ModelAndView getProductList(HttpSession session, @RequestParam(value = "pageNum",
             defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+        Map<String,Object> map = Maps.newHashMap();
         User user = (User)session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
-        /*if(!response.isSuccess()){
-            return response;
-        }*/
-        Map<String,ServerResponse> map = Maps.newHashMap();
-
+        if(!response.isSuccess()){
+            map.put("result",response);
+            return new ModelAndView("common/fail",map);
+        }
         map.put("result", productService.getProductList(pageNum, pageSize));
         return new ModelAndView("portal/product/productList",map);
     }

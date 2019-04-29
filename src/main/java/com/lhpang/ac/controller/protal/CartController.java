@@ -47,7 +47,7 @@ public class CartController {
             return response;
         }
 
-        return cartService.add(productId, count, productId);
+        return cartService.add(user.getId(), count, productId);
     }
     /**
      * 描 述: 更新购物车商品
