@@ -6,7 +6,6 @@ import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.pojo.User;
 import com.lhpang.ac.service.ProductService;
 import com.lhpang.ac.service.UserService;
-import com.lhpang.ac.vo.ProductDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -19,4 +19,5 @@ public class CartVo {
     private BigDecimal cartTotalPrice;
     //是否已经都勾选
     private Boolean allChecked;
+
 }

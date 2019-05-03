@@ -92,13 +92,17 @@ public class CartServiceImpl implements CartService {
 
         Cart cart = cartMapper.selectByUserIdProductId(userId, productId);
 
+        Product product = productMapper.selectByPrimaryKey(productId);
+
+        if(product.getStock() < count){
+            return ServerResponse.createByErrorMessage("库存不足");
+        }
         if (cart != null){
             cart.setQuantity(count);
+            cartMapper.updateByPrimaryKeySelective(cart);
         }
 
-        cartMapper.updateByPrimaryKeySelective(cart);
-
-        return this.list(userId);
+        return ServerResponse.createBySuccess();
     }
     /**
      * 描 述: 删除购物车中商品

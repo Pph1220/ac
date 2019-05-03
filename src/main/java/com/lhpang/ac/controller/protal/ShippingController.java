@@ -1,19 +1,21 @@
 package com.lhpang.ac.controller.protal;
 
+import com.google.common.collect.Maps;
 import com.lhpang.ac.common.Constant;
 import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.pojo.Shipping;
 import com.lhpang.ac.pojo.User;
 import com.lhpang.ac.service.ShippingService;
 import com.lhpang.ac.service.UserService;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
 *   类路径: com.lhpang.ac.controller.protal.ShippingController
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpSession;
 *   @author: lhpang
 *   @date: 2019-04-24 09:52
 */
+@Slf4j
 @Controller
 @RequestMapping("/shipping/")
 public class ShippingController {
@@ -38,7 +41,7 @@ public class ShippingController {
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @ResponseBody
-    @RequestMapping(value = "add",method = RequestMethod.GET)
+    @PostMapping("add")
     public ServerResponse add(HttpSession session, Shipping shipping){
 
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
@@ -57,7 +60,7 @@ public class ShippingController {
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @ResponseBody
-    @RequestMapping(value = "delete",method = RequestMethod.GET)
+    @PostMapping("delete")
     public ServerResponse delete (HttpSession session,Integer shippingId){
 
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
@@ -116,19 +119,24 @@ public class ShippingController {
      * @param: [pageNum, pageSize, session]
      * @return: com.lhpang.ac.common.ServerResponse
      **/
-    @ResponseBody
-    @RequestMapping(value = "list",method = RequestMethod.GET)
-    public ServerResponse list(@RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
-                               @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize,HttpSession session){
+    @GetMapping("list")
+    public ModelAndView list(HttpSession session){
+        Map map = Maps.newHashMap();
 
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
         if(!response.isSuccess()){
-            return response;
+            map.put("result",response);
+            return new ModelAndView("common/fail",map);
+        }
+        ServerResponse list = shippingService.list(user.getId());
+        map.put("result", list);
+        if(!list.isSuccess()){
+            return new ModelAndView("common/fail",map);
         }
 
-        return shippingService.list(user.getId(), pageNum, pageSize);
+        return new ModelAndView("portal/shipping/shippingList",map);
     }
 
 }

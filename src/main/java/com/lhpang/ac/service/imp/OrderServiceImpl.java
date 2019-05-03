@@ -33,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sun.net.www.protocol.http.ntlm.NTLMAuthentication;
 
 import java.io.File;
@@ -75,9 +76,10 @@ public class OrderServiceImpl implements OrderService {
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @Override
+    @Transactional
     public synchronized ServerResponse create(Integer userId, Integer shippingId) {
 
-        if (shippingId != null){
+        if (shippingId == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
 
@@ -234,7 +236,8 @@ public class OrderServiceImpl implements OrderService {
 
         orderVo.setOrderNo(order.getOrderNo());
         orderVo.setPayment(order.getPayment());
-        orderVo.setPaymentTypeDesc(Constant.PaymentTypeEnum.codeOf(order.getStatus()).getValue());
+        orderVo.setPaymentType(order.getPaymentType());
+        orderVo.setPaymentTypeDesc(Constant.PaymentTypeEnum.codeOf(order.getPaymentType()).getValue());
         orderVo.setStatus(order.getStatus());
         orderVo.setStatusDesc(Constant.OrderStatusEnum.codeOf(order.getStatus()).getValue());
         orderVo.setPaymentTime(DateUtil.dateToString(order.getPaymentTime()));
@@ -348,6 +351,8 @@ public class OrderServiceImpl implements OrderService {
         order.setUserId(userId);
         //收货地址id
         order.setShippingId(shippingId);
+        //创建时间
+        order.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
         int count = orderMapper.insert(order);
         if(count > 0 ){
@@ -551,6 +556,7 @@ public class OrderServiceImpl implements OrderService {
     public ServerResponse aliPayCallBack(Map requestMap){
 
         Map<String,String> map = Maps.newHashMap();
+        log.info(requestMap.toString());
 
         for (Iterator iterator = requestMap.keySet().iterator();iterator.hasNext();){
             String name = (String) iterator.next();
@@ -588,22 +594,31 @@ public class OrderServiceImpl implements OrderService {
             return ServerResponse.createBySuccess("支付宝重复调用");
         }
 
-        if(Constant.AlipayCallback.RESPONSE_SUCCESS.equals(tradeStatus)){
+        if(Constant.AlipayCallback.TRADE_STATUS_TRADE_SUCCESS.equals(tradeStatus)){
             order.setStatus(Constant.OrderStatusEnum.PAID.getCode());
-            order.setPaymentTime(DateUtil.strToDate(map.get("gmy_payment")));
+            order.setPaymentTime(DateUtil.strToDate(map.get("gmt_payment")));
             orderMapper.updateByPrimaryKeySelective(order);
         }
 
         PayInfo payInfo = new PayInfo();
+        //支付宝两次回调,先通过orderNo查询payinfo如果没有插入
+        PayInfo info = payInfoMapper.selectByOrderNo(orderNo);
+        if(info == null){
+            payInfo.setUserId(order.getUserId());
+            payInfo.setOrderNo(order.getOrderNo());
+            payInfo.setPayPlatform(Constant.PaymentTypeEnum.ONLINE_PAY.getCode());
+            payInfo.setPlatformNumber(tradeNo);
+            payInfo.setPlatformStatus(tradeStatus);
+            payInfo.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
-        payInfo.setUserId(order.getUserId());
-        payInfo.setOrderNo(order.getOrderNo());
-        payInfo.setPayPlatform(Constant.PaymentTypeEnum.ONLINE_PAY.getCode());
-        payInfo.setPlatformNumber(tradeNo);
-        payInfo.setPlatformStatus(tradeStatus);
-        payInfo.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            payInfoMapper.insert(payInfo);
 
-        payInfoMapper.insert(payInfo);
+            return ServerResponse.createBySuccess();
+        }
+
+        //如果有修改状态
+        payInfoMapper.updateStatusByOrderNo(orderNo,tradeStatus);
+
         return ServerResponse.createBySuccess();
     }
     /**
@@ -621,7 +636,7 @@ public class OrderServiceImpl implements OrderService {
         if(order == null ){
             return ServerResponse.createByErrorMessage("该订单不存在");
         }
-        if(order.getStatus() >= Constant.PaymentTypeEnum.ONLINE_PAY.getCode()){
+        if(order.getStatus() >= Constant.OrderStatusEnum.PAID.getCode()){
             return ServerResponse.createBySuccess();
         }
         return ServerResponse.createByError();
@@ -737,5 +752,4 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(Constant.OrderStatusEnum.SHIPPED.getCode());
         return ServerResponse.createBySuccessMessage("发货成功");
     }
-
 }

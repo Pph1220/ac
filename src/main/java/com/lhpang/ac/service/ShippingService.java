@@ -47,8 +47,8 @@ public interface ShippingService {
      * 描 述: 查询收货地址列表
      * @date: 2019-04-24 11:00
      * @author: lhpang
-     * @param: [userId, pageNum, pageSize]
-     * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo<com.lhpang.ac.pojo.Shipping>>
+     * @param: [userId]
+     * @return: com.lhpang.ac.common.ServerResponse<List>
      **/
-    ServerResponse<PageInfo<Shipping>> list(Integer userId, Integer pageNum, Integer pageSize);
+    ServerResponse list(Integer userId);
 }

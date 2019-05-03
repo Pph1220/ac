@@ -7,7 +7,7 @@
       <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="receiver_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="receiver_phone" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="receiverAddress" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="receiver_address" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
@@ -30,7 +30,7 @@
       receiver_phone, receiver_address, create_time,
       update_time)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR}, 
-      #{receiverPhone,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{receiverPhone,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, now(),
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.lhpang.ac.pojo.Shipping">
@@ -138,7 +138,7 @@
     <include refid="Base_Column_List"/>
     from c_shipping
     where user_id = #{userId}
-    and userId = #{shippingId}
+    and id = #{shippingId}
   </select>
 
   <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap">
@@ -146,5 +146,6 @@
     <include refid="Base_Column_List"/>
     from c_shipping
     where user_id = #{userId}
+    order by id
   </select>
 </mapper>

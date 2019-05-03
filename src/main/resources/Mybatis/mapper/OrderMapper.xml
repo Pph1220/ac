@@ -6,7 +6,7 @@
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="order_no" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="shippingId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="shipping_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="payment" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="payment_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
@@ -194,13 +194,22 @@
     <include refid="Base_Column_List"/>
     from c_order
     where user_id = #{userId}
-    order by create_time desc
+    order by create_time asc
   </select>
 
-  <select id="selectAllOrder">
+  <select id="selectAllOrder" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from c_order
     order by create_time desc
+  </select>
+
+  <select id="findOrder" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from c_order
+    where user_id = #{userId}
+    order by id
+    limit 1,1
   </select>
 </mapper>

@@ -1,21 +1,24 @@
 package com.lhpang.ac.controller.protal;
 
+import com.google.common.collect.Maps;
 import com.lhpang.ac.common.Constant;
 import com.lhpang.ac.common.ServerResponse;
+import com.lhpang.ac.pojo.Order;
 import com.lhpang.ac.pojo.User;
 import com.lhpang.ac.service.OrderService;
 import com.lhpang.ac.service.UserService;
+import com.lhpang.ac.utils.NumberUtil;
+import com.lhpang.ac.vo.OrderVo;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -36,24 +39,32 @@ public class OrderController {
 
 
     /**
-     * 描 述: 购买
+     * 描 述: 提交订单
      * @date: 2019-04-26 14:36
      * @author: lhpang
      * @param: [session, shippingId]
      * @return: com.lhpang.ac.common.ServerResponse
      **/
-    @ResponseBody
-    @RequestMapping(value = "create",method = RequestMethod.GET)
-    public ServerResponse create(HttpSession session,Integer shippingId){
+    @PostMapping("create")
+    public ModelAndView create(HttpSession session, Integer shippingId){
+        Map result = Maps.newHashMap();
 
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
-        ServerResponse response = userService.checkOnLine(user);
-        if(!response.isSuccess()){
-            return response;
+        ServerResponse checkOnLine = userService.checkOnLine(user);
+        if(!checkOnLine.isSuccess()){
+            result.put("result",checkOnLine);
+            return new ModelAndView("common/fail",result);
+        }
+        ServerResponse create = orderService.create(user.getId(), shippingId);
+        result.put("result",create);
+        if(!create.isSuccess()){
+            return new ModelAndView("common/fail",result);
         }
 
-        return orderService.create(user.getId(), shippingId);
+        ServerResponse detail = orderService.detail(user.getId(),((OrderVo)create.getData()).getOrderNo());
+        result.put("result", detail);
+        return new ModelAndView("portal/order/orderDetail",result);
     }
     /**
      * 描 述: 取消订单
@@ -77,23 +88,28 @@ public class OrderController {
     }
     /**
      * 描 述: 订单详情
-     * @date: 2019-04-26 15:56
+     * @date: 2019/5/2 13:22
      * @author: lhpang
-     * @param: [session, orderNo]
-     * @return: com.lhpang.ac.common.ServerResponse
+     * @param: [session, strOrderNo]
+     * @return: org.springframework.web.servlet.ModelAndView
      **/
-    @ResponseBody
-    @RequestMapping(value = "detail",method = RequestMethod.GET)
-    public ServerResponse detail(HttpSession session,Long orderNo){
+    @GetMapping("detail")
+    public ModelAndView detail(HttpSession session,String strOrderNo){
 
+
+        Map map = Maps.newHashMap();
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
         if(!response.isSuccess()){
-            return response;
+            map.put("result",response);
+            return new ModelAndView("common/fail",map);
         }
 
-        return orderService.detail(user.getId(), orderNo);
+        ServerResponse orderVo = orderService.detail(user.getId(), NumberUtil.stringToLong(strOrderNo));
+
+        map.put("result",orderVo);
+        return new ModelAndView("portal/order/orderDetail",map);
     }
     /**
      * 描 述: 分页查询订单列表
@@ -102,18 +118,22 @@ public class OrderController {
      * @param: [session, pageNum, pageSize]
      * @return: com.lhpang.ac.common.ServerResponse
      **/
-    @ResponseBody
-    @RequestMapping(value = "list",method = RequestMethod.GET)
-    public ServerResponse list(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,@RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
-
+    @GetMapping("list")
+    public ModelAndView list(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                  @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+        Map map = Maps.newHashMap();
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
         if(!response.isSuccess()){
-            return response;
+            map.put("result",response);
+            return new ModelAndView("common/fail",map);
         }
+        ServerResponse orderList = orderService.list(user.getId(),pageNum,pageSize);
 
-        return orderService.list(user.getId(),pageNum,pageSize);
+        map.put("result",orderList);
+
+        return new ModelAndView("portal/order/orderList",map);
     }
 
 
@@ -125,18 +145,22 @@ public class OrderController {
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @ResponseBody
-    @RequestMapping(value = "pay",method = RequestMethod.GET)
-    public ServerResponse pay(HttpSession session, Long orderNo, HttpServletRequest request){
+    @PostMapping("pay")
+    public ModelAndView pay(HttpSession session, String strOrderNo, HttpServletRequest request){
+        Map map = Maps.newHashMap();
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
         if(!response.isSuccess()){
-            return response;
+            map.put("result",response);
+            return new ModelAndView("common/fail",map);
         }
 
         String path = request.getSession().getServletContext().getRealPath("upload");
 
-        return orderService.pay(orderNo,user.getId(),path);
+        ServerResponse img = orderService.pay(NumberUtil.stringToLong(strOrderNo),user.getId(),path);
+        map.put("result", img);
+        return new ModelAndView("portal/order/scan",map);
     }
     /**
      * 描 述: 阿里回调方法
@@ -167,7 +191,7 @@ public class OrderController {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.Boolea>
      **/
     @ResponseBody
-    @RequestMapping(value = "queryPayStatus",method = RequestMethod.GET)
+    @PostMapping(value = "queryPayStatus")
     public ServerResponse<Boolean> queryPayStatus(HttpSession session, Long orderNo){
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 

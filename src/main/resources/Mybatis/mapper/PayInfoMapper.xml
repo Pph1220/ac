@@ -6,7 +6,7 @@
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="order_no" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="pay_ platform" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="pay_platform" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="platform_number" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="platform_status" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
@@ -14,7 +14,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, order_no, "pay_ platform", platform_number, platform_status, create_time, 
+    id, user_id, order_no, pay_platform, platform_number, platform_status, create_time,
     update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -127,5 +127,18 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByOrderNo" parameterType="long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from c_pay_info
+    where order_no = #{orderNo}
+  </select>
+
+  <update id="updateStatusByOrderNo" parameterType="map">
+    update c_pay_info
+    set platform_status = #{status}
+    where order_no = #{orderNo}
   </update>
 </mapper>

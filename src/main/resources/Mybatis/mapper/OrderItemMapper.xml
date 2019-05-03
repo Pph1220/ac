@@ -180,7 +180,7 @@
     values
     <foreach collection="orderItems" separator="," index="index" item="item">
       (
-      #{item.id},#{item.userId},#{item.orderNo},#{item.productId},#{item.productName},#{item.productImage},#{item.currentUnitPrice},#{item.quantity},#{item.totalPrice},now (),#{item.updateTime}
+      #{item.id},#{item.userId},#{item.orderNo},#{item.productId},#{item.productName},#{item.productImage},#{item.currentUnitPrice},#{item.quantity},#{item.totalPrice},now(),#{item.updateTime}
       )
     </foreach>
   </insert>

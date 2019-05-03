@@ -63,7 +63,7 @@ public class ShippingServiceImpl implements ShippingService {
         if (shippingId == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
-        int count = shippingMapper.deleteByShippingIdAndUserId(userId,shippingId);
+        int count = shippingMapper.deleteByShippingIdAndUserId(shippingId,userId);
         if(count > 0){
             return ServerResponse.createBySuccessMessage("删除地址成功");
         }
@@ -116,17 +116,13 @@ public class ShippingServiceImpl implements ShippingService {
      * 描 述: 查询收货地址列表
      * @date: 2019-04-24 11:00
      * @author: lhpang
-     * @param: [userId, pageNum, pageSize]
+     * @param: [userId]
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo<com.lhpang.ac.pojo.Shipping>>
      **/
     @Override
-    public ServerResponse<PageInfo<Shipping>> list(Integer userId,Integer pageNum,Integer pageSize){
-        PageHelper.startPage(pageNum, pageSize);
+    public ServerResponse list(Integer userId){
+        List<Shipping> shippingList  = shippingMapper.selectByUserId(userId);
 
-        List<Shipping> shippings  = shippingMapper.selectByUserId(userId);
-
-        PageInfo pageInfo = new PageInfo(shippings);
-
-        return ServerResponse.createBySuccess(pageInfo);
+        return ServerResponse.createBySuccess(shippingList);
     }
 }

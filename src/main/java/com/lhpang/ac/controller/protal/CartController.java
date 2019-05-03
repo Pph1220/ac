@@ -1,9 +1,11 @@
 package com.lhpang.ac.controller.protal;
 
+import com.google.common.collect.Maps;
 import com.lhpang.ac.common.Constant;
 import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.pojo.User;
 import com.lhpang.ac.service.CartService;
+import com.lhpang.ac.service.ShippingService;
 import com.lhpang.ac.service.UserService;
 import com.lhpang.ac.vo.CartVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
 *   类路径: com.lhpang.ac.controller.protal.CartController
@@ -28,6 +32,8 @@ public class CartController {
     private CartService cartService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ShippingService shippingService;
 
     /**
      * 描 述: 加入购物车
@@ -67,7 +73,7 @@ public class CartController {
             return response;
         }
 
-        return cartService.update(productId, count, productId);
+        return cartService.update(user.getId(), count, productId);
     }
     /**
      * 描 述: 删除购物车中的商品
@@ -90,24 +96,35 @@ public class CartController {
         return cartService.delete(user.getId(),productIds);
     }
     /**
-     * 描 述: 查询购物车中的商品
-     * @date: 2019/4/23 22:35
+     * 描 述: 查询购物车
+     * @date: 2019/5/1 16:01
      * @author: lhpang
-     * @param: [session, productIds]
-     * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.vo.CartVo>
+     * @param: [session]
+     * @return: org.springframework.web.servlet.ModelAndView
      **/
     @ResponseBody
     @RequestMapping(value = "list",method = RequestMethod.GET)
-    public ServerResponse<CartVo> list(HttpSession session){
+    public ModelAndView list(HttpSession session){
 
+        Map<String,Object> result = Maps.newHashMap();
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
         if(!response.isSuccess()){
-            return response;
+            result.put("result",response);
+            return new ModelAndView("common/fail",result);
         }
+        //查询购物车中商品
+        ServerResponse cartVo = cartService.list(user.getId());
+        //查询收货地址
+        ServerResponse shippingVoList = shippingService.list(user.getId());
+        result.put("cartVo",cartVo);
+        result.put("shippingVoList",shippingVoList);
 
-        return cartService.list(user.getId());
+        ModelAndView modelAndView = new ModelAndView("portal/cart/cartList");
+
+
+        return modelAndView.addObject("result", result);
     }
     /**
      * 描 述: 全选

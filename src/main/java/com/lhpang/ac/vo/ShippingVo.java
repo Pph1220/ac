@@ -11,6 +11,8 @@ import lombok.Data;
 @Data
 public class ShippingVo {
 
+    private int id;
+
     private String receiverName;
 
     private String receiverPhone;

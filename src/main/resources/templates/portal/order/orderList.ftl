@@ -40,53 +40,58 @@
             </nav>
         </div>
     </div>
+</div>
+<div class="container">
     <div class="row clearfix">
-        <div class="col-md-12 column">
-            <#if result.data.getList()??>
-                <#list result.data.getList() as a>
-                    <div class="col-md-4" style="width: 20%">
-                        <div class="thumbnail">
-                            <img height="195px" width="195px" src="${a.mainImage}" />
-                            <div class="caption">
-                                <h3>
-                                    <a href="/product/detail?productId=${a.id}">${a.name}</a>
-                                </h3>
-                                <p>
-                                    ${a.price}元
-                                </p>
-                                <p>
-                                    <input style="display: inline-block;width: 50px" type="text" class="form-control" id="${a.id}count"/>
-                                    <a class="btn btn-primary" id="${a.id}btn">加入购物车</a>
-                                </p>
-                            </div>
-                        </div>
-                        <script type="text/javascript">
-                            $('#${a.id}btn').click(function () {
-                                if (checkRate('${a.id}count')){
-                                    $.ajax({
-                                        method:'get',
-                                        url:'../cart/add',
-                                        dataType:'json',
-                                        data:{
-                                            'productId':${a.id},
-                                            'count':$('#${a.id}count').val()
-                                        },
-                                        success:function (result) {
-                                            if (result.status == 0){
-                                                alert("加入购物车成功");
-                                                $('#${a.id}count').val("");
-                                            }else{
-                                                alert("加入购物车失败");
-                                            }
-                                        }
-                                    })
-                                }
-                            })
-                        </script>
-                    </div>
-                </#list>
-            </#if>
-         </div>
+        <div class="col-md-1 column">
+        </div>
+        <div class="col-md-10 column">
+            <div style="height: 10px;"></div>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>
+                        编号
+                    </th>
+                    <th>
+                        订单编号
+                    </th>
+                    <th>
+                        订单总价
+                    </th>
+                    <th>
+                        创建时间
+                    </th>
+                    <th>
+                        订单状态
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <#if result.data.list?? && result.data.list?size gt 0>
+                    <#list result.data.list as info>
+                        <tr>
+                            <td>${info_index+1}</td>
+                            <td><a href="/order/detail?strOrderNo=${info.orderNo}">${info.orderNo}</a></td>
+                            <td>${info.payment}元</td>
+                            <td>${info.createTime}</td>
+                            <td>${info.statusDesc}</td>
+                        </tr>
+                    </#list>
+                <#else >
+                        <tr>
+                            <td>    </td>
+                            <td>    </td>
+                            <td>    </td>
+                            <td>    </td>
+                            <td>    </td>
+                        </tr>
+                </#if>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-1 column">
+        </div>
     </div>
     <div class="row clearfix">
         <div class="col-md-12 column">
@@ -118,8 +123,16 @@
         </div>
     </div>
 </div>
+<#--${result.data}-->
 </body>
 <script type="text/javascript">
+
+    function createOrder(){
+        alert(123);
+        $('#createOrder').submit();
+    }
+
+
     $('#search').click(function () {
         window.location.href = "product/search?productName="+$('#productName').val();
         alert(111);
@@ -136,7 +149,7 @@
         }
         return true;
     }
-    //判断视为为空
+    //判空
     function checkNull(input) {
         var v = document.getElementById(input).value;
         if (v == null || v == ""){
