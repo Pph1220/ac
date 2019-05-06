@@ -7,6 +7,7 @@ import com.lhpang.ac.pojo.User;
 import com.lhpang.ac.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -68,7 +69,7 @@ public class UserController {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
-    @RequestMapping(value = "register",method = RequestMethod.POST)
+    @PostMapping("register")
     public ServerResponse<String> register(User user){
 
         return userService.register(user);
@@ -81,7 +82,7 @@ public class UserController {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
-    @RequestMapping(value = "checkValid",method = RequestMethod.POST)
+    @PostMapping(value = "checkValid")
     public ServerResponse<String> checkValid(String s,String type){
 
         return userService.checkValid(s,type);
@@ -112,7 +113,7 @@ public class UserController {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
-    @RequestMapping(value = "getQuestion",method = RequestMethod.POST)
+    @PostMapping("getQuestion")
     public ServerResponse<String> getQuestion(String logNo){
         
         return userService.getQuestion(logNo);
@@ -125,7 +126,7 @@ public class UserController {
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
-    @RequestMapping(value = "checkAnswer",method = RequestMethod.POST)
+    @PostMapping("checkAnswer")
     public ServerResponse<String> checkAnswer(String logNo,String answer){
         
         return userService.checkAnswer(logNo, answer);

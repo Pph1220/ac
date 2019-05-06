@@ -194,7 +194,7 @@
     <include refid="Base_Column_List"/>
     from c_order
     where user_id = #{userId}
-    order by create_time asc
+    order by create_time desc
   </select>
 
   <select id="selectAllOrder" resultMap="BaseResultMap">

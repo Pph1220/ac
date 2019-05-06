@@ -7,30 +7,28 @@
     <link href="https://cdn.bootcss.com/twitter-bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+<div style="line-height: 20px"></div>
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-12 column">
             <nav class="navbar navbar-default" role="navigation">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/product/list">阿 C 外 卖</a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/productManager/getProductList">阿 C 外 卖</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="/cart/list">购物车</a>
+                            <a href="../newProduct.html">新增商品</a>
                         </li>
                         <li>
-                            <a href="/shipping/list">收货地址</a>
-                        </li>
-                        <li>
-                            <a href="/order/list">我的订单</a>
+                            <a href="">所有订单</a>
                         </li>
                     </ul>
-                    <form class="navbar-form navbar-left" role="search" action="/product/search" method="get">
+                    <#--<form class="navbar-form navbar-left" role="search" action="/product/search" method="get">
                         <div class="form-group">
                             <input type="text" class="form-control" name="productName" />
                         </div> <button id="submit" type="submit" class="btn btn-default">搜索</button>
-                    </form>
+                    </form>-->
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="../../changePassword.html">修改密码</a>
@@ -44,51 +42,47 @@
         </div>
     </div>
 </div>
+<#--${result.data}-->
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-1 column">
         </div>
         <div class="col-md-10 column">
-            <div style="height: 10px;"></div>
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>
-                        编号
-                    </th>
-                    <th>
-                        订单编号
-                    </th>
-                    <th>
-                        订单总价
-                    </th>
-                    <th>
-                        创建时间
-                    </th>
-                    <th>
-                        订单状态
-                    </th>
+                    <th style="text-align: center">编号</th>
+                    <th style="text-align: center">名称</th>
+                    <th style="text-align: center">价钱</th>
+                    <th style="text-align: center">库存</th>
+                    <th style="text-align: center">状态</th>
+                    <th>    </th>
                 </tr>
                 </thead>
                 <tbody>
-                <#if result.data.list?? && result.data.list?size gt 0>
+                <#if result.data.getList()?? && result.data.getList()?size gt 0>
                     <#list result.data.list as info>
                         <tr>
-                            <td>${info_index+1}</td>
-                            <td><a href="/order/detail?strOrderNo=${info.orderNo}">${info.orderNo}</a></td>
-                            <td>${info.payment}元</td>
-                            <td>${info.createTime}</td>
-                            <td>${info.statusDesc}</td>
+                            <td align="center">${info_index+1}</td>
+                            <td align="center"><a href="/productManager/getProductDetail?productId=${info.id}">${info.name}</a></td>
+                            <td align="center">${info.price}元</td>
+                            <td align="center">${info.stock}份</td>
+                            <#if info.status == 1>
+                                <td align="center">在售</td>
+                            <#else>
+                                <td align="center">已下架</td>
+                            </#if>
+                            <#if info.status == 1>
+                                <td align="center"><button type="button" class="btn btn-default btn-danger" onclick="downOrUp(${info.id})">下架</button></td>
+                            <#else>
+                                <#if info.stock gt 0>
+                                    <td align="center"><button type="button" class="btn btn-default btn-success" onclick="downOrUp(${info.id})">上架</button></td>
+                                <#else>
+                                    <td align="center"><button type="button" disabled class="btn btn-default btn-success">上架</button></td>
+                                </#if>
+                            </#if>
                         </tr>
                     </#list>
-                <#else >
-                        <tr>
-                            <td>    </td>
-                            <td>    </td>
-                            <td>    </td>
-                            <td>    </td>
-                            <td>    </td>
-                        </tr>
                 </#if>
                 </tbody>
             </table>
@@ -96,6 +90,8 @@
         <div class="col-md-1 column">
         </div>
     </div>
+</div>
+<div class="container">
     <div class="row clearfix">
         <div class="col-md-12 column">
             <div class="col-md-1 column">
@@ -105,19 +101,19 @@
                     <#if !result.data.hasPreviousPage>
                         <li class="disabled"><a href="#">上一页</a></li>
                     <#else>
-                        <li><a href="/product/list?pageNum=${result.data.prePage}">上一页</a></li>
+                        <li><a href="/productManager/getProductList?pageNum=${result.data.prePage}">上一页</a></li>
                     </#if>
                     <#list result.data.navigatepageNums as index>
                         <#if result.data.pageNum == index>
                             <li class="disabled"><a href="#">#{index}</a></li>
                         <#else>
-                            <li><a href="/product/list?pageNum=${index}">${index}</a></li>
+                            <li><a href="/productManager/getProductList?pageNum=${index}">${index}</a></li>
                         </#if>
                     </#list>
                     <#if !(result.data.hasNextPage)>
                         <li class="disabled"><a href="#">下一页</a></li>
                     <#else>
-                        <li><a href="/product/list?pageNum=${result.data.nextPage}">下一页</a></li>
+                        <li><a href="/productManager/getProductList?pageNum=${result.data.nextPage}">下一页</a></li>
                     </#if>
                 </ul>
             </div>
@@ -126,10 +122,24 @@
         </div>
     </div>
 </div>
-<#--${result.data}-->
 </body>
 <script type="text/javascript">
-
+    
+    function downOrUp(productId) {
+        $.ajax({
+            method:'post',
+            url:'../productManager/setStatus',
+            dataType:'json',
+            data:{
+                'productId' : productId
+            },
+            success:function (result) {
+                if(result.status == 0){
+                    window.location.href = '../productManager/getProductList';
+                }
+            }
+        })
+    }
     function logOut(){
         $.ajax({
             method:'post',
@@ -144,19 +154,10 @@
         })
     }
 
-    function createOrder(){
-        alert(123);
-        $('#createOrder').submit();
-    }
 
-
-    $('#search').click(function () {
-        window.location.href = "product/search?productName="+$('#productName').val();
-        alert(111);
-    })
     //判断是否为数字
     function checkRate(input) {
-        var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
+        var re = /^[1-9]+.?[1-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
         var nubmer = document.getElementById(input).value;
 
         if (!re.test(nubmer)) {
@@ -166,7 +167,7 @@
         }
         return true;
     }
-    //判空
+    //判断视为为空
     function checkNull(input) {
         var v = document.getElementById(input).value;
         if (v == null || v == ""){

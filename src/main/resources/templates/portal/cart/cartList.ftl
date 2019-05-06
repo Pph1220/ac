@@ -33,7 +33,10 @@
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="#">我的阿C</a>
+                            <a href="../../changePassword.html">修改密码</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="logOut()">退出登录</a>
                         </li>
                     </ul>
                 </div>
@@ -46,7 +49,7 @@
         <div class="col-md-1 column">
         </div>
         <div class="col-md-10 column">
-            <#--${result.data}-->
+            <#--${result["cartVo"].data}-->
             <div style="height: 10px;"></div>
             <h3>所选商品:</h3>
             <table class="table table-hover">
@@ -57,6 +60,7 @@
                     <th>商品单价</th>
                     <th>商品数量</th>
                     <th>总价</th>
+                    <th>    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -64,10 +68,11 @@
                     <#list result["cartVo"].data.cartProductVoList as info>
                         <tr>
                             <td>${info_index+1}</td>
-                            <td><a href="/product/detail?productId=${info.id}">${info.productName}</a></td>
+                            <td><a href="/product/detail?productId=${info.productId}">${info.productName}</a></td>
                             <td><span id="${info.id}price">${info.productPrice}</span>元</td>
                             <td><input style="width: 50px" type="text" id="${info.id}count" class="form-control" value="${info.quantity}"份</td>
                             <td><sapan id="${info.id}">${info.productTotalPrice}</sapan>元</td>
+                            <td align="center"><button type="button" onclick="doDelete(${info.productId});" class="btn btn-default btn-danger">删除</button></td>
                             <script type="text/javascript">
                                 $('#${info.id}count').change(function () {
                                     if (checkRate('${info.id}count')) {
@@ -76,7 +81,7 @@
                                             url: '/cart/update',
                                             dataType: 'json',
                                             data: {
-                                                'productId':${info.id},
+                                                'productId':${info.productId},
                                                 'count': $('#${info.id}count').val()
                                             },
                                             success: function (result) {
@@ -178,6 +183,39 @@
 </div>
 </body>
 <script type="text/javascript">
+
+    function logOut(){
+        $.ajax({
+            method:'post',
+            url:'../user/logout',
+            dataType:'json',
+            data:{
+
+            },
+            success:function (result) {
+                window.location.href="../../index.html";
+            }
+        })
+    }
+
+    function doDelete(id) {
+        if (confirm("是否删除?")) {
+            $.ajax({
+                method:'post',
+                url:'../cart/delete',
+                dataType:'json',
+                data:{
+                    'productId':id
+                },
+                success:function (result) {
+                    //alert(result.status);
+                    if (result.status == 0){
+                        window.location.href="../cart/list";
+                    }
+                }
+            })
+        }
+    }
 
     function createOrder(){
         alert(123);

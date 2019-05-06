@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -322,6 +323,27 @@ public class ProductServiceImpl implements ProductService {
         PageInfo pageInfo = new PageInfo<>(productList);
         pageInfo.setList(productListVoList);
         return ServerResponse.createBySuccess(pageInfo);
+    }
+    /**
+     * 描 述: 后台删除商品
+     * @date: 2019/5/6 12:03
+     * @author: lhpang
+     * @param: [productId]
+     * @return: com.lhpang.ac.common.ServerResponse
+     **/
+    @Override
+    public ServerResponse delete(Integer productId){
 
+        if(productId == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),
+                    ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+
+        int count = productMapper.deleteByPrimaryKey(productId);
+
+        if(count > 0){
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByError();
     }
 }

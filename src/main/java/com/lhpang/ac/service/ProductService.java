@@ -76,4 +76,12 @@ public interface ProductService {
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
      **/
     ServerResponse<PageInfo> list(int pageNum, int pageSize);
+    /**
+     * 描 述: 后台删除商品
+     * @date: 2019/5/6 12:03
+     * @author: lhpang
+     * @param: [productId]
+     * @return: com.lhpang.ac.common.ServerResponse
+     **/
+    ServerResponse delete(Integer productId);
 }

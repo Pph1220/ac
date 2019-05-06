@@ -168,7 +168,7 @@
     select
     <include refid="Base_Column_List" />
     from c_product
-    order by id asc
+    order by status desc,id asc
   </select>
 
   <select id="selectByName" parameterType="string" resultMap="BaseResultMap">

@@ -10,6 +10,7 @@ import com.lhpang.ac.service.UserService;
 import com.lhpang.ac.vo.CartVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -79,12 +80,12 @@ public class CartController {
      * 描 述: 删除购物车中的商品
      * @date: 2019/4/23 22:35
      * @author: lhpang
-     * @param: [session, productIds]
-     * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.vo.CartVo>
+     * @param: [session, productId]
+     * @return: com.lhpang.ac.common.ServerResponse
      **/
     @ResponseBody
-    @RequestMapping(value = "delete",method = RequestMethod.GET)
-    public ServerResponse<CartVo> delete(HttpSession session,String productIds){
+    @PostMapping(value = "delete")
+    public ServerResponse delete(HttpSession session,String productId){
 
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
@@ -93,7 +94,7 @@ public class CartController {
             return response;
         }
 
-        return cartService.delete(user.getId(),productIds);
+        return cartService.delete(user.getId(),productId);
     }
     /**
      * 描 述: 查询购物车

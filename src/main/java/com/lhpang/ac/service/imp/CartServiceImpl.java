@@ -108,26 +108,17 @@ public class CartServiceImpl implements CartService {
      * 描 述: 删除购物车中商品
      * @date: 2019/4/23 22:02
      * @author: lhpang
-     * @param: [userId, productIds]
-     * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.vo.CartVo>
+     * @param: [userId, productId]
+     * @return: com.lhpang.ac.common.ServerResponse
      **/
     @Override
-    public ServerResponse<CartVo> delete(Integer userId, String productIds) {
+    public ServerResponse<CartVo> delete(Integer userId, String productId) {
 
-        Iterable<String> iterable = Splitter.on(",").split(productIds);
-
-        if(!iterable.iterator().hasNext()){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        if(productId != null){
+            cartMapper.deleteCartByUserIdProductId(userId, productId);
         }
 
-        Iterator<String> iterator = iterable.iterator();
-        while (iterator.hasNext()){
-            if(iterator.next() != null){
-                cartMapper.deleteCartByUserIdProductId(userId, iterator.next());
-            }
-        }
-
-        return this.list(userId);
+        return ServerResponse.createBySuccess();
     }
     /**
      * 描 述: 查询购物车中的商品

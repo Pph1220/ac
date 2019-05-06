@@ -33,7 +33,10 @@
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="#">我的阿C</a>
+                            <a href="../../changePassword.html">修改密码</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="logOut()">退出登录</a>
                         </li>
                     </ul>
                 </div>
@@ -120,13 +123,27 @@
 </div>
 </body>
 <script type="text/javascript">
+    function logOut(){
+        $.ajax({
+            method:'post',
+            url:'../user/logout',
+            dataType:'json',
+            data:{
+
+            },
+            success:function (result) {
+                window.location.href="../../index.html";
+            }
+        })
+    }
+
+
     $('#search').click(function () {
         window.location.href = "product/search?productName="+$('#productName').val();
-        alert(111);
     })
     //判断是否为数字
     function checkRate(input) {
-        var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
+        var re = /^[1-9]+.?[1-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
         var nubmer = document.getElementById(input).value;
 
         if (!re.test(nubmer)) {
