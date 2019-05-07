@@ -24,7 +24,7 @@
                             <a href="../newProduct.html">新增商品</a>
                         </li>
                         <li>
-                            <a href="">所有订单</a>
+                            <a href="../orderManager/list">所有订单</a>
                         </li>
                     </ul>
                     <#--<form class="navbar-form navbar-left" role="search" action="/product/search" method="get">
@@ -208,9 +208,7 @@
             <div class="row clearfix">
                 <div style="height: 30px;"></div>
                 <div><h3>详情描述:</h3></div>
-                <textarea id="detail">
-                    ${result.data.detail}
-                </textarea>
+                <textarea style="height: 100px; width: 100%" id="detail">${result.data.detail}</textarea>
             </div>
         </div>
         <div class="col-md-1 column">
@@ -248,7 +246,7 @@
                 'name' : $('#name').val(),
                 'subtitle' : $('#subtitle').val(),
                 'mainImage' : $('#finalImg')[0].src,
-                'detail' : $('#detail').html(),
+                'detail' : $('#detail').val(),
                 'price' : $('#price').val(),
                 'stock' : $('#stock').val()
             },

@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <title>阿C外卖</title>
     <script src="../script/JQuery.js" type="text/javascript"></script>
+    <script src="../script/cropper.min.js" type="text/javascript"></script>
     <link href="https://cdn.bootcss.com/twitter-bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/cropper.min.css">
+    <link rel="stylesheet" href="../css/ImgCropping.css">
 </head>
 <body>
 <div class="container">
@@ -12,25 +15,22 @@
         <div class="col-md-12 column">
             <nav class="navbar navbar-default" role="navigation">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/product/list">阿 C 外 卖</a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/productManager/getProductList">阿 C 外 卖</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="/cart/list">购物车</a>
+                            <a href="../newProduct.html">新增商品</a>
                         </li>
                         <li>
-                            <a href="/shipping/list">收货地址</a>
-                        </li>
-                        <li>
-                            <a href="/order/list">我的订单</a>
+                            <a href="../orderManager/list">所有订单</a>
                         </li>
                     </ul>
-                    <form class="navbar-form navbar-left" role="search" action="/product/search" method="get">
+                    <#--<form class="navbar-form navbar-left" role="search" action="/product/search" method="get">
                         <div class="form-group">
                             <input type="text" class="form-control" name="productName" />
                         </div> <button id="submit" type="submit" class="btn btn-default">搜索</button>
-                    </form>
+                    </form>-->
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="../../changePassword.html">修改密码</a>
@@ -44,6 +44,7 @@
         </div>
     </div>
 </div>
+<#--${result.data}-->
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-1 column">
@@ -53,32 +54,32 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>编号</th>
-                    <th>订单编号</th>
-                    <th>订单总价</th>
-                    <th>创建时间</th>
-                    <th>订单状态</th>
+                    <th style="text-align: center">编号</th>
+                    <th style="text-align: center">订单编号</th>
+                    <th style="text-align: center">订单总价</th>
+                    <th style="text-align: center">创建时间</th>
+                    <th style="text-align: center">订单状态</th>
                 </tr>
                 </thead>
                 <tbody>
                 <#if result.data.list?? && result.data.list?size gt 0>
                     <#list result.data.list as info>
                         <tr>
-                            <td>${info_index+1}</td>
-                            <td><a href="/order/detail?strOrderNo=${info.orderNo}">${info.orderNo}</a></td>
-                            <td>${info.payment}元</td>
-                            <td>${info.createTime}</td>
-                            <td>${info.statusDesc}</td>
+                            <td align="center">${info_index+1}</td>
+                            <td align="center"><a href="/orderManager/detail?strOrderNo=${info.orderNo}">${info.orderNo}</a></td>
+                            <td align="center">${info.payment}元</td>
+                            <td align="center">${info.createTime}</td>
+                            <td align="center">${info.statusDesc}</td>
                         </tr>
                     </#list>
                 <#else >
-                        <tr>
-                            <td>    </td>
-                            <td>    </td>
-                            <td>    </td>
-                            <td>    </td>
-                            <td>    </td>
-                        </tr>
+                    <tr>
+                        <td>    </td>
+                        <td>    </td>
+                        <td>    </td>
+                        <td>    </td>
+                        <td>    </td>
+                    </tr>
                 </#if>
                 </tbody>
             </table>
@@ -116,9 +117,30 @@
         </div>
     </div>
 </div>
-<#--${result.data}-->
 </body>
 <script type="text/javascript">
+
+    function doUpdate() {
+        $.ajax({
+            method:'post',
+            url:'../productManager/saveOrUpdateProduct',
+            dataType:'json',
+            data:{
+                'id' : $('#productId').val(),
+                'name' : $('#name').val(),
+                'subtitle' : $('#subtitle').val(),
+                'mainImage' : $('#finalImg')[0].src,
+                'detail' : $('#detail').val(),
+                'price' : $('#price').val(),
+                'stock' : $('#stock').val()
+            },
+            success:function (result) {
+                if (result.status == 0) {
+                    alert("修改成功");
+                }
+            }
+        })
+    }
 
     function logOut(){
         $.ajax({
@@ -133,20 +155,33 @@
             }
         })
     }
-
-    function createOrder(){
-        alert(123);
-        $('#createOrder').submit();
-    }
-
-
     $('#search').click(function () {
         window.location.href = "product/search?productName="+$('#productName').val();
-        alert(111);
     })
+
+
+
+    function doDelete() {
+        if (confirm("是否删除")){
+            $.ajax({
+                method:'post',
+                url:'../productManager/deleteProduct',
+                dataType:'json',
+                data:{
+                    'productId':$('#productId').val()
+                },
+                success:function (result) {
+                    if (result.status == 0){
+                        window.location.href = "/productManager/getProductList";
+                    }
+                }
+            })
+        }
+    }
+
     //判断是否为数字
     function checkRate(input) {
-        var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
+        var re = /^[1-9]+.?[1-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
         var nubmer = document.getElementById(input).value;
 
         if (!re.test(nubmer)) {
@@ -156,12 +191,17 @@
         }
         return true;
     }
-    //判空
+    //判断视为为空
     function checkNull(input) {
-        var v = document.getElementById(input).value;
-        if (v == null || v == ""){
-            alert("数量不能为空");
-            return false;
+
+        var ids = input.split(",");
+        for (var i = 0;i<ids.length;i++){
+            var id = ids[i];
+            var v = document.getElementById(id).value;
+            if (v == null || v == ""){
+                alert("请检查是否有空");
+                return false;
+            }
         }
     }
 </script>

@@ -21,7 +21,7 @@
                             <a href="../newProduct.html">新增商品</a>
                         </li>
                         <li>
-                            <a href="">所有订单</a>
+                            <a href="../orderManager/list">所有订单</a>
                         </li>
                     </ul>
                     <#--<form class="navbar-form navbar-left" role="search" action="/product/search" method="get">

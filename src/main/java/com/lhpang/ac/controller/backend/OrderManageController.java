@@ -1,19 +1,20 @@
 package com.lhpang.ac.controller.backend;
 
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
 import com.lhpang.ac.common.Constant;
 import com.lhpang.ac.common.ServerResponse;
 import com.lhpang.ac.pojo.User;
 import com.lhpang.ac.service.OrderService;
 import com.lhpang.ac.service.UserService;
+import com.lhpang.ac.utils.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
 *   类路径: com.lhpang.ac.controller.backend.OrderManageOrder
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpSession;
 *   @date: 2019-04-26 16:16
 */
 @Controller
-@RequestMapping("/manager/order/")
+@RequestMapping("/orderManager/")
 public class OrderManageController {
     @Autowired
     private UserService userService;
@@ -37,17 +38,22 @@ public class OrderManageController {
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
      **/
     @ResponseBody
-    @RequestMapping(value = "list",method = RequestMethod.GET)
-    public ServerResponse<PageInfo> list(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,@RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+    @GetMapping("list")
+    public ModelAndView list(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                             @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+        Map map = Maps.newHashMap();
 
         User user = (User)session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkRoleAndOnLine(user);
         if(!response.isSuccess()){
-            return response;
+            map.put("result", response);
+            return new ModelAndView("common/fail",map);
         }
+        ServerResponse list = orderService.managerList(pageNum, pageSize);
+        map.put("result", list);
 
-        return orderService.managerList(pageNum, pageSize);
+        return new ModelAndView("backend/order/orderList",map);
 
     }
     /**
@@ -58,17 +64,21 @@ public class OrderManageController {
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @ResponseBody
-    @RequestMapping(value = "detail",method = RequestMethod.GET)
-    public ServerResponse detail(HttpSession session,Long orderNo){
+    @GetMapping("detail")
+    public ModelAndView detail(HttpSession session,String strOrderNo){
+        Map map = Maps.newHashMap();
 
         User user = (User)session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkRoleAndOnLine(user);
         if(!response.isSuccess()){
-            return response;
+            map.put("result", response);
+            return new ModelAndView("common/fail",map);
         }
+        ServerResponse detail = orderService.managerDetail(NumberUtil.stringToLong(strOrderNo));
+        map.put("result", detail);
 
-        return orderService.managerDetail(orderNo);
+        return new ModelAndView("backend/order/orderDetail",map);
     }
     /**
      * 描 述: 搜索订单
@@ -98,8 +108,8 @@ public class OrderManageController {
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @ResponseBody
-    @RequestMapping(value = "send",method = RequestMethod.GET)
-    public ServerResponse send(HttpSession session,Long orderNo){
+    @PostMapping(value = "send")
+    public ServerResponse send(HttpSession session,String strOrderNo){
         User user = (User)session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkRoleAndOnLine(user);
@@ -107,7 +117,7 @@ public class OrderManageController {
             return response;
         }
 
-        return  orderService.send(orderNo);
+        return  orderService.send(NumberUtil.stringToLong(strOrderNo));
 
     }
     

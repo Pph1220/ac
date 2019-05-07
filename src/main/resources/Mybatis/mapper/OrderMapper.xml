@@ -197,11 +197,12 @@
     order by create_time desc
   </select>
 
-  <select id="selectAllOrder" resultMap="BaseResultMap">
+  <select id="selectPayedOrder" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from c_order
-    order by create_time desc
+    where status >=20
+    order by status asc,create_time desc
   </select>
 
   <select id="findOrder" parameterType="int" resultMap="BaseResultMap">

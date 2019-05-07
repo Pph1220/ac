@@ -672,7 +672,7 @@ public class OrderServiceImpl implements OrderService {
 
         PageHelper.startPage(pageNum, pageSize);
 
-        List<Order> orderList = orderMapper.selectAllOrder();
+        List<Order> orderList = orderMapper.selectPayedOrder();
 
         List<OrderVo> orderVoList = this.assembleOrderVoList(orderList, null);
 
@@ -750,6 +750,8 @@ public class OrderServiceImpl implements OrderService {
             return ServerResponse.createByErrorMessage("请勿重复发货");
         }
         order.setStatus(Constant.OrderStatusEnum.SHIPPED.getCode());
+        order.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        orderMapper.updateByPrimaryKeySelective(order);
         return ServerResponse.createBySuccessMessage("发货成功");
     }
 }

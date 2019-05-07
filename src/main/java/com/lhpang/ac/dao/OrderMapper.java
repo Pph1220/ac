@@ -28,7 +28,7 @@ public interface OrderMapper {
 
     List<Order> selectByUserId(Integer userId);
 
-    List<Order> selectAllOrder();
+    List<Order> selectPayedOrder();
 
     Order findOrder(Integer userId);
 }
