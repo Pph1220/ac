@@ -121,7 +121,7 @@ public class OrderController {
     @GetMapping("list")
     public ModelAndView list(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                   @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
-        Map map = Maps.newHashMap();
+        Map<String,ServerResponse> map = Maps.newHashMap();
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
