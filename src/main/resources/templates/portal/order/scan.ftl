@@ -12,7 +12,11 @@
         <div class="col-md-12 column">
             <nav class="navbar navbar-default" role="navigation">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/product/list">阿 C 外 卖</a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1"><span
+                                class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
+                                class="icon-bar"></span><span class="icon-bar"></span></button>
+                    <a class="navbar-brand" href="/product/list">阿 C 外 卖</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
@@ -28,8 +32,9 @@
                     </ul>
                     <form class="navbar-form navbar-left" role="search" action="/product/search" method="get">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="productName" />
-                        </div> <button id="submit" type="submit" class="btn btn-default">搜索</button>
+                            <input type="text" class="form-control" name="productName"/>
+                        </div>
+                        <button id="submit" type="submit" class="btn btn-default">搜索</button>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
@@ -59,51 +64,50 @@
 </body>
 <script type="text/javascript">
 
-    function logOut(){
+    function logOut() {
         $.ajax({
-            method:'post',
-            url:'../user/logout',
-            dataType:'json',
-            data:{
-
-            },
-            success:function (result) {
-                window.location.href="../../index.html";
+            method: 'post',
+            url: '../user/logout',
+            dataType: 'json',
+            data: {},
+            success: function (result) {
+                window.location.href = "../../index.html";
             }
         })
     }
 
     window.onload = function () {
-        setInterval(queryPayStatus,2000);
+        setInterval(queryPayStatus, 2000);
 
     }
 
     function queryPayStatus() {
         $.ajax({
-            method:'post',
-            url:'../order/queryPayStatus',
-            dataType:'json',
-            data:{
+            method: 'post',
+            url: '../order/queryPayStatus',
+            dataType: 'json',
+            data: {
                 'orderNo':${result.data.orderNo}
             },
-            success:function (result) {
-                if (result.data){
+            success: function (result) {
+                if (result.data) {
                     window.location.href = "../order/detail?strOrderNo=${result.data.orderNo}";
                 }
             }
         })
     }
 
-    function createOrder(){
+    function createOrder() {
         alert(123);
         $('#createOrder').submit();
     }
 
 
     $('#search').click(function () {
-        window.location.href = "product/search?productName="+$('#productName').val();
+        window.location.href = "product/search?productName=" + $('#productName').val();
         alert(111);
     })
+
     //判断是否为数字
     function checkRate(input) {
         var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
@@ -116,10 +120,11 @@
         }
         return true;
     }
+
     //判空
     function checkNull(input) {
         var v = document.getElementById(input).value;
-        if (v == null || v == ""){
+        if (v == null || v == "") {
             alert("数量不能为空");
             return false;
         }

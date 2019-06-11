@@ -6,11 +6,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
-*   类路径: com.lhpang.ac.vo.CartVo
-*   描述: 购物车vo
-*   @author: lhpang
-*   @date: 2019-04-23 14:30
-*/
+ * 类路径: com.lhpang.ac.vo.CartVo
+ * 描述: 购物车vo
+ *
+ * @author: lhpang
+ * @date: 2019-04-23 14:30
+ */
 @Data
 public class CartVo {
 

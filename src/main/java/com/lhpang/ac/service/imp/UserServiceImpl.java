@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 /**
  * 类路径: com.lhpang.ac.service.imp.UserService
  * 描述:  UserService
+ *
  * @author: lhpang
  * @date: 2019-04-17 10:16
  */
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 描 述: 登陆
+     *
      * @date: 2019/4/17 23:11
      * @author: lhpang
      * @param:
@@ -51,8 +53,10 @@ public class UserServiceImpl implements UserService {
 
         return ServerResponse.createBySuccess("登陆成功", user);
     }
+
     /**
      * 描 述: 注册
+     *
      * @date: 2019/4/17 20:46
      * @author: lhpang
      * @param:
@@ -85,8 +89,10 @@ public class UserServiceImpl implements UserService {
 
         return ServerResponse.createBySuccess("注册成功");
     }
+
     /**
      * 描 述: 检查
+     *
      * @date: 2019/4/17 21:56
      * @author: lhpang
      * @param:
@@ -115,8 +121,10 @@ public class UserServiceImpl implements UserService {
         }
         return ServerResponse.createBySuccessMessage("校验成功");
     }
+
     /**
      * 描 述: 获得密保问题
+     *
      * @date: 2019-04-18 11:06
      * @author: lhpang
      * @param: [logNo]
@@ -136,8 +144,10 @@ public class UserServiceImpl implements UserService {
         }
         return ServerResponse.createByErrorMessage("问题为空");
     }
+
     /**
      * 描 述: 检查密保答案
+     *
      * @date: 2019-04-18 11:06
      * @author: lhpang
      * @param: [answer]
@@ -161,8 +171,10 @@ public class UserServiceImpl implements UserService {
         }
         return ServerResponse.createByErrorMessage("答案错误");
     }
+
     /**
      * 描 述: 忘记密码
+     *
      * @date: 2019/4/18 23:11
      * @author: lhpang
      * @param:
@@ -198,6 +210,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 描 述: 登陆状态修改密码
+     *
      * @date: 2019/4/18 23:11
      * @author: lhpang
      * @param:
@@ -224,6 +237,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 描 述: 更新个人信息
+     *
      * @date: 2019/4/18 23:07
      * @author: lhpang
      * @param:
@@ -242,13 +256,13 @@ public class UserServiceImpl implements UserService {
         if (!StringUtils.equals(currentUser.getPhone(), updateUser.getPhone()) && StringUtils.isNotBlank(updateUser.getPhone())) {
             currentUser.setPhone(updateUser.getPhone());
         }
-        if(!StringUtils.equals(currentUser.getName(), updateUser.getName()) && StringUtils.isNotBlank(updateUser.getName())){
+        if (!StringUtils.equals(currentUser.getName(), updateUser.getName()) && StringUtils.isNotBlank(updateUser.getName())) {
             currentUser.setName(updateUser.getName());
         }
-        if(!StringUtils.equals(currentUser.getQuestion(), updateUser.getQuestion()) && StringUtils.isNotBlank(updateUser.getQuestion())){
+        if (!StringUtils.equals(currentUser.getQuestion(), updateUser.getQuestion()) && StringUtils.isNotBlank(updateUser.getQuestion())) {
             currentUser.setQuestion(updateUser.getQuestion());
         }
-        if(!StringUtils.equals(currentUser.getAnswer(), updateUser.getAnswer()) && StringUtils.isNotBlank(updateUser.getAnswer())){
+        if (!StringUtils.equals(currentUser.getAnswer(), updateUser.getAnswer()) && StringUtils.isNotBlank(updateUser.getAnswer())) {
             currentUser.setAnswer(updateUser.getAnswer());
         }
 
@@ -264,6 +278,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 描 述: 获得当前用户
+     *
      * @date: 2019/4/18 23:19
      * @author: lhpang
      * @param:
@@ -279,8 +294,10 @@ public class UserServiceImpl implements UserService {
         user.setPassword(StringUtils.EMPTY);
         return ServerResponse.createBySuccess(user);
     }
+
     /**
      * 描 述: 判断当前用户是否为管理员
+     *
      * @date: 2019/4/18 23:21
      * @author: lhpang
      * @param:
@@ -293,8 +310,10 @@ public class UserServiceImpl implements UserService {
         }
         return ServerResponse.createByErrorMessage("无权限操作");
     }
+
     /**
      * 描 述: 判断是否在登陆状态
+     *
      * @date: 2019-04-19 16:56
      * @author: lhpang
      * @param: [user]
@@ -302,28 +321,30 @@ public class UserServiceImpl implements UserService {
      **/
     @Override
     public ServerResponse<String> checkOnLine(User user) {
-        if(user == null){
+        if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录");
         }
         return ServerResponse.createBySuccess();
     }
+
     /**
      * 描 述: 验证用户是否为管理员和是否在线
+     *
      * @date: 2019-04-22 15:25
      * @author: lhpang
      * @param: [user]
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @Override
-    public ServerResponse<String> checkRoleAndOnLine(User user){
+    public ServerResponse<String> checkRoleAndOnLine(User user) {
         //判断是否为登陆状态
         ServerResponse onLine = this.checkOnLine(user);
-        if(!onLine.isSuccess()){
+        if (!onLine.isSuccess()) {
             return onLine;
         }
         //判断是否为管理员
         ServerResponse adminRole = this.checkAdminRole(user);
-        if(!adminRole.isSuccess()){
+        if (!adminRole.isSuccess()) {
             return adminRole;
         }
         return ServerResponse.createBySuccess();

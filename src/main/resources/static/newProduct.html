@@ -16,7 +16,11 @@
         <div class="col-md-12 column">
             <nav class="navbar navbar-default" role="navigation">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/productManager/getProductList">阿 C 外 卖</a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1"><span
+                            class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
+                            class="icon-bar"></span><span class="icon-bar"></span></button>
+                    <a class="navbar-brand" href="/productManager/getProductList">阿 C 外 卖</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
@@ -66,10 +70,11 @@
                                 <div class="tailoring-content">
                                     <div class="tailoring-content-one">
                                         <label title="上传图片" for="chooseImg" class="l-btn choose-btn">
-                                            <input type="file" accept="image/jpg,image/jpeg,image/png" name="file" id="chooseImg" class="hidden" onchange="selectImg(this)">
+                                            <input type="file" accept="image/jpg,image/jpeg,image/png" name="file"
+                                                   id="chooseImg" class="hidden" onchange="selectImg(this)">
                                             选择图片
                                         </label>
-                                        <div class="close-tailoring"  onclick="closeTailor(this)">×</div>
+                                        <div class="close-tailoring" onclick="closeTailor(this)">×</div>
                                     </div>
                                     <div class="tailoring-content-two">
                                         <div class="tailoring-box-parcel">
@@ -94,39 +99,41 @@
                                 (window.onresize = function () {
                                     var win_height = $(window).height();
                                     var win_width = $(window).width();
-                                    if (win_width <= 768){
+                                    if (win_width <= 768) {
                                         $(".tailoring-content").css({
-                                            "top": (win_height - $(".tailoring-content").outerHeight())/2,
+                                            "top": (win_height - $(".tailoring-content").outerHeight()) / 2,
                                             "left": 0
                                         });
-                                    }else{
+                                    } else {
                                         $(".tailoring-content").css({
-                                            "top": (win_height - $(".tailoring-content").outerHeight())/2,
-                                            "left": (win_width - $(".tailoring-content").outerWidth())/2
+                                            "top": (win_height - $(".tailoring-content").outerHeight()) / 2,
+                                            "left": (win_width - $(".tailoring-content").outerWidth()) / 2
                                         });
                                     }
                                 })();
 
                                 //弹出图片裁剪框
-                                $("#replaceImg").on("click",function () {
+                                $("#replaceImg").on("click", function () {
                                     $(".tailoring-container").toggle();
                                 });
+
                                 //图像上传
                                 function selectImg(file) {
-                                    if (!file.files || !file.files[0]){
+                                    if (!file.files || !file.files[0]) {
                                         return;
                                     }
                                     var reader = new FileReader();
                                     reader.onload = function (evt) {
                                         var replaceSrc = evt.target.result;
                                         //更换cropper的图片
-                                        $('#tailoringImg').cropper('replace', replaceSrc,false);//默认false，适应高度，不失真
+                                        $('#tailoringImg').cropper('replace', replaceSrc, false);//默认false，适应高度，不失真
                                     }
                                     reader.readAsDataURL(file.files[0]);
                                 }
+
                                 //cropper图片裁剪
                                 $('#tailoringImg').cropper({
-                                    aspectRatio: 1/1,//默认比例
+                                    aspectRatio: 1 / 1,//默认比例
                                     preview: '.previewImg',//预览视图
                                     guides: false,  //裁剪框的虚线(九宫格)
                                     autoCropArea: 0.5,  //0-1之间的数值，定义自动剪裁区域的大小，默认0.8
@@ -138,25 +145,25 @@
                                     mouseWheelZoom: false,  //是否允许通过鼠标滚轮来缩放图片
                                     touchDragZoom: true,  //是否允许通过触摸移动来缩放图片
                                     rotatable: true,  //是否允许旋转图片
-                                    crop: function(e) {
+                                    crop: function (e) {
                                         // 输出结果数据裁剪图像。
                                     }
                                 });
                                 //旋转
-                                $(".cropper-rotate-btn").on("click",function () {
+                                $(".cropper-rotate-btn").on("click", function () {
                                     $('#tailoringImg').cropper("rotate", 45);
                                 });
                                 //复位
-                                $(".cropper-reset-btn").on("click",function () {
+                                $(".cropper-reset-btn").on("click", function () {
                                     $('#tailoringImg').cropper("reset");
                                 });
                                 //换向
                                 var flagX = true;
-                                $(".cropper-scaleX-btn").on("click",function () {
-                                    if(flagX){
+                                $(".cropper-scaleX-btn").on("click", function () {
+                                    if (flagX) {
                                         $('#tailoringImg').cropper("scaleX", -1);
                                         flagX = false;
-                                    }else{
+                                    } else {
                                         $('#tailoringImg').cropper("scaleX", 1);
                                         flagX = true;
                                     }
@@ -164,18 +171,19 @@
                                 });
 
                                 //裁剪后的处理
-                                $("#sureCut").on("click",function () {
-                                    if ($("#tailoringImg").attr("src") == null ){
+                                $("#sureCut").on("click", function () {
+                                    if ($("#tailoringImg").attr("src") == null) {
                                         return false;
-                                    }else{
+                                    } else {
                                         var cas = $('#tailoringImg').cropper('getCroppedCanvas');//获取被裁剪后的canvas
                                         var base64url = cas.toDataURL('image/png'); //转换为base64地址形式
-                                        $("#finalImg").prop("src",base64url);//显示为图片的形式
+                                        $("#finalImg").prop("src", base64url);//显示为图片的形式
 
                                         //关闭裁剪框
                                         closeTailor();
                                     }
                                 });
+
                                 //关闭裁剪框
                                 function closeTailor() {
                                     $(".tailoring-container").toggle();
@@ -186,10 +194,20 @@
                         <div class="col-md-6 column">
                             <div style="line-height: 50px"></div>
                             <input type="hidden" id="productId" value=""/>
-                            <label for="subtitle">标题</label><input style="width: 200px"  name="subtitle" type="text" class="form-control" id="subtitle" onchange="checkNull('subtitle')" value="" />
-                            <label for="name">名称</label><input style="width: 200px"  name="name" type="text" class="form-control" id="name" onchange="checkNull('name')" value="" />
-                            <label for="price">价钱</label><input style="width: 200px"  name="price" type="text" class="form-control" id="price" onchange="checkNull('price');checkRate('price')" value="" />
-                            <label for="stock">库存</label><input style="width: 200px"  name="stock" type="text" class="form-control" id="stock" onchange="checkNull('stock');checkRate('stock')" value="" />
+                            <label for="subtitle">标题</label><input style="width: 200px" name="subtitle" type="text"
+                                                                   class="form-control" id="subtitle"
+                                                                   onchange="checkNull('subtitle')" value=""/>
+                            <label for="name">名称</label><input style="width: 200px" name="name" type="text"
+                                                               class="form-control" id="name"
+                                                               onchange="checkNull('name')" value=""/>
+                            <label for="price">价钱</label><input style="width: 200px" name="price" type="text"
+                                                                class="form-control" id="price"
+                                                                onchange="checkNull('price');checkRate('price')"
+                                                                value=""/>
+                            <label for="stock">库存</label><input style="width: 200px" name="stock" type="text"
+                                                                class="form-control" id="stock"
+                                                                onchange="checkNull('stock');checkRate('stock')"
+                                                                value=""/>
                         </div>
                     </div>
                 </div>
@@ -222,7 +240,9 @@
             <div class="col-md-6 column">
             </div>
             <div class="col-md-6 column" style="text-align: right">
-                <button style="display: inline-block" onclick="doUpdate();" type="button" class="btn btn-default btn-success">新增</button>
+                <button style="display: inline-block" onclick="doUpdate();" type="button"
+                        class="btn btn-default btn-success">新增
+                </button>
             </div>
         </div>
         <div class="col-md-1 column">
@@ -234,20 +254,20 @@
 
     function doUpdate() {
         $.ajax({
-            method:'post',
-            url:'../productManager/saveOrUpdateProduct',
-            dataType:'json',
-            data:{
-                'id' : $('#productId').val(),
-                'categoryId' : 1,
-                'name' : $('#name').val(),
-                'subtitle' : $('#subtitle').val(),
-                'mainImage' : $('#finalImg')[0].src,
-                'detail' : $('#detail').val(),
-                'price' : $('#price').val(),
-                'stock' : $('#stock').val()
+            method: 'post',
+            url: '../productManager/saveOrUpdateProduct',
+            dataType: 'json',
+            data: {
+                'id': $('#productId').val(),
+                'categoryId': 1,
+                'name': $('#name').val(),
+                'subtitle': $('#subtitle').val(),
+                'mainImage': $('#finalImg')[0].src,
+                'detail': $('#detail').val(),
+                'price': $('#price').val(),
+                'stock': $('#stock').val()
             },
-            success:function (result) {
+            success: function (result) {
                 if (result.status == 0) {
                     alert("新增成功");
                 }
@@ -255,16 +275,14 @@
         })
     }
 
-    function logOut(){
+    function logOut() {
         $.ajax({
-            method:'post',
-            url:'../user/logout',
-            dataType:'json',
-            data:{
-
-            },
-            success:function (result) {
-                window.location.href="../../index.html";
+            method: 'post',
+            url: '../user/logout',
+            dataType: 'json',
+            data: {},
+            success: function (result) {
+                window.location.href = "../../index.html";
             }
         })
     }
@@ -282,10 +300,11 @@
         }
         return true;
     }
+
     //判断视为为空
     function checkNull(input) {
         var v = document.getElementById(input).value;
-        if (v == null || v == ""){
+        if (v == null || v == "") {
             alert("数量不能为空");
             return false;
         }

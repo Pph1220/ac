@@ -18,11 +18,12 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
-*   类路径: com.lhpang.ac.controller.protal.ProductController
-*   描述: 商品前台接口
-*   @author: lhpang
-*   @date: 2019-04-23 10:08
-*/
+ * 类路径: com.lhpang.ac.controller.protal.ProductController
+ * 描述: 商品前台接口
+ *
+ * @author: lhpang
+ * @date: 2019-04-23 10:08
+ */
 @Controller
 @RequestMapping("/product/")
 public class ProductController {
@@ -35,69 +36,67 @@ public class ProductController {
 
     /**
      * 描 述: 获得商品信息详情(前台)
+     *
      * @date: 2019-04-23 10:18
      * @author: lhpang
      * @param: [productId]
      * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.vo.ProductDetailVo>
      **/
     @ResponseBody
-    @RequestMapping(value = "detail",method = RequestMethod.GET)
-    public ModelAndView detail(HttpSession session,Integer productId){
-        Map<String,Object> map = Maps.newHashMap();
+    @RequestMapping(value = "detail", method = RequestMethod.GET)
+    public ModelAndView detail(HttpSession session, Integer productId) {
+        Map<String, Object> map = Maps.newHashMap();
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
         ServerResponse response = userService.checkOnLine(user);
-        if(!response.isSuccess()){
+        if (!response.isSuccess()) {
             map.put("result", response);
-            return new ModelAndView("common/fail",map);
+            return new ModelAndView("common/fail", map);
         }
         map.put("result", productService.getProductDetail(productId));
-        return new ModelAndView("portal/product/productDetail",map);
+        return new ModelAndView("portal/product/productDetail", map);
     }
+
     /**
      * 描 述: 搜索(前台)
+     *
      * @date: 2019-04-23 10:57
      * @author: lhpang
      * @param: [productName, pageSize, pageNum, orderBy]
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
      **/
-    @RequestMapping(value = "search",method = RequestMethod.GET)
-    public ModelAndView search(HttpSession session,
-                                           @RequestParam(value = "productName" ,required = false) String productName,
-                                           @RequestParam(value = "categoryId",required = false) Integer categoryId,
-                                           @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-                                           @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
-                                           @RequestParam(value = "orderBy",defaultValue = "") String orderBy){
-        Map<String,Object> map = Maps.newHashMap();
+    @RequestMapping(value = "search", method = RequestMethod.GET)
+    public ModelAndView search(HttpSession session, @RequestParam(value = "productName", required = false) String productName, @RequestParam(value = "categoryId", required = false) Integer categoryId, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum, @RequestParam(value = "pageSize", defaultValue = "10") int pageSize, @RequestParam(value = "orderBy", defaultValue = "") String orderBy) {
+        Map<String, Object> map = Maps.newHashMap();
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
         ServerResponse response = userService.checkOnLine(user);
-        if(!response.isSuccess()){
-            map.put("result",response);
-            return new ModelAndView("common/fail",map);
+        if (!response.isSuccess()) {
+            map.put("result", response);
+            return new ModelAndView("common/fail", map);
         }
-        map.put("result", productService.getProductByproductNameCategoryId(productName,categoryId, pageSize, pageNum, orderBy));
-        return new ModelAndView("portal/product/productList",map);
+        map.put("result", productService.getProductByproductNameCategoryId(productName, categoryId, pageSize, pageNum, orderBy));
+        return new ModelAndView("portal/product/productList", map);
     }
 
     /**
      * 描 述: 所有商品
+     *
      * @date: 2019/4/22 23:15
      * @author: lhpang
      * @param:
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
      **/
-    @RequestMapping(value = "list",method = RequestMethod.GET)
-    public ModelAndView list(HttpSession session, @RequestParam(value = "pageNum",
-            defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5") int pageSize){
-        Map<String,Object> map = Maps.newHashMap();
-        User user = (User)session.getAttribute(Constant.CURRENT_USER);
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+    public ModelAndView list(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum, @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+        Map<String, Object> map = Maps.newHashMap();
+        User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
-        if(!response.isSuccess()){
-            map.put("result",response);
-            return new ModelAndView("common/fail",map);
+        if (!response.isSuccess()) {
+            map.put("result", response);
+            return new ModelAndView("common/fail", map);
         }
         map.put("result", productService.list(pageNum, pageSize));
-        return new ModelAndView("portal/product/productList",map);
+        return new ModelAndView("portal/product/productList", map);
     }
 
 }

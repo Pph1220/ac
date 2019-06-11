@@ -22,11 +22,12 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
-*   类路径: com.lhpang.ac.service.imp.CartService
-*   描述: 购物车ServiceImpl
-*   @author: lhpang
-*   @date: 2019-04-17 10:20
-*/
+ * 类路径: com.lhpang.ac.service.imp.CartService
+ * 描述: 购物车ServiceImpl
+ *
+ * @author: lhpang
+ * @date: 2019-04-17 10:20
+ */
 @Service
 public class CartServiceImpl implements CartService {
 
@@ -37,21 +38,22 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 描 述: 加入购物车
+     *
      * @date: 2019-04-23 14:38
      * @author: lhpang
      * @param: [userId, count, productId]
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @Override
-    public ServerResponse<CartVo> add(Integer userId,Integer count ,Integer productId){
+    public ServerResponse<CartVo> add(Integer userId, Integer count, Integer productId) {
         //判断参数
-        if(count == null || productId == null){
+        if (count == null || productId == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
 
         Cart cart = cartMapper.selectByUserIdProductId(userId, productId);
 
-        if(cart == null){
+        if (cart == null) {
             //这个产品不在这个购物车里面,需要新增
             Cart newCart = new Cart();
             newCart.setQuantity(count);
@@ -61,23 +63,25 @@ public class CartServiceImpl implements CartService {
 
             int insertResult = cartMapper.insert(newCart);
 
-            if(insertResult <= 0){
+            if (insertResult <= 0) {
                 return ServerResponse.createByErrorMessage("加入购物车失败");
             }
-        }else{
+        } else {
             //产品已经在购物车里面
             count = count + cart.getQuantity();
             cart.setQuantity(count);
             int updateResult = cartMapper.updateByPrimaryKeySelective(cart);
 
-            if(updateResult <= 0){
+            if (updateResult <= 0) {
                 return ServerResponse.createByErrorMessage("加入购物车失败");
             }
         }
         return this.list(userId);
     }
+
     /**
      * 描 述: 修改购物车中商品
+     *
      * @date: 2019/4/23 21:55
      * @author: lhpang
      * @param: [userId, count, productId]
@@ -86,7 +90,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public ServerResponse<CartVo> update(Integer userId, Integer count, Integer productId) {
         //判断参数
-        if(count == null || productId == null){
+        if (count == null || productId == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
 
@@ -94,18 +98,20 @@ public class CartServiceImpl implements CartService {
 
         Product product = productMapper.selectByPrimaryKey(productId);
 
-        if(product.getStock() < count){
+        if (product.getStock() < count) {
             return ServerResponse.createByErrorMessage("库存不足");
         }
-        if (cart != null){
+        if (cart != null) {
             cart.setQuantity(count);
             cartMapper.updateByPrimaryKeySelective(cart);
         }
 
         return ServerResponse.createBySuccess();
     }
+
     /**
      * 描 述: 删除购物车中商品
+     *
      * @date: 2019/4/23 22:02
      * @author: lhpang
      * @param: [userId, productId]
@@ -114,14 +120,16 @@ public class CartServiceImpl implements CartService {
     @Override
     public ServerResponse<CartVo> delete(Integer userId, String productId) {
 
-        if(productId != null){
+        if (productId != null) {
             cartMapper.deleteCartByUserIdProductId(userId, productId);
         }
 
         return ServerResponse.createBySuccess();
     }
+
     /**
      * 描 述: 查询购物车中的商品
+     *
      * @date: 2019/4/23 22:38
      * @author: lhpang
      * @param: [userId]
@@ -133,30 +141,34 @@ public class CartServiceImpl implements CartService {
         CartVo cartVo = this.getCartVoLimit(userId);
         return ServerResponse.createBySuccess(cartVo);
     }
+
     /**
      * 描 述: 全选,全不选,选择,不选择
+     *
      * @date: 2019/4/23 23:26
      * @author: lhpang
      * @param: [userId, productId, checked]
      * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.vo.CartVo>
      **/
     @Override
-    public ServerResponse<CartVo> checkOrUnCheckProduct(Integer userId,Integer productId,Integer checked) {
-        cartMapper.checkOrUnCheckProduct(userId, checked,productId);
+    public ServerResponse<CartVo> checkOrUnCheckProduct(Integer userId, Integer productId, Integer checked) {
+        cartMapper.checkOrUnCheckProduct(userId, checked, productId);
 
         return this.list(userId);
     }
+
     /**
      * 描 述: 查询购物车中商品总数
+     *
      * @date: 2019/4/23 23:50
      * @author: lhpang
      * @param: [userId]
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.Integer>
      **/
     @Override
-    public ServerResponse<Integer> getCartProductCount(Integer userId){
+    public ServerResponse<Integer> getCartProductCount(Integer userId) {
 
-        if(userId == null){
+        if (userId == null) {
             return ServerResponse.createBySuccess(0);
         }
         return ServerResponse.createBySuccess(cartMapper.getCartProductCount(userId));
@@ -164,12 +176,13 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 描 述: 根据userId获得CartVo
+     *
      * @date: 2019-04-23 17:05
      * @author: lhpang
      * @param: [userId]
      * @return: com.lhpang.ac.vo.CartVo
      **/
-    private CartVo getCartVoLimit(Integer userId){
+    private CartVo getCartVoLimit(Integer userId) {
 
         CartVo cartVo = new CartVo();
 
@@ -178,8 +191,8 @@ public class CartServiceImpl implements CartService {
 
         BigDecimal cartTotalPrice = new BigDecimal("0");
 
-        if(!CollectionUtils.isEmpty(carts)){
-            for(Cart cart : carts){
+        if (!CollectionUtils.isEmpty(carts)) {
+            for (Cart cart : carts) {
                 CartProductVo cartProductVo = new CartProductVo();
 
                 cartProductVo.setId(cart.getId());
@@ -188,7 +201,7 @@ public class CartServiceImpl implements CartService {
 
                 Product product = productMapper.selectByPrimaryKey(cart.getProductId());
 
-                if(product != null){
+                if (product != null) {
                     cartProductVo.setProductMainImage(product.getMainImage());
                     cartProductVo.setProductName(product.getName());
                     cartProductVo.setProductSubtitle(product.getSubtitle());
@@ -198,10 +211,10 @@ public class CartServiceImpl implements CartService {
 
                     //判断库存
                     int buyLimitCount = 0;
-                    if(product.getStock() >= cart.getQuantity()){
+                    if (product.getStock() >= cart.getQuantity()) {
                         buyLimitCount = cart.getQuantity();
                         cartProductVo.setLimitQuantity(Constant.Cart.LIMIT_NUM_SUCCESS);
-                    }else{
+                    } else {
                         buyLimitCount = product.getStock();
                         cartProductVo.setLimitQuantity(Constant.Cart.LIMIT_NUM_FAIL);
                         //更新有效库存
@@ -212,11 +225,11 @@ public class CartServiceImpl implements CartService {
                     }
                     cartProductVo.setQuantity(buyLimitCount);
                     //计算总价
-                    cartProductVo.setProductTotalPrice(BigDecimalUtil.mul(product.getPrice().doubleValue(),cartProductVo.getQuantity().doubleValue()));
+                    cartProductVo.setProductTotalPrice(BigDecimalUtil.mul(product.getPrice().doubleValue(), cartProductVo.getQuantity().doubleValue()));
                     cartProductVo.setProductChecked(cart.getChecked());
                 }
                 //计算购物车总价
-                if(cart.getChecked() == Constant.Cart.CHECKED){
+                if (cart.getChecked() == Constant.Cart.CHECKED) {
                     cartTotalPrice = BigDecimalUtil.add(cartTotalPrice.doubleValue(), cartProductVo.getProductTotalPrice().doubleValue());
                 }
                 cartProductVos.add(cartProductVo);
@@ -230,19 +243,21 @@ public class CartServiceImpl implements CartService {
         return cartVo;
 
     }
+
     /**
      * 描 述: 判断购物车中商品是否全选
+     *
      * @date: 2019-04-23 17:00
      * @author: lhpang
      * @param: [userId]
      * @return: boolean
      **/
-    private boolean getAllCheckStatus(Integer userId){
+    private boolean getAllCheckStatus(Integer userId) {
 
-        if(userId == null){
+        if (userId == null) {
             return false;
         }
         return cartMapper.selectCartProductCheckedStatusByUserId(userId) == 0;
     }
-    
+
 }

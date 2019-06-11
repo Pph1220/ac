@@ -22,5 +22,5 @@ public interface PayInfoMapper {
 
     PayInfo selectByOrderNo(Long orderNo);
 
-    int updateStatusByOrderNo(@Param("orderNo") Long orderNo,@Param("status") String status);
+    int updateStatusByOrderNo(@Param("orderNo") Long orderNo, @Param("status") String status);
 }

@@ -12,7 +12,11 @@
         <div class="col-md-12 column">
             <nav class="navbar navbar-default" role="navigation">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/product/list">阿 C 外 卖</a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1"><span
+                                class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
+                                class="icon-bar"></span><span class="icon-bar"></span></button>
+                    <a class="navbar-brand" href="/product/list">阿 C 外 卖</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
@@ -28,8 +32,9 @@
                     </ul>
                     <form class="navbar-form navbar-left" role="search" action="/product/search" method="get">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="productName" />
-                        </div> <button id="submit" type="submit" class="btn btn-default">搜索</button>
+                            <input type="text" class="form-control" name="productName"/>
+                        </div>
+                        <button id="submit" type="submit" class="btn btn-default">搜索</button>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
@@ -49,7 +54,7 @@
                 <#list result.data.getList() as a>
                     <div class="col-md-4" style="width: 20%">
                         <div class="thumbnail">
-                            <img height="195px" width="195px" src="${a.mainImage}" />
+                            <img height="195px" width="195px" src="${a.mainImage}"/>
                             <div class="caption">
                                 <h3>
                                     <a href="/product/detail?productId=${a.id}">${a.name}</a>
@@ -58,27 +63,28 @@
                                     ${a.price}元
                                 </p>
                                 <p>
-                                    <input style="display: inline-block;width: 50px" type="text" class="form-control" id="${a.id}count"/>
+                                    <input style="display: inline-block;width: 50px" type="text" class="form-control"
+                                           id="${a.id}count"/>
                                     <a class="btn btn-primary" id="${a.id}btn">加入购物车</a>
                                 </p>
                             </div>
                         </div>
                         <script type="text/javascript">
                             $('#${a.id}btn').click(function () {
-                                if (checkRate('${a.id}count')){
+                                if (checkRate('${a.id}count')) {
                                     $.ajax({
-                                        method:'get',
-                                        url:'../cart/add',
-                                        dataType:'json',
-                                        data:{
+                                        method: 'get',
+                                        url: '../cart/add',
+                                        dataType: 'json',
+                                        data: {
                                             'productId':${a.id},
-                                            'count':$('#${a.id}count').val()
+                                            'count': $('#${a.id}count').val()
                                         },
-                                        success:function (result) {
-                                            if (result.status == 0){
+                                        success: function (result) {
+                                            if (result.status == 0) {
                                                 alert("加入购物车成功");
                                                 $('#${a.id}count').val("");
-                                            }else{
+                                            } else {
                                                 alert("加入购物车失败");
                                             }
                                         }
@@ -89,7 +95,7 @@
                     </div>
                 </#list>
             </#if>
-         </div>
+        </div>
     </div>
     <div class="row clearfix">
         <div class="col-md-12 column">
@@ -123,24 +129,23 @@
 </div>
 </body>
 <script type="text/javascript">
-    function logOut(){
+    function logOut() {
         $.ajax({
-            method:'post',
-            url:'../user/logout',
-            dataType:'json',
-            data:{
-
-            },
-            success:function (result) {
-                window.location.href="../../index.html";
+            method: 'post',
+            url: '../user/logout',
+            dataType: 'json',
+            data: {},
+            success: function (result) {
+                window.location.href = "../../index.html";
             }
         })
     }
 
 
     $('#search').click(function () {
-        window.location.href = "product/search?productName="+$('#productName').val();
+        window.location.href = "product/search?productName=" + $('#productName').val();
     })
+
     //判断是否为数字
     function checkRate(input) {
         var re = /^[1-9]+.?[1-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
@@ -153,10 +158,11 @@
         }
         return true;
     }
+
     //判断视为为空
     function checkNull(input) {
         var v = document.getElementById(input).value;
-        if (v == null || v == ""){
+        if (v == null || v == "") {
             alert("数量不能为空");
             return false;
         }

@@ -7,11 +7,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
-*   类路径: com.lhpang.ac.vo.OrderVo
-*   描述: 订单Vo
-*   @author: lhpang
-*   @date: 2019-04-26 13:45
-*/
+ * 类路径: com.lhpang.ac.vo.OrderVo
+ * 描述: 订单Vo
+ *
+ * @author: lhpang
+ * @date: 2019-04-26 13:45
+ */
 @Data
 public class OrderVo {
 
@@ -27,7 +28,7 @@ public class OrderVo {
 
     private String statusDesc;
 
-    private String  paymentTime;
+    private String paymentTime;
 
     private String dendTime;
 
@@ -46,5 +47,5 @@ public class OrderVo {
     private String receiverName;
 
     private ShippingVo shippingVo;
-    
+
 }

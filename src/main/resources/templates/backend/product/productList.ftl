@@ -13,7 +13,11 @@
         <div class="col-md-12 column">
             <nav class="navbar navbar-default" role="navigation">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/productManager/getProductList">阿 C 外 卖</a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1"><span
+                                class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
+                                class="icon-bar"></span><span class="icon-bar"></span></button>
+                    <a class="navbar-brand" href="/productManager/getProductList">阿 C 外 卖</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
@@ -56,7 +60,7 @@
                     <th style="text-align: center">价钱</th>
                     <th style="text-align: center">库存</th>
                     <th style="text-align: center">状态</th>
-                    <th>    </th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -64,7 +68,9 @@
                     <#list result.data.list as info>
                         <tr>
                             <td align="center">${info_index+1}</td>
-                            <td align="center"><a href="/productManager/getProductDetail?productId=${info.id}">${info.name}</a></td>
+                            <td align="center"><a
+                                        href="/productManager/getProductDetail?productId=${info.id}">${info.name}</a>
+                            </td>
                             <td align="center">${info.price}元</td>
                             <td align="center">${info.stock}份</td>
                             <#if info.status == 1>
@@ -73,12 +79,22 @@
                                 <td align="center">已下架</td>
                             </#if>
                             <#if info.status == 1>
-                                <td align="center"><button type="button" class="btn btn-default btn-danger" onclick="downOrUp(${info.id})">下架</button></td>
+                                <td align="center">
+                                    <button type="button" class="btn btn-default btn-danger"
+                                            onclick="downOrUp(${info.id})">下架
+                                    </button>
+                                </td>
                             <#else>
                                 <#if info.stock gt 0>
-                                    <td align="center"><button type="button" class="btn btn-default btn-success" onclick="downOrUp(${info.id})">上架</button></td>
+                                    <td align="center">
+                                        <button type="button" class="btn btn-default btn-success"
+                                                onclick="downOrUp(${info.id})">上架
+                                        </button>
+                                    </td>
                                 <#else>
-                                    <td align="center"><button type="button" disabled class="btn btn-default btn-success">上架</button></td>
+                                    <td align="center">
+                                        <button type="button" disabled class="btn btn-default btn-success">上架</button>
+                                    </td>
                                 </#if>
                             </#if>
                         </tr>
@@ -124,32 +140,31 @@
 </div>
 </body>
 <script type="text/javascript">
-    
+
     function downOrUp(productId) {
         $.ajax({
-            method:'post',
-            url:'../productManager/setStatus',
-            dataType:'json',
-            data:{
-                'productId' : productId
+            method: 'post',
+            url: '../productManager/setStatus',
+            dataType: 'json',
+            data: {
+                'productId': productId
             },
-            success:function (result) {
-                if(result.status == 0){
+            success: function (result) {
+                if (result.status == 0) {
                     window.location.href = '../productManager/getProductList';
                 }
             }
         })
     }
-    function logOut(){
-        $.ajax({
-            method:'post',
-            url:'../user/logout',
-            dataType:'json',
-            data:{
 
-            },
-            success:function (result) {
-                window.location.href="../../index.html";
+    function logOut() {
+        $.ajax({
+            method: 'post',
+            url: '../user/logout',
+            dataType: 'json',
+            data: {},
+            success: function (result) {
+                window.location.href = "../../index.html";
             }
         })
     }
@@ -167,10 +182,11 @@
         }
         return true;
     }
+
     //判断视为为空
     function checkNull(input) {
         var v = document.getElementById(input).value;
-        if (v == null || v == ""){
+        if (v == null || v == "") {
             alert("数量不能为空");
             return false;
         }

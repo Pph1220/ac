@@ -12,7 +12,11 @@
         <div class="col-md-12 column">
             <nav class="navbar navbar-default" role="navigation">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/product/list">阿 C 外 卖</a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1"><span
+                                class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
+                                class="icon-bar"></span><span class="icon-bar"></span></button>
+                    <a class="navbar-brand" href="/product/list">阿 C 外 卖</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
@@ -28,8 +32,9 @@
                     </ul>
                     <form class="navbar-form navbar-left" role="search" action="/product/search" method="get">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="productName" />
-                        </div> <button id="submit" type="submit" class="btn btn-default">搜索</button>
+                            <input type="text" class="form-control" name="productName"/>
+                        </div>
+                        <button id="submit" type="submit" class="btn btn-default">搜索</button>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
@@ -66,15 +71,23 @@
                         <td>${info.receiverName}</td>
                         <td>${info.receiverPhone}</td>
                         <td>${info.receiverAddress}</td>
-                        <td><button type="button" onclick="doDelete(${info.id})" class="btn btn-default btn-danger">删除</button></td>
+                        <td>
+                            <button type="button" onclick="doDelete(${info.id})" class="btn btn-default btn-danger">删除
+                            </button>
+                        </td>
                     </tr>
                 </#list>
                 <tr>
                     <td></td>
-                    <td align="center"><input id="name" style="width: 70px" class="form-control"  type="text" value=""/></td>
-                    <td align="center"><input id="phone" style="width: 115px" class="form-control"  type="text" value=""/></td>
-                    <td align="center"><input id="address" style="width: 200px" class="form-control"  type="text" value=""/></td>
-                    <td><button type="button" onclick="doAdd()" class="btn btn-default btn-success">新增</button></td>
+                    <td align="center"><input id="name" style="width: 70px" class="form-control" type="text" value=""/>
+                    </td>
+                    <td align="center"><input id="phone" style="width: 115px" class="form-control" type="text"
+                                              value=""/></td>
+                    <td align="center"><input id="address" style="width: 200px" class="form-control" type="text"
+                                              value=""/></td>
+                    <td>
+                        <button type="button" onclick="doAdd()" class="btn btn-default btn-success">新增</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -86,46 +99,44 @@
 </body>
 <script type="text/javascript">
 
-    function logOut(){
+    function logOut() {
         $.ajax({
-            method:'post',
-            url:'../user/logout',
-            dataType:'json',
-            data:{
-
-            },
-            success:function (result) {
-                window.location.href="../../index.html";
+            method: 'post',
+            url: '../user/logout',
+            dataType: 'json',
+            data: {},
+            success: function (result) {
+                window.location.href = "../../index.html";
             }
         })
     }
 
     function doDelete(id) {
-        if (confirm("是否删除")){
+        if (confirm("是否删除")) {
             deleteShipping(id);
         }
     }
-    
+
     function deleteShipping(id) {
         if (confirm("是否删除?")) {
             $.ajax({
-                method:'post',
-                url:'../shipping/delete',
-                dataType:'json',
-                data:{
-                    'shippingId':id
+                method: 'post',
+                url: '../shipping/delete',
+                dataType: 'json',
+                data: {
+                    'shippingId': id
                 },
-                success:function (result) {
+                success: function (result) {
                     //alert(result.status);
-                    if (result.status == 0){
-                        window.location.href="../shipping/list";
+                    if (result.status == 0) {
+                        window.location.href = "../shipping/list";
                     }
                 }
             })
         }
     }
 
-    function doAdd(){
+    function doAdd() {
         checkNull("name,phone,address");
         checkPhone("phone");
         add();
@@ -133,27 +144,27 @@
 
     function add() {
         $.ajax({
-            method:'post',
-            url:'../shipping/add',
-            dataType:'json',
-            data:{
-                'receiverName':$('#name').val(),
-                'receiverPhone':$('#phone').val(),
-                'receiverAddress':$('#address').val()
+            method: 'post',
+            url: '../shipping/add',
+            dataType: 'json',
+            data: {
+                'receiverName': $('#name').val(),
+                'receiverPhone': $('#phone').val(),
+                'receiverAddress': $('#address').val()
             },
-            success:function (result) {
+            success: function (result) {
                 //alert(result.status);
-                if (result.status == 0){
-                    window.location.href="../shipping/list";
+                if (result.status == 0) {
+                    window.location.href = "../shipping/list";
                 }
             }
         })
     }
 
-    function checkPhone(input){
+    function checkPhone(input) {
         var v = document.getElementById(input).value;
         var TEL_REGEXP = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
-        if (!TEL_REGEXP.test(v)){
+        if (!TEL_REGEXP.test(v)) {
             alert("请输入正确的手机号格式");
             return false;
         }
@@ -161,9 +172,10 @@
 
 
     $('#search').click(function () {
-        window.location.href = "product/search?productName="+$('#productName').val();
+        window.location.href = "product/search?productName=" + $('#productName').val();
         alert(111);
     })
+
     //判断是否为数字
     function checkRate(input) {
         var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
@@ -176,15 +188,16 @@
         }
         return true;
     }
+
     //判空
 
     function checkNull(input) {
 
         var ids = input.split(",");
-        for (var i = 0;i<ids.length;i++){
+        for (var i = 0; i < ids.length; i++) {
             var id = ids[i];
             var v = document.getElementById(id).value;
-            if (v == null || v == ""){
+            if (v == null || v == "") {
                 alert("请检查是否有空");
                 return false;
             }

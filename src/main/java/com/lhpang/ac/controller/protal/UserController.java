@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 
 /**
-*   类路径: com.lhpang.ac.controller.protal.UserController
-*   描述: 用户Controller
-*   @author: lhpang
-*   @date: 2019-04-17 14:01
-*/
+ * 类路径: com.lhpang.ac.controller.protal.UserController
+ * 描述: 用户Controller
+ *
+ * @author: lhpang
+ * @date: 2019-04-17 14:01
+ */
 @Controller
 @RequestMapping("/user/")
 public class UserController {
@@ -29,53 +30,60 @@ public class UserController {
 
     /**
      * 描 述: 登陆
+     *
      * @date: 2019-04-17 14:05
      * @author: lhpang
      * @param: [name, password, session]
      * @return: java.lang.Object
      **/
     @ResponseBody
-    @RequestMapping(value = "login",method = RequestMethod.POST)
-    public ServerResponse<User> login(String logNo, String password, HttpSession session){
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    public ServerResponse<User> login(String logNo, String password, HttpSession session) {
 
         ServerResponse<User> login = userService.login(logNo, password);
 
-        if(login.isSuccess()){
+        if (login.isSuccess()) {
             session.setAttribute(Constant.CURRENT_USER, login.getData());
         }
 
         return login;
     }
+
     /**
      * 描 述: 登出
+     *
      * @date: 2019/4/17 20:41
      * @author: lhpang
      * @param:
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
-    @RequestMapping(value = "logout",method = RequestMethod.POST)
-    public ServerResponse<String> logout (HttpSession session){
+    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    public ServerResponse<String> logout(HttpSession session) {
 
         session.removeAttribute(Constant.CURRENT_USER);
 
         return ServerResponse.createBySuccess();
     }
+
     /**
      * 描 述: 用户注册
+     *
      * @date: 2019/4/17 21:49
      * @author: lhpang
-     * @param:  User
+     * @param: User
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
     @PostMapping("register")
-    public ServerResponse<String> register(User user){
+    public ServerResponse<String> register(User user) {
 
         return userService.register(user);
     }
+
     /**
      * 描 述: 检查登陆账号,电话是否唯一
+     *
      * @date: 2019/4/17 22:07
      * @author: lhpang
      * @param:
@@ -83,30 +91,34 @@ public class UserController {
      **/
     @ResponseBody
     @PostMapping(value = "checkValid")
-    public ServerResponse<String> checkValid(String s,String type){
+    public ServerResponse<String> checkValid(String s, String type) {
 
-        return userService.checkValid(s,type);
+        return userService.checkValid(s, type);
     }
+
     /**
      * 描 述: 获取当前用户信息
+     *
      * @date: 2019/4/17 22:10
      * @author: lhpang
      * @param:
      * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.pojo.User>
      **/
     @ResponseBody
-    @RequestMapping(value = "getUserInfo",method = RequestMethod.POST)
-    public ServerResponse<User> getUserInfo(HttpSession session){
+    @RequestMapping(value = "getUserInfo", method = RequestMethod.POST)
+    public ServerResponse<User> getUserInfo(HttpSession session) {
 
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
-        if(user != null){
+        if (user != null) {
             return ServerResponse.createBySuccess(user);
         }
         return ServerResponse.createByErrorMessage("未登录");
     }
+
     /**
      * 描 述: 获得密保问题
+     *
      * @date: 2019-04-18 11:40
      * @author: lhpang
      * @param: [logNo]
@@ -114,12 +126,14 @@ public class UserController {
      **/
     @ResponseBody
     @PostMapping("getQuestion")
-    public ServerResponse<String> getQuestion(String logNo){
-        
+    public ServerResponse<String> getQuestion(String logNo) {
+
         return userService.getQuestion(logNo);
     }
+
     /**
      * 描 述: 检查密保问题答案
+     *
      * @date: 2019-04-18 11:42
      * @author: lhpang
      * @param: [logNo, question, answer]
@@ -127,76 +141,84 @@ public class UserController {
      **/
     @ResponseBody
     @PostMapping("checkAnswer")
-    public ServerResponse<String> checkAnswer(String logNo,String answer){
-        
+    public ServerResponse<String> checkAnswer(String logNo, String answer) {
+
         return userService.checkAnswer(logNo, answer);
     }
+
     /**
      * 描 述: 忘记密码
+     *
      * @date: 2019/4/18 22:50
      * @author: lhpang
      * @param:
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
-    @RequestMapping(value = "forgetPassword",method = RequestMethod.POST)
-    public ServerResponse<String> forgetPassword(String logNo,String newPassword,String answer){
-        return userService.forgetPassword(logNo,newPassword,answer);
+    @RequestMapping(value = "forgetPassword", method = RequestMethod.POST)
+    public ServerResponse<String> forgetPassword(String logNo, String newPassword, String answer) {
+        return userService.forgetPassword(logNo, newPassword, answer);
     }
+
     /**
      * 描 述: 登陆状态忘记密码
+     *
      * @date: 2019/4/18 22:50
      * @author: lhpang
      * @param:
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.String>
      **/
     @ResponseBody
-    @RequestMapping(value = "updatePasswordOnLine",method = RequestMethod.POST)
-    public ServerResponse<String> updatePasswordOnLine(HttpSession session,String oldPassword,String newPassword){
+    @RequestMapping(value = "updatePasswordOnLine", method = RequestMethod.POST)
+    public ServerResponse<String> updatePasswordOnLine(HttpSession session, String oldPassword, String newPassword) {
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse onLine = userService.checkOnLine(user);
-        if(!onLine.isSuccess()){
+        if (!onLine.isSuccess()) {
             return onLine;
         }
         return userService.updatePasswordOnLine(user, oldPassword, newPassword);
     }
+
     /**
      * 描 述: 更新用户信息
+     *
      * @date: 2019/4/18 22:52
      * @author: lhpang
      * @param:
      * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.pojo.User>
      **/
     @ResponseBody
-    @RequestMapping(value = "updateInformation",method = RequestMethod.POST)
-    public ServerResponse<User> updateInformation(User user,HttpSession session){
+    @RequestMapping(value = "updateInformation", method = RequestMethod.POST)
+    public ServerResponse<User> updateInformation(User user, HttpSession session) {
 
         User currentUser = (User) session.getAttribute(Constant.CURRENT_USER);
         ServerResponse onLine = userService.checkOnLine(user);
-        if(!onLine.isSuccess()){
+        if (!onLine.isSuccess()) {
             return onLine;
         }
-        ServerResponse<User> response = userService.updateInformation(currentUser,user);
+        ServerResponse<User> response = userService.updateInformation(currentUser, user);
 
-        if(response.isSuccess()){
+        if (response.isSuccess()) {
             session.setAttribute(Constant.CURRENT_USER, response.getData());
         }
         return response;
     }
+
     /**
      * 描 述: 获得当前用户信息
+     *
      * @date: 2019/4/18 23:24
      * @author: lhpang
      * @param:
      * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.pojo.User>
      **/
     @ResponseBody
-    @RequestMapping(value = "getInformation",method = RequestMethod.POST)
-    public ServerResponse<User> getInformation(HttpSession session){
-        User currentUser = (User)session.getAttribute(Constant.CURRENT_USER);
-        if(currentUser == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
+    @RequestMapping(value = "getInformation", method = RequestMethod.POST)
+    public ServerResponse<User> getInformation(HttpSession session) {
+        User currentUser = (User) session.getAttribute(Constant.CURRENT_USER);
+        if (currentUser == null) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "未登录,需要强制登录status=10");
         }
         return userService.getInformation(currentUser.getId());
 

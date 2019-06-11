@@ -7,73 +7,75 @@
     <link href="https://cdn.bootcss.com/twitter-bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <!--<div style="height: 1080px;width: auto">
-        账号:<input type="text" id="logNo" value=""/>
-        <br/>
-        密码:<input type="password" id="password" value="" />
-        <br/>
-        <input type="button" value="登陆" onclick="login();"/>
-    </div>-->
-    <div style="margin-top: 150px">
-    </div>
-    <div class="container">
-        <div class="row clearfix">
-            <div class="col-md-3 column">
-            </div>
-            <div class="col-md-6 column">
-                <form role="form">
-                    <div class="form-group">
-                        <div style="text-align: right"><h2>阿C外卖</h2></div>
-                        <label for="logNo">账号</label><input type="email" class="form-control" id="logNo" />
-                    </div>
-                    <div class="form-group">
-                        <label for="password">密码</label><input type="password" class="form-control" id="password" name="" />
-                    </div>
-                    <div class="checkbox">
-                    </div>
-                    <button type="button" onclick="toRegister()" class="btn btn-default">注册</button>
-                    <button style="margin-left: 400px" type="button" class="btn btn-default btn-success" onclick="login();">登陆</button>
-                    <div style="text-align: center"><a href="forgetPassword.html">忘记密码</a></div>
+<!--<div style="height: 1080px;width: auto">
+    账号:<input type="text" id="logNo" value=""/>
+    <br/>
+    密码:<input type="password" id="password" value="" />
+    <br/>
+    <input type="button" value="登陆" onclick="login();"/>
+</div>-->
+<div style="margin-top: 150px">
+</div>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-3 column">
+        </div>
+        <div class="col-md-6 column">
+            <form role="form">
+                <div class="form-group">
+                    <div style="text-align: right"><h2>阿C外卖</h2></div>
+                    <label for="logNo">账号</label><input type="email" class="form-control" id="logNo"/>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label><input type="password" class="form-control" id="password" name=""/>
+                </div>
+                <div class="checkbox">
+                </div>
+                <button type="button" onclick="toRegister()" class="btn btn-default">注册</button>
+                <button style="margin-left: 400px" type="button" class="btn btn-default btn-success" onclick="login();">
+                    登陆
+                </button>
+                <div style="text-align: center"><a href="forgetPassword.html">忘记密码</a></div>
 
-                </form>
-            </div>
-            <div class="col-md-3 column">
-            </div>
+            </form>
+        </div>
+        <div class="col-md-3 column">
         </div>
     </div>
+</div>
 </body>
 <script type="text/javascript">
-    
+
     function toRegister() {
-        window.location.href="register.html";
+        window.location.href = "register.html";
     }
 
     function login() {
         $.ajax({
-            url:"user/login",
-            method:'post',
-            dataType:'json',
-            data:{
-                "logNo" : $('#logNo').val(),
-                "password" : $('#password').val()
+            url: "user/login",
+            method: 'post',
+            dataType: 'json',
+            data: {
+                "logNo": $('#logNo').val(),
+                "password": $('#password').val()
             },
-            success : function(result){
+            success: function (result) {
                 console.log(result);
-                if (result.status == 1){
+                if (result.status == 1) {
                     $('#logNo').val("");
                     $('#password').val("");
                     alert("登陆有误");
                 }
-                if (result.status == 0){
-                    if (result.data.role == 0){
+                if (result.status == 0) {
+                    if (result.data.role == 0) {
                         window.location.href = "/productManager/getProductList";
                     }
-                    if(result.data.role == 1){
+                    if (result.data.role == 1) {
                         window.location.href = "product/list";
                     }
                 }
             }
-    });
+        });
 
     }
 

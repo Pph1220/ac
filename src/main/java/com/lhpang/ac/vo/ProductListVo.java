@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 /**
  * 类路径: com.lhpang.ac.vo.ProdectListVo
  * 描述: 商品列表Vo
+ *
  * @author: lhpang
  * @date: 2019-04-22 22:47
  */

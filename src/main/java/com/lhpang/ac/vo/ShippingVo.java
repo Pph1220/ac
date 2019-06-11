@@ -3,11 +3,12 @@ package com.lhpang.ac.vo;
 import lombok.Data;
 
 /**
-*   类路径: com.lhpang.ac.vo.ShippingVo
-*   描述: 收货地址Vo
-*   @author: lhpang
-*   @date: 2019-04-26 13:52
-*/
+ * 类路径: com.lhpang.ac.vo.ShippingVo
+ * 描述: 收货地址Vo
+ *
+ * @author: lhpang
+ * @date: 2019-04-26 13:52
+ */
 @Data
 public class ShippingVo {
 
@@ -18,5 +19,5 @@ public class ShippingVo {
     private String receiverPhone;
 
     private String receiverAddress;
-    
+
 }

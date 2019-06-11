@@ -8,11 +8,12 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 
 /**
  * 描 述: //TODO Fuck BoHai University
+ *
  * @date: 2019-04-24 9:57
  * @author: lhpang
  * @param:
  * @return:
-**/
+ **/
 @SpringBootApplication
 public class AcApplication {
 

@@ -5,11 +5,12 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 /**
-*   类路径: com.lhpang.ac.vo.OrderItemVo
-*   描述: OrderItemVo
-*   @author: lhpang
-*   @date: 2019-04-26 13:49
-*/
+ * 类路径: com.lhpang.ac.vo.OrderItemVo
+ * 描述: OrderItemVo
+ *
+ * @author: lhpang
+ * @date: 2019-04-26 13:49
+ */
 @Data
 public class OrderItemVo {
 
@@ -30,5 +31,5 @@ public class OrderItemVo {
     private String createTime;
 
     private String updateTime;
-    
+
 }

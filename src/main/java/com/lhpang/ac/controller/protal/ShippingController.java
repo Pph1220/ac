@@ -18,11 +18,12 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
-*   类路径: com.lhpang.ac.controller.protal.ShippingController
-*   描述: 收货地址Controller
-*   @author: lhpang
-*   @date: 2019-04-24 09:52
-*/
+ * 类路径: com.lhpang.ac.controller.protal.ShippingController
+ * 描述: 收货地址Controller
+ *
+ * @author: lhpang
+ * @date: 2019-04-24 09:52
+ */
 @Slf4j
 @Controller
 @RequestMapping("/shipping/")
@@ -35,6 +36,7 @@ public class ShippingController {
 
     /**
      * 描 述: 新增收货地址
+     *
      * @date: 2019-04-24 10:16
      * @author: lhpang
      * @param: [session, shipping]
@@ -42,18 +44,20 @@ public class ShippingController {
      **/
     @ResponseBody
     @PostMapping("add")
-    public ServerResponse add(HttpSession session, Shipping shipping){
+    public ServerResponse add(HttpSession session, Shipping shipping) {
 
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
-        if(!response.isSuccess()){
+        if (!response.isSuccess()) {
             return response;
         }
-        return shippingService.add(user.getId(),shipping);
+        return shippingService.add(user.getId(), shipping);
     }
+
     /**
      * 描 述: 删除收货地址
+     *
      * @date: 2019-04-24 10:26
      * @author: lhpang
      * @param: [session, shippingId]
@@ -61,82 +65,88 @@ public class ShippingController {
      **/
     @ResponseBody
     @PostMapping("delete")
-    public ServerResponse delete (HttpSession session,Integer shippingId){
+    public ServerResponse delete(HttpSession session, Integer shippingId) {
 
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
-        if(!response.isSuccess()){
+        if (!response.isSuccess()) {
             return response;
         }
 
         return shippingService.delete(user.getId(), shippingId);
     }
+
     /**
      * 描 述: 更新收货地址
+     *
      * @date: 2019-04-24 10:44
      * @author: lhpang
      * @param: [session, shipping]
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @ResponseBody
-    @RequestMapping(value = "update",method = RequestMethod.GET)
-    public ServerResponse update(HttpSession session, Shipping shipping){
+    @RequestMapping(value = "update", method = RequestMethod.GET)
+    public ServerResponse update(HttpSession session, Shipping shipping) {
 
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
-        if(!response.isSuccess()){
+        if (!response.isSuccess()) {
             return response;
         }
 
-        return shippingService.update(user.getId(),shipping);
+        return shippingService.update(user.getId(), shipping);
     }
+
     /**
      * 描 述: 收货地址详情
+     *
      * @date: 2019-04-24 10:44
      * @author: lhpang
      * @param: [session, shippingId]
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @ResponseBody
-    @RequestMapping(value = "detail",method = RequestMethod.GET)
-    public ServerResponse<Shipping> detail(HttpSession session, Integer shippingId){
+    @RequestMapping(value = "detail", method = RequestMethod.GET)
+    public ServerResponse<Shipping> detail(HttpSession session, Integer shippingId) {
 
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
-        if(!response.isSuccess()){
+        if (!response.isSuccess()) {
             return response;
         }
 
-        return shippingService.detail(user.getId(),shippingId);
+        return shippingService.detail(user.getId(), shippingId);
     }
+
     /**
      * 描 述: 查询收货地址列表
+     *
      * @date: 2019-04-24 11:01
      * @author: lhpang
      * @param: [pageNum, pageSize, session]
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @GetMapping("list")
-    public ModelAndView list(HttpSession session){
+    public ModelAndView list(HttpSession session) {
         Map map = Maps.newHashMap();
 
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
-        if(!response.isSuccess()){
-            map.put("result",response);
-            return new ModelAndView("common/fail",map);
+        if (!response.isSuccess()) {
+            map.put("result", response);
+            return new ModelAndView("common/fail", map);
         }
         ServerResponse list = shippingService.list(user.getId());
         map.put("result", list);
-        if(!list.isSuccess()){
-            return new ModelAndView("common/fail",map);
+        if (!list.isSuccess()) {
+            return new ModelAndView("common/fail", map);
         }
 
-        return new ModelAndView("portal/shipping/shippingList",map);
+        return new ModelAndView("portal/shipping/shippingList", map);
     }
 
 }

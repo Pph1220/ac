@@ -9,11 +9,12 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 /**
-*   类路径: com.lhpang.ac.config.alipayConfig
-*   描述: 支付宝参数配置类
-*   @author: lhpang
-*   @date: 2019-04-25 09:50
-*/
+ * 类路径: com.lhpang.ac.config.alipayConfig
+ * 描述: 支付宝参数配置类
+ *
+ * @author: lhpang
+ * @date: 2019-04-25 09:50
+ */
 @Slf4j
 @ConfigurationProperties(prefix = "alipay")
 @Data
@@ -50,7 +51,7 @@ public class AlipayConfig {
 
     private String notifyUrl;
 
-    private String  charset = "utf-8";
+    private String charset = "utf-8";
 
     private String format = "json";
 
@@ -93,14 +94,10 @@ public class AlipayConfig {
 
     private static String getKeyDescription(String key) {
         int showLength = 6;
-        if (StringUtils.isNotEmpty(key) &&
-                key.length() > showLength) {
-            return new StringBuilder(key.substring(0, showLength))
-                    .append("******")
-                    .append(key.substring(key.length() - showLength))
-                    .toString();
+        if (StringUtils.isNotEmpty(key) && key.length() > showLength) {
+            return new StringBuilder(key.substring(0, showLength)).append("******").append(key.substring(key.length() - showLength)).toString();
         }
         return null;
     }
-    
+
 }

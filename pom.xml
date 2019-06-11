@@ -27,11 +27,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-configuration-processor</artifactId>
-        <optional>true</optional>
-      </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -89,20 +89,20 @@
         </dependency>
 
         <!--支付宝-->
-      <dependency>
-        <groupId>com.alipay.sdk</groupId>
-        <artifactId>alipay-sdk-java</artifactId>
-        <version>3.0.0</version>
-      </dependency>
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>3.0.0</version>
+        </dependency>
 
-<!--
-      <dependency>
-        <groupId>com.alipay</groupId>
-        <artifactId>trade-sdk</artifactId>
-        <version>0.0.1</version>
-        <systemPath>${project.basedir}/src/main/resources/lib/alipay-trade-sdk-20161215.jar</systemPath>
-      </dependency>
--->
+        <!--
+              <dependency>
+                <groupId>com.alipay</groupId>
+                <artifactId>trade-sdk</artifactId>
+                <version>0.0.1</version>
+                <systemPath>${project.basedir}/src/main/resources/lib/alipay-trade-sdk-20161215.jar</systemPath>
+              </dependency>
+        -->
 
         <dependency>
             <groupId>commons-codec</groupId>
@@ -147,16 +147,16 @@
             <version>2.10.1</version>
         </dependency>
 
-      <!--farmemark-->
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-freemarker</artifactId>
-      </dependency>
+        <!--farmemark-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
 
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-thymeleaf</artifactId>
-      </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
     </dependencies>
 
 
@@ -180,20 +180,20 @@
                     </configurationFile>
                 </configuration>
             </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <source>1.8</source>
-              <target>1.8</target>
-              <encoding>UTF-8</encoding>
-              <compilerArguments>
-                <extdirs>
-                  ${project.basedir}/src/main/resources/lib
-                </extdirs>
-              </compilerArguments>
-            </configuration>
-          </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                    <compilerArguments>
+                        <extdirs>
+                            ${project.basedir}/src/main/resources/lib
+                        </extdirs>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
         </plugins>
         <!--<resources>
              <resource>

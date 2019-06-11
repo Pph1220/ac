@@ -26,11 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-*   类路径: com.lhpang.ac.service.imp.ProductService
-*   描述: 产品ServiceImpl
-*   @author: lhpang
-*   @date: 2019-04-17 10:18
-*/
+ * 类路径: com.lhpang.ac.service.imp.ProductService
+ * 描述: 产品ServiceImpl
+ *
+ * @author: lhpang
+ * @date: 2019-04-17 10:18
+ */
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -41,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 描 述: 商品新增或修改(后台)
+     *
      * @date: 2019-04-22 16:36
      * @author: lhpang
      * @param: [product]
@@ -50,17 +52,17 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(rollbackFor = Exception.class)
     public synchronized ServerResponse<String> saveOrUpdateProduct(Product product) {
 
-        if(product != null){
-            if(product.getId() != null){
+        if (product != null) {
+            if (product.getId() != null) {
                 int count = productMapper.updateByPrimaryKeySelective(product);
-                if(count > 0){
+                if (count > 0) {
                     return ServerResponse.createBySuccessMessage("更新成功");
                 }
                 return ServerResponse.createByErrorMessage("更新失败");
-            }else{
+            } else {
                 product.setCreateTime(new Timestamp(System.currentTimeMillis()));
                 int count = productMapper.insertSelective(product);
-                if(count > 0){
+                if (count > 0) {
                     return ServerResponse.createBySuccessMessage("新增成功");
                 }
                 return ServerResponse.createByErrorMessage("新增失败");
@@ -68,8 +70,10 @@ public class ProductServiceImpl implements ProductService {
         }
         return ServerResponse.createByErrorMessage("参数错误");
     }
+
     /**
      * 描 述: 修改上下架状态(后台)
+     *
      * @date: 2019-04-22 16:43
      * @author: lhpang
      * @param: [id]
@@ -79,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public synchronized ServerResponse<String> setStatus(Integer productId) {
 
-        if(productId == null){
+        if (productId == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
         //判断是否有这个产品
@@ -87,22 +91,22 @@ public class ProductServiceImpl implements ProductService {
         Product updateProduct = new Product();
         updateProduct.setId(productId);
 
-        if(product == null){
+        if (product == null) {
             return ServerResponse.createByErrorMessage("商品不存在");
-        }else{
+        } else {
             //如果为在下架改为在售
-            if(product.getStatus() == Constant.ProductStatusEnum.OFF_SALE.getCode()){
+            if (product.getStatus() == Constant.ProductStatusEnum.OFF_SALE.getCode()) {
                 updateProduct.setStatus(Constant.ProductStatusEnum.ON_SALE.getCode());
                 int count = productMapper.updateByPrimaryKeySelective(updateProduct);
-                if(count > 0){
+                if (count > 0) {
                     return ServerResponse.createBySuccessMessage("上架成功");
                 }
             }
             //如果为在售改为下架
-            if(product.getStatus() == Constant.ProductStatusEnum.ON_SALE.getCode()){
+            if (product.getStatus() == Constant.ProductStatusEnum.ON_SALE.getCode()) {
                 updateProduct.setStatus(Constant.ProductStatusEnum.OFF_SALE.getCode());
                 int count = productMapper.updateByPrimaryKeySelective(updateProduct);
-                if(count > 0){
+                if (count > 0) {
                     return ServerResponse.createBySuccessMessage("下架成功");
                 }
             }
@@ -110,22 +114,24 @@ public class ProductServiceImpl implements ProductService {
 
         return ServerResponse.createByErrorMessage("修改失败");
     }
+
     /**
      * 描 述: 商品详情(后台)
+     *
      * @date: 2019-04-22 17:53
      * @author: lhpang
      * @param: [productId]
      * @return: com.lhpang.ac.common.ServerResponse<java.lang.Object>
      **/
     @Override
-    public ServerResponse<ProductDetailVo> managerProductDetail(Integer productId){
+    public ServerResponse<ProductDetailVo> managerProductDetail(Integer productId) {
 
-        if(productId == null){
+        if (productId == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
         Product product = productMapper.selectByPrimaryKey(productId);
 
-        if(product == null){
+        if (product == null) {
             return ServerResponse.createByErrorMessage("商品不存在");
         }
 
@@ -133,15 +139,17 @@ public class ProductServiceImpl implements ProductService {
 
         return ServerResponse.createBySuccess(vo);
     }
+
     /**
      * 描 述: 查询Product列表(后台)
+     *
      * @date: 2019/4/22 22:58
      * @author: lhpang
      * @param:
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pageHelper.PageInfo>
      **/
     @Override
-    public ServerResponse<PageInfo> getProductList(int pageNum, int pageSize){
+    public ServerResponse<PageInfo> getProductList(int pageNum, int pageSize) {
         //startPage
         Page page = PageHelper.startPage(pageNum, pageSize);
         //查询
@@ -149,7 +157,7 @@ public class ProductServiceImpl implements ProductService {
 
         List<ProductListVo> listVos = new ArrayList<>();
         //po转Vo
-        for (Product product:products){
+        for (Product product : products) {
             listVos.add(this.poToListVo(product));
         }
         //pagerHelper收尾
@@ -158,15 +166,17 @@ public class ProductServiceImpl implements ProductService {
 
         return ServerResponse.createBySuccess(pageInfo);
     }
+
     /**
      * 描 述: 搜索商品(后台)
+     *
      * @date: 2019/4/22 23:30
      * @author: lhpang
      * @param:
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
      **/
     @Override
-    public ServerResponse<PageInfo> searchProduct(String productName,int pageNum,int pageSize){
+    public ServerResponse<PageInfo> searchProduct(String productName, int pageNum, int pageSize) {
 
         //startPage
         PageHelper.startPage(pageNum, pageSize);
@@ -178,7 +188,7 @@ public class ProductServiceImpl implements ProductService {
 
         List<ProductListVo> listVos = new ArrayList<>();
         //po转Vo
-        for (Product product:products){
+        for (Product product : products) {
             listVos.add(this.poToListVo(product));
         }
         //pagerHelper收尾
@@ -187,14 +197,16 @@ public class ProductServiceImpl implements ProductService {
 
         return ServerResponse.createBySuccess(pageInfo);
     }
+
     /**
      * 描 述: poToListVo
+     *
      * @date: 2019/4/22 22:52
      * @author: lhpang
      * @param:
      * @return: com.lhpang.ac.vo.ProductListVo
      **/
-    public ProductListVo poToListVo(Product product){
+    public ProductListVo poToListVo(Product product) {
 
         ProductListVo vo = new ProductListVo();
         vo.setId(product.getId());
@@ -208,14 +220,16 @@ public class ProductServiceImpl implements ProductService {
 
         return vo;
     }
+
     /**
      * 描 述: po转vo
+     *
      * @date: 2019/4/22 22:15
      * @author: lhpang
      * @param:
      * @return: com.lhpang.ac.vo.ProductDetailVo
      **/
-    private ProductDetailVo poToDetailVo(Product product){
+    private ProductDetailVo poToDetailVo(Product product) {
 
         ProductDetailVo vo = new ProductDetailVo();
         vo.setId(product.getId());
@@ -235,24 +249,25 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 描 述: 获得商品信息详情(前台)
+     *
      * @date: 2019-04-23 10:18
      * @author: lhpang
      * @param: [productId]
      * @return: com.lhpang.ac.common.ServerResponse<com.lhpang.ac.vo.ProductDetailVo>
      **/
     @Override
-    public ServerResponse<ProductDetailVo> getProductDetail(Integer productId){
+    public ServerResponse<ProductDetailVo> getProductDetail(Integer productId) {
 
-        if(productId == null){
+        if (productId == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
         Product product = productMapper.selectByPrimaryKey(productId);
 
-        if(product == null){
+        if (product == null) {
             return ServerResponse.createByErrorMessage("商品不存在");
         }
 
-        if(product.getStatus() == Constant.ProductStatusEnum.OFF_SALE.getCode()){
+        if (product.getStatus() == Constant.ProductStatusEnum.OFF_SALE.getCode()) {
             return ServerResponse.createByErrorMessage("商品已下架");
         }
 
@@ -260,23 +275,25 @@ public class ProductServiceImpl implements ProductService {
 
         return ServerResponse.createBySuccess(vo);
     }
+
     /**
      * 描 述: 搜索(前台)
+     *
      * @date: 2019-04-23 10:57
      * @author: lhpang
      * @param: [productName, pageSize, pageNum, orderBy]
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
      **/
     @Override
-    public ServerResponse<PageInfo> getProductByproductNameCategoryId(String productName,Integer categoryId,int pageSize,int pageNum,String orderBy){
-        if(StringUtils.isBlank(productName) && categoryId == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+    public ServerResponse<PageInfo> getProductByproductNameCategoryId(String productName, Integer categoryId, int pageSize, int pageNum, String orderBy) {
+        if (StringUtils.isBlank(productName) && categoryId == null) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
         //查询有没有这个分类
         Category categorie = categoryMapper.selectByPrimaryKey(categoryId);
         //PageHelper start
         PageHelper.startPage(pageNum, pageSize);
-        if(categorie == null && StringUtils.isBlank(productName)){
+        if (categorie == null && StringUtils.isBlank(productName)) {
             //没有该分类也没有关键字时返回空
             List<ProductListVo> productListVos = Lists.newArrayList();
             PageInfo page = new PageInfo(productListVos);
@@ -284,17 +301,17 @@ public class ProductServiceImpl implements ProductService {
         }
 
         //排序
-        if(StringUtils.isNotBlank(orderBy)){
-            if (Constant.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)){
+        if (StringUtils.isNotBlank(orderBy)) {
+            if (Constant.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)) {
                 String[] orderByArray = orderBy.split("_");
                 PageHelper.orderBy(orderByArray[0] + " " + orderByArray[1]);
             }
         }
-        List<Product> products = productMapper.selectByNameCategoryId(productName,categoryId);
+        List<Product> products = productMapper.selectByNameCategoryId(productName, categoryId);
 
         List<ProductListVo> productListVos = new ArrayList<>();
 
-        for(Product product: products){
+        for (Product product : products) {
             ProductListVo productListVo = poToListVo(product);
             productListVos.add(productListVo);
         }
@@ -304,19 +321,21 @@ public class ProductServiceImpl implements ProductService {
 
         return ServerResponse.createBySuccess(pageInfo);
     }
+
     /**
      * 描 述: 全部商品（前台）
+     *
      * @date: 2019/4/29 22:34
      * @author: lhpang
      * @param: [pageNum, pageSize]
      * @return: com.lhpang.ac.common.ServerResponse<com.github.pagehelper.PageInfo>
      **/
     @Override
-    public ServerResponse<PageInfo> list(int pageNum, int pageSize){
+    public ServerResponse<PageInfo> list(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Product> productList = productMapper.list();
         List<ProductListVo> productListVoList = Lists.newArrayList();
-        for (Product product:productList){
+        for (Product product : productList) {
             ProductListVo vo = poToListVo(product);
             productListVoList.add(vo);
         }
@@ -324,24 +343,25 @@ public class ProductServiceImpl implements ProductService {
         pageInfo.setList(productListVoList);
         return ServerResponse.createBySuccess(pageInfo);
     }
+
     /**
      * 描 述: 后台删除商品
+     *
      * @date: 2019/5/6 12:03
      * @author: lhpang
      * @param: [productId]
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @Override
-    public ServerResponse delete(Integer productId){
+    public ServerResponse delete(Integer productId) {
 
-        if(productId == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),
-                    ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        if (productId == null) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
 
         int count = productMapper.deleteByPrimaryKey(productId);
 
-        if(count > 0){
+        if (count > 0) {
             return ServerResponse.createBySuccess();
         }
         return ServerResponse.createByError();

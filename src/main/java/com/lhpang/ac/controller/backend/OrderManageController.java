@@ -17,11 +17,12 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
-*   类路径: com.lhpang.ac.controller.backend.OrderManageOrder
-*   描述: 管理员订单Controller
-*   @author: lhpang
-*   @date: 2019-04-26 16:16
-*/
+ * 类路径: com.lhpang.ac.controller.backend.OrderManageOrder
+ * 描述: 管理员订单Controller
+ *
+ * @author: lhpang
+ * @date: 2019-04-26 16:16
+ */
 @Controller
 @RequestMapping("/orderManager/")
 public class OrderManageController {
@@ -32,6 +33,7 @@ public class OrderManageController {
 
     /**
      * 描 述: 查询订单列表
+     *
      * @date: 2019-04-26 16:30
      * @author: lhpang
      * @param: [session, pageNum, pageSize]
@@ -39,25 +41,26 @@ public class OrderManageController {
      **/
     @ResponseBody
     @GetMapping("list")
-    public ModelAndView list(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                             @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+    public ModelAndView list(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum, @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         Map map = Maps.newHashMap();
 
-        User user = (User)session.getAttribute(Constant.CURRENT_USER);
+        User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkRoleAndOnLine(user);
-        if(!response.isSuccess()){
+        if (!response.isSuccess()) {
             map.put("result", response);
-            return new ModelAndView("common/fail",map);
+            return new ModelAndView("common/fail", map);
         }
         ServerResponse list = orderService.managerList(pageNum, pageSize);
         map.put("result", list);
 
-        return new ModelAndView("backend/order/orderList",map);
+        return new ModelAndView("backend/order/orderList", map);
 
     }
+
     /**
      * 描 述: 订单详情
+     *
      * @date: 2019-04-26 15:56
      * @author: lhpang
      * @param: [session, orderNo]
@@ -65,43 +68,47 @@ public class OrderManageController {
      **/
     @ResponseBody
     @GetMapping("detail")
-    public ModelAndView detail(HttpSession session,String strOrderNo){
+    public ModelAndView detail(HttpSession session, String strOrderNo) {
         Map map = Maps.newHashMap();
 
-        User user = (User)session.getAttribute(Constant.CURRENT_USER);
+        User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkRoleAndOnLine(user);
-        if(!response.isSuccess()){
+        if (!response.isSuccess()) {
             map.put("result", response);
-            return new ModelAndView("common/fail",map);
+            return new ModelAndView("common/fail", map);
         }
         ServerResponse detail = orderService.managerDetail(NumberUtil.stringToLong(strOrderNo));
         map.put("result", detail);
 
-        return new ModelAndView("backend/order/orderDetail",map);
+        return new ModelAndView("backend/order/orderDetail", map);
     }
+
     /**
      * 描 述: 搜索订单
+     *
      * @date: 2019-04-26 15:56
      * @author: lhpang
      * @param: [session, orderNo]
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @ResponseBody
-    @RequestMapping(value = "search",method = RequestMethod.GET)
-    public ServerResponse search(HttpSession session,Long orderNo){
+    @RequestMapping(value = "search", method = RequestMethod.GET)
+    public ServerResponse search(HttpSession session, Long orderNo) {
 
-        User user = (User)session.getAttribute(Constant.CURRENT_USER);
+        User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkRoleAndOnLine(user);
-        if(!response.isSuccess()){
+        if (!response.isSuccess()) {
             return response;
         }
 
         return orderService.search(orderNo);
     }
+
     /**
      * 描 述: 发货
+     *
      * @date: 2019-04-26 15:56
      * @author: lhpang
      * @param: [session, orderNo]
@@ -109,16 +116,16 @@ public class OrderManageController {
      **/
     @ResponseBody
     @PostMapping(value = "send")
-    public ServerResponse send(HttpSession session,String strOrderNo){
-        User user = (User)session.getAttribute(Constant.CURRENT_USER);
+    public ServerResponse send(HttpSession session, String strOrderNo) {
+        User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkRoleAndOnLine(user);
-        if(!response.isSuccess()){
+        if (!response.isSuccess()) {
             return response;
         }
 
-        return  orderService.send(NumberUtil.stringToLong(strOrderNo));
+        return orderService.send(NumberUtil.stringToLong(strOrderNo));
 
     }
-    
+
 }

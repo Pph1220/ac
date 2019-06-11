@@ -7,19 +7,19 @@
     <link href="https://cdn.bootcss.com/twitter-bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <div class="row clearfix">
-            <div class="col-md-12 column">
-                <div class="jumbotron">
-                    <h1>
-                        Error!
-                    </h1>
-                    <p>
-                        ${result.msg}
-                    </p>
-                </div>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="jumbotron">
+                <h1>
+                    Error!
+                </h1>
+                <p>
+                    ${result.msg}
+                </p>
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>

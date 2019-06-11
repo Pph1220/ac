@@ -13,7 +13,11 @@
         <div class="col-md-12 column">
             <nav class="navbar navbar-default" role="navigation">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/product/list">阿 C 外 卖</a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1"><span
+                                class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
+                                class="icon-bar"></span><span class="icon-bar"></span></button>
+                    <a class="navbar-brand" href="/product/list">阿 C 外 卖</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
@@ -29,8 +33,9 @@
                     </ul>
                     <form class="navbar-form navbar-left" role="search" action="/product/search" method="get">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="productName" />
-                        </div> <button id="submit" type="submit" class="btn btn-default">搜索</button>
+                            <input type="text" class="form-control" name="productName"/>
+                        </div>
+                        <button id="submit" type="submit" class="btn btn-default">搜索</button>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
@@ -56,7 +61,7 @@
                 <div class="container">
                     <div class="row clearfix">
                         <div class="col-md-6 column">
-                            <img alt="140x140" src="${result.data.mainImage}" style="height: 300px;width: 300px;" />
+                            <img alt="140x140" src="${result.data.mainImage}" style="height: 300px;width: 300px;"/>
                         </div>
                         <div class="col-md-6 column">
                             <ul>
@@ -88,8 +93,9 @@
                 <div class="col-md-6 column">
                 </div>
                 <div class="col-md-6 column" style="text-align: right">
-                    <input style="width: 50px;display: inline-block" type="text" class="form-control" id="count" />
-                    <button style="display: inline-block" onclick="add();" type="button" class="btn btn-primary">加入购物车</button>
+                    <input style="width: 50px;display: inline-block" type="text" class="form-control" id="count"/>
+                    <button style="display: inline-block" onclick="add();" type="button" class="btn btn-primary">加入购物车
+                    </button>
                 </div>
             </div>
         </div>
@@ -111,38 +117,37 @@
 </body>
 <script type="text/javascript">
 
-    function logOut(){
+    function logOut() {
         $.ajax({
-            method:'post',
-            url:'../user/logout',
-            dataType:'json',
-            data:{
-
-            },
-            success:function (result) {
-                window.location.href="../../index.html";
+            method: 'post',
+            url: '../user/logout',
+            dataType: 'json',
+            data: {},
+            success: function (result) {
+                window.location.href = "../../index.html";
             }
         })
     }
+
     $('#search').click(function () {
-        window.location.href = "product/search?productName="+$('#productName').val();
+        window.location.href = "product/search?productName=" + $('#productName').val();
     })
 
     function add() {
-        if (checkRate('count')){
+        if (checkRate('count')) {
             $.ajax({
-                method:'get',
-                url:'../cart/add',
-                dataType:'json',
-                data:{
-                    'productId':$('#productId').val(),
-                    'count':$('#count').val()
+                method: 'get',
+                url: '../cart/add',
+                dataType: 'json',
+                data: {
+                    'productId': $('#productId').val(),
+                    'count': $('#count').val()
                 },
-                success:function (result) {
-                    if (result.status == 0){
+                success: function (result) {
+                    if (result.status == 0) {
                         alert("加入购物车成功");
                         $('#count').val("");
-                    }else{
+                    } else {
                         alert("加入购物车失败");
                     }
                 }
@@ -162,10 +167,11 @@
         }
         return true;
     }
+
     //判断视为为空
     function checkNull(input) {
         var v = document.getElementById(input).value;
-        if (v == null || v == ""){
+        if (v == null || v == "") {
             alert("数量不能为空");
             return false;
         }

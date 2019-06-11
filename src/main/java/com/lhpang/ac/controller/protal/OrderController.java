@@ -22,11 +22,12 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 /**
-*   类路径: com.lhpang.ac.controller.protal.OrderController
-*   描述: 订单Controller
-*   @author: lhpang
-*   @date: 2019-04-25 11:45
-*/
+ * 类路径: com.lhpang.ac.controller.protal.OrderController
+ * 描述: 订单Controller
+ *
+ * @author: lhpang
+ * @date: 2019-04-25 11:45
+ */
 @Slf4j
 @Controller
 @RequestMapping("/order/")
@@ -40,105 +41,112 @@ public class OrderController {
 
     /**
      * 描 述: 提交订单
+     *
      * @date: 2019-04-26 14:36
      * @author: lhpang
      * @param: [session, shippingId]
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @PostMapping("create")
-    public ModelAndView create(HttpSession session, Integer shippingId){
+    public ModelAndView create(HttpSession session, Integer shippingId) {
         Map result = Maps.newHashMap();
 
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse checkOnLine = userService.checkOnLine(user);
-        if(!checkOnLine.isSuccess()){
-            result.put("result",checkOnLine);
-            return new ModelAndView("common/fail",result);
+        if (!checkOnLine.isSuccess()) {
+            result.put("result", checkOnLine);
+            return new ModelAndView("common/fail", result);
         }
         ServerResponse create = orderService.create(user.getId(), shippingId);
-        result.put("result",create);
-        if(!create.isSuccess()){
-            return new ModelAndView("common/fail",result);
+        result.put("result", create);
+        if (!create.isSuccess()) {
+            return new ModelAndView("common/fail", result);
         }
 
-        ServerResponse detail = orderService.detail(user.getId(),((OrderVo)create.getData()).getOrderNo());
+        ServerResponse detail = orderService.detail(user.getId(), ((OrderVo) create.getData()).getOrderNo());
         result.put("result", detail);
-        return new ModelAndView("portal/order/orderDetail",result);
+        return new ModelAndView("portal/order/orderDetail", result);
     }
+
     /**
      * 描 述: 取消订单
+     *
      * @date: 2019-04-26 15:20
      * @author: lhpang
      * @param: [session, orderNo]
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @ResponseBody
-    @RequestMapping(value = "cancle",method = RequestMethod.GET)
-    public ServerResponse cancle(HttpSession session,long orderNo){
+    @RequestMapping(value = "cancle", method = RequestMethod.GET)
+    public ServerResponse cancle(HttpSession session, long orderNo) {
 
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
-        if(!response.isSuccess()){
+        if (!response.isSuccess()) {
             return response;
         }
 
-        return orderService.cancle(user.getId(),orderNo);
+        return orderService.cancle(user.getId(), orderNo);
     }
+
     /**
      * 描 述: 订单详情
+     *
      * @date: 2019/5/2 13:22
      * @author: lhpang
      * @param: [session, strOrderNo]
      * @return: org.springframework.web.servlet.ModelAndView
      **/
     @GetMapping("detail")
-    public ModelAndView detail(HttpSession session,String strOrderNo){
+    public ModelAndView detail(HttpSession session, String strOrderNo) {
 
 
         Map map = Maps.newHashMap();
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
-        if(!response.isSuccess()){
-            map.put("result",response);
-            return new ModelAndView("common/fail",map);
+        if (!response.isSuccess()) {
+            map.put("result", response);
+            return new ModelAndView("common/fail", map);
         }
 
         ServerResponse orderVo = orderService.detail(user.getId(), NumberUtil.stringToLong(strOrderNo));
 
-        map.put("result",orderVo);
-        return new ModelAndView("portal/order/orderDetail",map);
+        map.put("result", orderVo);
+        return new ModelAndView("portal/order/orderDetail", map);
     }
+
     /**
      * 描 述: 分页查询订单列表
+     *
      * @date: 2019-04-26 16:15
      * @author: lhpang
      * @param: [session, pageNum, pageSize]
      * @return: com.lhpang.ac.common.ServerResponse
      **/
     @GetMapping("list")
-    public ModelAndView list(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-                  @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
-        Map<String,ServerResponse> map = Maps.newHashMap();
+    public ModelAndView list(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum, @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        Map<String, ServerResponse> map = Maps.newHashMap();
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
-        if(!response.isSuccess()){
-            map.put("result",response);
-            return new ModelAndView("common/fail",map);
+        if (!response.isSuccess()) {
+            map.put("result", response);
+            return new ModelAndView("common/fail", map);
         }
-        ServerResponse orderList = orderService.list(user.getId(),pageNum,pageSize);
+        ServerResponse orderList = orderService.list(user.getId(), pageNum, pageSize);
 
-        map.put("result",orderList);
+        map.put("result", orderList);
 
-        return new ModelAndView("portal/order/orderList",map);
+        return new ModelAndView("portal/order/orderList", map);
     }
 
 
     /**
      * 描 述: 支付接口
+     *
      * @date: 2019-04-26 10:43
      * @author: lhpang
      * @param: [session, orderNo, request]
@@ -146,45 +154,49 @@ public class OrderController {
      **/
     @ResponseBody
     @PostMapping("pay")
-    public ModelAndView pay(HttpSession session, String strOrderNo, HttpServletRequest request){
+    public ModelAndView pay(HttpSession session, String strOrderNo, HttpServletRequest request) {
         Map map = Maps.newHashMap();
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
-        if(!response.isSuccess()){
-            map.put("result",response);
-            return new ModelAndView("common/fail",map);
+        if (!response.isSuccess()) {
+            map.put("result", response);
+            return new ModelAndView("common/fail", map);
         }
 
         String path = request.getSession().getServletContext().getRealPath("upload");
 
-        ServerResponse img = orderService.pay(NumberUtil.stringToLong(strOrderNo),user.getId(),path);
+        ServerResponse img = orderService.pay(NumberUtil.stringToLong(strOrderNo), user.getId(), path);
         map.put("result", img);
-        return new ModelAndView("portal/order/scan",map);
+        return new ModelAndView("portal/order/scan", map);
     }
+
     /**
      * 描 述: 阿里回调方法
+     *
      * @date: 2019-04-25 17:57
      * @author: lhpang
      * @param: [request]
      * @return: java.lang.Object
      **/
     @ResponseBody
-    @RequestMapping(value = "aliPayCallback",method = RequestMethod.POST)
-    public Object aliPayCallback(HttpServletRequest request){
+    @RequestMapping(value = "aliPayCallback", method = RequestMethod.POST)
+    public Object aliPayCallback(HttpServletRequest request) {
 
         Map map = request.getParameterMap();
 
         ServerResponse response = orderService.aliPayCallBack(map);
-        if(response.isSuccess()){
+        if (response.isSuccess()) {
             log.info("回调成功");
             return Constant.AlipayCallback.RESPONSE_SUCCESS;
         }
         log.info("回调失败");
         return Constant.AlipayCallback.RESPONSE_FAILED;
     }
+
     /**
      * 描 述: 查询订单支付状态
+     *
      * @date: 2019-04-26 10:16
      * @author: lhpang
      * @param: [session, orderNo]
@@ -192,15 +204,15 @@ public class OrderController {
      **/
     @ResponseBody
     @PostMapping(value = "queryPayStatus")
-    public ServerResponse<Boolean> queryPayStatus(HttpSession session, Long orderNo){
+    public ServerResponse<Boolean> queryPayStatus(HttpSession session, Long orderNo) {
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
 
         ServerResponse response = userService.checkOnLine(user);
-        if(!response.isSuccess()){
+        if (!response.isSuccess()) {
             return response;
         }
 
         return orderService.queryOrderPayStatus(user.getId(), orderNo).isSuccess() ? ServerResponse.createBySuccess(true) : ServerResponse.createBySuccess(false);
     }
-    
+
 }

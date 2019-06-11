@@ -12,7 +12,11 @@
         <div class="col-md-12 column">
             <nav class="navbar navbar-default" role="navigation">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/productManager/getProductList">阿 C 外 卖</a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1"><span
+                                class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
+                                class="icon-bar"></span><span class="icon-bar"></span></button>
+                    <a class="navbar-brand" href="/productManager/getProductList">阿 C 外 卖</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
@@ -85,9 +89,12 @@
             <div class="col-md-1 column">
             </div>
             <div class="col-md-10 column">
-                <p style="line-height: 20px"><span style="font-size: large">收货人姓名:</span><span>${result.data.shippingVo.receiverName}</span></p>
+                <p style="line-height: 20px"><span
+                            style="font-size: large">收货人姓名:</span><span>${result.data.shippingVo.receiverName}</span>
+                </p>
                 <p><span style="font-size: large">收货人电话:</span><span>${result.data.shippingVo.receiverPhone}</span></p>
-                <p><span style="font-size: large">收货人地址:</span><span>${result.data.shippingVo.receiverAddress}</span></p>
+                <p><span style="font-size: large">收货人地址:</span><span>${result.data.shippingVo.receiverAddress}</span>
+                </p>
             </div>
             <div class="col-md-1 column">
             </div>
@@ -100,7 +107,9 @@
             <div class="col-md-10 column" style="text-align: right">
                 <#if result.data.status lt 40>
                     <span>订单总价:</span><span>${result.data.payment}元</span>
-                    <button style="margin-left: 50px" type="button" onclick="toSend()" class="btn btn-default btn-success">发货</button>
+                    <button style="margin-left: 50px" type="button" onclick="toSend()"
+                            class="btn btn-default btn-success">发货
+                    </button>
                 <#else >
                     <span>订单总价:</span><span>${result.data.payment}元</span>
                 </#if>
@@ -114,29 +123,28 @@
 </body>
 <script type="text/javascript">
 
-    function logOut(){
+    function logOut() {
         $.ajax({
-            method:'post',
-            url:'../user/logout',
-            dataType:'json',
-            data:{
-
-            },
-            success:function (result) {
-                window.location.href="../../index.html";
+            method: 'post',
+            url: '../user/logout',
+            dataType: 'json',
+            data: {},
+            success: function (result) {
+                window.location.href = "../../index.html";
             }
         })
     }
+
     function toSend() {
         $.ajax({
-            method:'post',
-            url:'../orderManager/send',
-            dataType:'json',
-            data:{
-                'strOrderNo' : '${result.data.orderNo}'
+            method: 'post',
+            url: '../orderManager/send',
+            dataType: 'json',
+            data: {
+                'strOrderNo': '${result.data.orderNo}'
             },
-            success:function (result) {
-                if (result.status == 0){
+            success: function (result) {
+                if (result.status == 0) {
                     alert("发货成功");
                 }
             }
@@ -156,10 +164,11 @@
         }
         return true;
     }
+
     //判空
     function checkNull(input) {
         var v = document.getElementById(input).value;
-        if (v == null || v == ""){
+        if (v == null || v == "") {
             alert("数量不能为空");
             return false;
         }
