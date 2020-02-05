@@ -25,7 +25,7 @@ alipay:
   heartbeat_delay: 5
   heartbeat_duration: 900
   # 回调地址
-  notify-url: http://pph.nat300.top/order/aliPayCallback
+  notify-url: http://kevinkao.nat200.top/order/aliPayCallback
 
 
 
@@ -43,6 +43,7 @@ spring:
 mybatis:
   mapper-locations: classpath:Mybatis/mapper/*.xml
 
+
 #logging:
 #  level:
 #    com.lhpang.ac.dao : debug
@@ -51,4 +52,5 @@ mybatis:
 logging:
   level:
     com.lhpang.ac.dao: trace
-
+server:
+  port: 8080

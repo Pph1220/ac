@@ -12,8 +12,6 @@ import org.springframework.stereotype.Repository;
  * @author: lhpang
  * @date: 2019-04-17 14:19
  */
-@Repository
-@Mapper
 public interface UserMapper {
 
     int deleteByPrimaryKey(Integer id);

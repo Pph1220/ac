@@ -6,8 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-@Mapper
+
 public interface CategoryMapper {
     int deleteByPrimaryKey(Integer id);
 
